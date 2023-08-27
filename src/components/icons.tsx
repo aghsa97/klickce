@@ -16,3 +16,5 @@ export const Kanban = Lucide.Kanban;
 export const Moon = Lucide.Moon;
 export const Sun = Lucide.Sun;
 export const ArrowRight = Lucide.ArrowRight;
+export const ChevronRight = Lucide.ChevronRight;
+export const Eye = Lucide.Eye;

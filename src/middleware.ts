@@ -8,13 +8,6 @@ export default authMiddleware({
     const userId = auth.userId;
 
     if (isPublicRoute) {
-      if (userId) {
-        // User is signed in
-        const url = new URL(req.nextUrl.origin);
-        url.pathname = "/dashboard";
-
-        return NextResponse.redirect(url);
-      }
       return NextResponse.next();
     }
 

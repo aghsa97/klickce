@@ -2,8 +2,10 @@ import React from 'react'
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
-import { Button, buttonVariants } from './ui/button';
+import { cn } from '@/lib/utils';
 import { auth, UserButton } from '@clerk/nextjs';
+import { Button, buttonVariants } from './ui/button';
+
 import * as Icons from './icons';
 
 const ThemeToggle = dynamic(() => import("./theme-toggle"), {
@@ -28,8 +30,9 @@ function MainHeader() {
                 <Link href={"/sign-in"} className={buttonVariants({ variant: 'outline' })}>
                     Sign In
                 </Link>
-                <Link href={"/sign-up"} className={buttonVariants({ variant: 'default' })}>
-                    Get Started For Free
+                <Link href={"/sign-up"} className={cn(buttonVariants({ variant: 'default' }), 'group')}>
+                    Get Started <span className='ml-1 italic'> - it&apos;s free</span>
+                    <Icons.ChevronRight className='w-4 h-4 ml-1 group-hover:translate-x-1 group-hover:animate-in' />
                 </Link>
             </div>
         )
