@@ -21,7 +21,7 @@ export default function DashboardLayout(props: { children: React.ReactNode }) {
         <div className="min-h-screen overflow-hidden rounded-[0.5rem] max-w-screen-md mx-auto">
             <nav className="container z-50 flex h-16 items-center justify-between border-b bg-background">
                 <div className="mr-8 hidden items-center md:flex">
-                    <p className="tracking-tighter text-2xl">spottz</p>
+                    <p className="text-2xl">Klik<span className="text-primary">ce</span></p>
                 </div>
                 <div className="flex items-center gap-4">
                     <ThemeToggle />

@@ -6,7 +6,7 @@ export const marketingFeatures = [
         title: "Your Design",
         body: (
             <>
-                Design the perfect marker. Set the mood with beautiful map styles. Create pixel-perfect modal pop-ups. Your limit is your imagination — spottz gives you complete design control.
+                Design the perfect marker. Set the mood with beautiful map styles. Create pixel-perfect modal pop-ups. Your limit is your imagination — Klikce gives you complete design control.
             </>
         ),
     },
@@ -15,7 +15,7 @@ export const marketingFeatures = [
         title: "Markers",
         body: (
             <>
-                Spottz is perfect for maps with a single marker — or thousands of markers. Plus, import spreadsheets and effortlessly create maps from your own data sets.
+                Klikce is perfect for maps with a single marker — or thousands of markers. Plus, import spreadsheets and effortlessly create maps from your own data sets.
             </>
         ),
     },

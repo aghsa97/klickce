@@ -7,15 +7,20 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { marketingFeatures } from '../config';
+import { api } from '@/lib/trpc/api';
 
-export const runtime = "edge";
 
-function Home() {
+async function Home() {
+    const mapsCount = await api.maps.getMapsCount.query();
+    const viewsCount = await api.maps.getViewsCount.query();
+    const spotsCount = await api.spots.getSpotsCount.query();
+
     return (
         <main className="flex w-full flex-col items-center justify-center py-24 gap-24">
             <div className='w-full flex flex-col items-center rounded-lg border border-border p-6'>
                 <h1 className="text-foreground font-semibold mb-6 text-3xl">
-                    Welcome to <span>spottz</span> <Badge variant={'secondary'}>beta</Badge>
+                    Welcome to <span>Klik<span className="text-primary">ce</span>
+                    </span> <Badge variant={'secondary'}>beta</Badge>
                 </h1>
                 <p className="text-center text-muted-foreground text-lg mb-6">
                     Design personalized maps tailored to your interests or needs.
@@ -35,6 +40,26 @@ function Home() {
                     </Button>
                 </div>
             </div>
+            <div className='flex justify-between items-center gap-8 w-full border border-border rounded-lg'>
+                <Card className={cn("border-none dark:bg-transparent")}>
+                    <CardHeader className='text-muted-foreground'>Maps</CardHeader>
+                    <CardContent>
+                        <CardTitle className='text-2xl'>{mapsCount.count}</CardTitle>
+                    </CardContent>
+                </Card>
+                <Card className={cn("border-none dark:bg-transparent")}>
+                    <CardHeader className='text-muted-foreground'>Views</CardHeader>
+                    <CardContent>
+                        <CardTitle>{viewsCount.count}</CardTitle>
+                    </CardContent>
+                </Card>
+                <Card className={cn("border-none dark:bg-transparent")}>
+                    <CardHeader className='text-muted-foreground'>Spots</CardHeader>
+                    <CardContent>
+                        <CardTitle>{spotsCount.count}</CardTitle>
+                    </CardContent>
+                </Card>
+            </div>
             <div className='flex flex-col items-center gap-8'>
                 <div>
                     <h2 className="text-2xl font-semibold text-center">
@@ -47,7 +72,7 @@ function Home() {
                 <div className='flex flex-col items-center'>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                         {marketingFeatures.map((feature) => (
-                            <Card key={feature.title} className={cn("p-2")}>
+                            <Card key={feature.title} className={cn("p-2 dark:bg-transparent")}>
                                 <CardHeader>{feature.icon}</CardHeader>
                                 <CardContent className="space-y-2">
                                     <CardTitle>{feature.title}</CardTitle>
@@ -60,7 +85,7 @@ function Home() {
                     </div>
                 </div>
             </div>
-        </main>
+        </main >
     )
 }
 

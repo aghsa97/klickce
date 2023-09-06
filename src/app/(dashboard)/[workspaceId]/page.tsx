@@ -3,9 +3,8 @@ import Link from 'next/link'
 
 import { buttonVariants } from '@/components/ui/button'
 
-export const runtime = 'edge'
 
-function DashboardPage() {
+async function DashboardPage() {
 
     return (
         <div className='w-full'>

@@ -1,8 +1,8 @@
-import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
-  publicRoutes: ["/sign-in", "/sign-up", "/"],
+  publicRoutes: ["/sign-in", "/sign-up", "/", "/(api|trpc)(.*)"],
   afterAuth(auth, req) {
     const isPublicRoute = auth.isPublicRoute;
     const userId = auth.userId;
