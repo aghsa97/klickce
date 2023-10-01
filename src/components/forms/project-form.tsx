@@ -45,11 +45,11 @@ function ProjectForm({ data, setIsOpen }: ContentTabProps) {
                     ...data
                 })
                 setIsOpen(false)
-                toast('updated')
+                toast('updated', `Project ${data.name} updated`)
                 router.refresh()
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error')
+                toast('error', error.message)
             }
         })
     }
@@ -59,11 +59,11 @@ function ProjectForm({ data, setIsOpen }: ContentTabProps) {
             try {
                 await api.projects.deleteProject.mutate({ id: data.id })
                 setIsOpen(false)
-                toast('deleted')
+                toast('deleted', `Project ${data.name} deleted`)
                 router.refresh()
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error);
-                toast('error')
+                toast('error', error.message)
             }
         })
     }

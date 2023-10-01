@@ -15,9 +15,10 @@ import ShareTab from './share-tab'
 type FormTabsProps = {
     mapId: string
     data: NonNullable<RouterOutputs["maps"]["getMapDataById"]>
+    styles: string[]
 }
 
-function FormTabs({ mapId, data }: FormTabsProps) {
+function FormTabs({ styles, mapId, data }: FormTabsProps) {
     const { setMapData } = useMapStore()
 
     useEffect(() => {
@@ -34,7 +35,7 @@ function FormTabs({ mapId, data }: FormTabsProps) {
                 <ContentTab data={data} />
             </TabsContent>
             <TabsContent value='customize'>
-                <CustomizeTab data={data} />
+                <CustomizeTab styles={styles} data={data} />
             </TabsContent>
             <TabsContent value='share'>
                 <ShareTab mapId={mapId} />

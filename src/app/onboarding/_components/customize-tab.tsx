@@ -3,12 +3,14 @@ import { RouterOutputs } from '@/lib/api'
 
 type ContentTabProps = {
     data: NonNullable<RouterOutputs["maps"]["getMapDataById"]>
+    styles: string[]
 }
 
-function CustomizeTab({ data }: ContentTabProps) {
+function CustomizeTab({ styles, data }: ContentTabProps) {
+
     return (
         <div className='flex flex-col'>
-            <MapCustomizeTabForm data={data} />
+            <MapCustomizeTabForm styles={styles} data={data} />
         </div>
     )
 }

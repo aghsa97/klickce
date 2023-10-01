@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useToast, Toast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const config = {
     error: {
@@ -19,21 +19,9 @@ const config = {
         title: "You have reached the limit for your plan.",
         description: "Please upgrade your plan to create more maps.",
     },
-    "unique-slug": {
-        title: "Slug is already taken",
-        description: "Please select another slug. Every slug is unique.",
-    },
-    created: { title: "Created successfully", variant: "success" },
-    deleted: { title: "Deleted successfully", variant: "info" }, // TODO: we are not informing the user besides the visual changes when an entry has been deleted
-    updated: { title: "Updated successfully", variant: "info" },
-    "test-error": {
-        title: "Connection Failed",
-        // description: "Be sure to include the auth headers.",
-        variant: "destructive",
-    },
-    "test-success": {
-        title: "Connection Established",
-    },
+    created: { title: "Created successfully", variant: "success", description: "You can now add spots to your map" },
+    deleted: { title: "Deleted successfully", variant: "info", description: "You deleted it successfuly." }, // TODO: we are not informing the user besides the visual changes when an entry has been deleted
+    updated: { title: "Updated successfully", variant: "info", description: "You updated it successfuly." },
 } as const;
 
 type ToastAction = keyof typeof config;
@@ -41,8 +29,12 @@ type ToastAction = keyof typeof config;
 export function useToastAction() {
     const { toast: defaultToast } = useToast();
 
-    function toast(action: ToastAction) {
-        return defaultToast(config[action]);
+    function toast(action: ToastAction, message?: string) {
+        return defaultToast({
+            title: config[action].title,
+            description: message ?? config[action].description,
+            variant: config[action].variant,
+        });
     }
 
     return { toast };

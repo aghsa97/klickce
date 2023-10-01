@@ -47,6 +47,35 @@
     --input: 240 3.7% 15.9%;
     --ring: 142.4 71.8% 29.2%;
   }
+
+  ul {
+    list-style: none;
+  }
+
+  ul.sub-menu {
+    position: relative;
+    padding: 0;
+    margin-left: 30px;
+  }
+
+  li.item span {
+    position: relative;
+  }
+
+  ul.sub-menu li.item span::before {
+    content: "";
+    height: 100%;
+    width: 16px;
+    border-bottom: 2px;
+    border-left: 2px;
+    border-style: solid;
+    border-color: hsl(var(--muted-foreground));
+    position: absolute;
+    bottom: 8px;
+    left: -24px;
+    z-index: -1;
+    border-bottom-left-radius: 8px;
+  }
 }
 
 @layer base {

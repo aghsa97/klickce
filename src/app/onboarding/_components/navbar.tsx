@@ -13,24 +13,21 @@ import { genId } from '@/lib/db';
 import { useToastAction } from '@/hooks/use-toast-action'
 
 function MapFormNavbar({ mapId }: { mapId: string }) {
-    const [_, startTransition] = useTransition()
     const { toast } = useToastAction()
     const router = useRouter()
 
     async function handleClick() {
-        startTransition(async () => {
-            try {
-                await api.projects.createProject.mutate({
-                    name: "New project - " + genId().slice(0, 5), // add slugs names instead?
-                    mapId: mapId,
-                })
-                toast('created')
-                router.refresh()
-            } catch (error) {
-                console.log(error); // TODO: handle error
-                toast('error')
-            }
-        })
+        try {
+            await api.projects.createProject.mutate({
+                name: "New project - " + genId().slice(0, 5), // add slugs names instead?
+                mapId: mapId,
+            })
+            toast('created', 'Project created')
+            router.refresh()
+        } catch (error: any) {
+            console.log(error); // TODO: handle error
+            toast('error', error.message)
+        }
     }
     return (
         <div className='flex items-center justify-between border-b border-border py-4'>

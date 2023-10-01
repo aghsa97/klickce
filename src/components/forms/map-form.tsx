@@ -21,9 +21,10 @@ type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 
 type MapCustomizeTabFormProps = {
     data: data
+    styles: string[]
 }
 
-function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
+function MapCustomizeTabForm({ styles, data }: MapCustomizeTabFormProps) {
     const router = useRouter()
     const { mapData, setMapData } = useMapStore()
     const [_, startTransition] = useTransition()
@@ -44,7 +45,7 @@ function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
         startTransition(async () => {
             try {
                 await api.maps.updateMap.mutate({ ...data })
-                toast('updated')
+                toast('updated', `Map ${data.name} updated`)
                 router.refresh()
             } catch (error) {
                 console.log(error); // TODO: handle error
@@ -52,6 +53,20 @@ function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
             }
         })
     }
+
+    async function handleDelete() {
+        startTransition(async () => {
+            try {
+                await api.maps.deleteMap.mutate({ id: data.id })
+                toast('deleted', `Map ${data.name} deleted`)
+                router.push('/dashboard')
+            } catch (error) {
+                console.log(error); // TODO: handle error
+                toast('error')
+            }
+        })
+    }
+
     function handleStyleClick(style: string) {
         if (!mapData) return
         mapData.style = style
@@ -80,7 +95,7 @@ function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Map Style</FormLabel>
-                                <MapStyle onClick={handleStyleClick} defaultValue={field.value ?? ""} />
+                                <MapStyle styles={styles} onClick={handleStyleClick} defaultValue={field.value ?? ""} />
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -125,7 +140,7 @@ function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
                         )}
                     />
                 </div>
-                <ActionBtns onDelete={() => { }} message="Deleting the map will delete all the data associated with it." />
+                <ActionBtns onDelete={handleDelete} message="Deleting the map will delete all the data associated with it." />
             </form>
         </Form>
     )

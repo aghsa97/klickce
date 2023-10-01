@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 import { marketingFeatures } from '../config';
 import { api } from '@/lib/trpc/api';
+import Logo from '@/components/ui/logo';
 
 
 async function Home() {
@@ -18,9 +19,9 @@ async function Home() {
     return (
         <main className="flex w-full flex-col items-center justify-center py-24 gap-24">
             <div className='w-full flex flex-col items-center rounded-lg border border-border p-6'>
-                <h1 className="text-foreground font-semibold mb-6 text-3xl">
-                    Welcome to <span>Klik<span className="text-primary">ce</span>
-                    </span> <Badge variant={'secondary'}>beta</Badge>
+                <h1 className="flex items-center justify-center gap-2 text-foreground font-semibold mb-6 text-3xl">
+                    Welcome to <Logo size='3xl' />
+                    <Badge variant={'secondary'}>beta</Badge>
                 </h1>
                 <p className="text-center text-muted-foreground text-lg mb-6">
                     Design personalized maps tailored to your interests or needs.
@@ -66,7 +67,7 @@ async function Home() {
                         Features
                     </h2>
                     <p className="text-center text-muted-foreground">
-                        Some of the features that spottz offers.
+                        Some of the features that we offer.
                     </p>
                 </div>
                 <div className='flex flex-col items-center'>

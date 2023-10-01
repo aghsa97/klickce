@@ -14,32 +14,26 @@ import { useToastAction } from '@/hooks/use-toast-action'
 function FormSearch({ mapId }: { mapId: string }) {
     const router = useRouter()
     const { zoom, setIsMovePin, isMovePin } = useMapStore()
-    const [_, startTransition] = useTransition()
     const { toast } = useToastAction()
 
     const iconComp = zoom < 12 ? <Icon.MapPinOff /> : <Icon.MapPin onClick={() => setIsMovePin(!isMovePin)} />
 
     async function handleOnSelect(data: { location: { locationName: string, address: string }, lat: number | null, lng: number | null }) {
-        startTransition(async () => {
-            try {
-                if (!data.lat || !data.lng) {
-                    toast('error')
-                    return // TODO: handle error
-                }
-                await api.spots.createSpot.mutate({
-                    mapId,
-                    address: data.location.address,
-                    name: data.location.locationName,
-                    lat: data.lat,
-                    lng: data.lng,
-                })
-                toast('created')
-                router.refresh()
-            } catch (error) {
-                console.log(error); // TODO: handle error
-                toast('error')
-            }
-        })
+        try {
+            if (!data.lat || !data.lng) return
+            await api.spots.createSpot.mutate({
+                name: data.location.locationName,
+                address: data.location.address,
+                lat: data.lat,
+                lng: data.lng,
+                mapId,
+            })
+            toast('created', `Spot created with name ${data.location.locationName}`)
+            router.refresh()
+        } catch (error: any) {
+            console.log(error); // TODO: handle error
+            toast('error', error.message)
+        }
     }
 
 

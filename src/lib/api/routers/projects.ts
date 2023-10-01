@@ -9,6 +9,7 @@ import {
   updateProjectSchema,
 } from "@/lib/db/schema/projects";
 import { genId } from "@/lib/db";
+import { spots } from "@/lib/db/schema/spots";
 
 export const projectsRouter = router({
   getProjectById: protectedProcedure
@@ -57,6 +58,29 @@ export const projectsRouter = router({
     .mutation(async ({ ctx, input }) => {
       if (!input.id) return;
       // TODO: delete all spots in this project? (no delete cascade in db)
+      const spotsIds = await ctx.db
+        .select({ id: spots.id })
+        .from(spots)
+        .where(
+          and(
+            eq(spots.projectId, input.id),
+            eq(spots.ownerId, ctx.auth.userId),
+          ),
+        )
+        .execute();
+
+      if (spotsIds.length > 0) {
+        await ctx.db
+          .delete(spots)
+          .where(
+            and(
+              eq(spots.projectId, input.id),
+              eq(spots.ownerId, ctx.auth.userId),
+            ),
+          )
+          .execute();
+      }
+
       return await ctx.db
         .delete(projects)
         .where(

@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 
@@ -12,6 +12,10 @@ import {
 import { customers } from "@/lib/db/schema/customers";
 import { allPlans } from "@/lib/plan";
 import { genId } from "@/lib/db";
+import { projects } from "@/lib/db/schema/projects";
+import { spots } from "@/lib/db/schema/spots";
+import { images } from "@/lib/db/schema/images";
+import { deleteFolder, deleteImage } from "@/lib/cloudinary";
 
 export const mapsRouter = router({
   getMapsCount: publicProcedure.query(async ({ ctx }) => {
@@ -139,6 +143,78 @@ export const mapsRouter = router({
     .input(mapIdSchema)
     .mutation(async ({ ctx, input }) => {
       // TODO: delete all projects and spots related to this map? (no delete cascade in db)
+      const projectIds = await ctx.db
+        .select({ id: projects.id })
+        .from(projects)
+        .where(
+          and(
+            eq(projects.mapId, input.id),
+            eq(projects.ownerId, ctx.auth.userId),
+          ),
+        )
+        .execute();
+
+      const spotIds = await ctx.db
+        .select({ id: spots.id })
+        .from(spots)
+        .where(
+          and(eq(spots.mapId, input.id), eq(spots.ownerId, ctx.auth.userId)),
+        )
+        .execute();
+
+      if (projectIds.length > 0) {
+        await ctx.db
+          .delete(projects)
+          .where(
+            and(
+              eq(projects.mapId, input.id),
+              eq(projects.ownerId, ctx.auth.userId),
+            ),
+          );
+      }
+
+      if (spotIds.length > 0) {
+        const imgs = await ctx.db
+          .select({ id: images.id, publicId: images.publicId })
+          .from(images)
+          .where(
+            and(
+              eq(images.ownerId, ctx.auth.userId),
+              inArray(
+                images.spotId,
+                spotIds.map((s) => s.id),
+              ),
+            ),
+          )
+          .execute();
+
+        if (imgs.length > 0) {
+          const mapFolderPath = imgs[0].publicId
+            .split("/")
+            .slice(0, 3)
+            .join("/");
+          for (const img of imgs) {
+            await deleteImage(img.publicId);
+          }
+          await deleteFolder(mapFolderPath);
+          await ctx.db.delete(images).where(
+            and(
+              eq(images.ownerId, ctx.auth.userId),
+              inArray(
+                images.spotId,
+                spotIds.map((s) => s.id),
+              ),
+            ),
+          );
+        }
+
+        await ctx.db
+          .delete(spots)
+          .where(
+            and(eq(spots.mapId, input.id), eq(spots.ownerId, ctx.auth.userId)),
+          );
+      }
+
       await ctx.db
         .delete(maps)
         .where(and(eq(maps.id, input.id), eq(maps.ownerId, ctx.auth.userId)));

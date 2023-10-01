@@ -48,11 +48,11 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
         startTransition(async () => {
             try {
                 await api.spots.updateSpot.mutate({ ...data })
-                toast('updated')
+                toast('updated', `Spot ${data.name} updated`)
                 router.refresh()
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error')
+                toast('error', error.message)
             }
         })
     }
@@ -61,11 +61,11 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
         startTransition(async () => {
             try {
                 await api.spots.deleteSpot.mutate({ id: data.id })
-                toast('deleted')
+                toast('deleted', `Spot ${data.name} deleted`)
                 router.refresh()
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error')
+                toast('error', error.message)
             }
         })
     }

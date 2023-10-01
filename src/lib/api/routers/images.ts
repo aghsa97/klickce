@@ -1,26 +1,13 @@
-import { eq, sql } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
+import { and, eq } from "drizzle-orm";
+import { z } from "zod";
 
-import {
-  imageIdSchema,
-  images,
-  insertImageSchema,
-  selectImageSchema,
-} from "@/lib/db/schema/images";
+import { imageIdSchema, images } from "@/lib/db/schema/images";
 import { spotIdSchema } from "@/lib/db/schema/spots";
 
-import { v2 as cloudinary } from "cloudinary";
-
 import { protectedProcedure, router } from "../trpc";
-import { z } from "zod";
-import { TRPCError } from "@trpc/server";
 import { genId } from "@/lib/db";
-
-cloudinary.config({
-  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true,
-});
+import { deleteImage, uploadImage } from "@/lib/cloudinary";
 
 export const imagesRouter = router({
   getImagesBySpotId: protectedProcedure
@@ -41,44 +28,45 @@ export const imagesRouter = router({
         .where(eq(images.id, input.id))
         .execute();
     }),
-  createCloudinaryImage: protectedProcedure
-    .input(z.object({ fileName: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const results = await cloudinary.uploader.upload(input.fileName, {
-          public_id: "test",
-          upload_preset: "o1ylfqms",
-        });
-        console.log("results", results);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }),
   createImage: protectedProcedure
     .input(z.object({ spotId: z.string(), url: z.string(), mapId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const id = "img_" + genId();
       const { userId } = ctx.auth;
+      const id = "img_" + genId();
+      const publicId = `${userId}/${input.mapId}/${input.spotId}/${id}`;
+
+      const imgs = await ctx.db.query.images.findMany({
+        where: and(eq(images.spotId, input.spotId), eq(images.ownerId, userId)),
+        columns: {
+          id: true,
+          publicId: true,
+        },
+      });
+
+      if (imgs.length >= 4) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Maximum number of images reached",
+        });
+      }
+
       try {
-        const results = await cloudinary.uploader.upload(input.url, {
-          public_id: `${userId}/${input.mapId}/${input.spotId}/${id}`,
-          upload_preset: "o1ylfqms",
-          transformation: {
-            quality: "auto:best",
-            fetch_format: "auto",
-            width: 800,
-            height: 600,
-            crop: "limit",
-          },
-        });
+        const res = await uploadImage(input.url, publicId);
+        if (!res) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Error uploading image",
+          });
+        }
         await ctx.db.insert(images).values({
-          id: id,
+          id,
           spotId: input.spotId,
-          publicId: results.public_id,
+          publicId: res.publicId,
+          ownerId: userId,
         });
-        return { id, publicId: results.public_id };
+        return { id, publicId: res.publicId };
       } catch (error) {
-        console.log("Error uploading image", error);
+        console.log(error);
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Error uploading image",
@@ -86,16 +74,33 @@ export const imagesRouter = router({
       }
     }),
   deleteImage: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        publicId: z.string(),
-      }),
-    )
+    .input(imageIdSchema)
     .mutation(async ({ ctx, input }) => {
-      const res = await cloudinary.api.delete_resources([input.publicId]);
+      const { userId } = ctx.auth;
 
-      if (res.deleted[input.publicId] !== "deleted") return;
-      await ctx.db.delete(images).where(eq(images.id, input.id));
+      const image = await ctx.db.query.images.findFirst({
+        where: and(eq(images.id, input.id), eq(images.ownerId, userId)),
+        columns: {
+          id: true,
+          publicId: true,
+        },
+      });
+
+      if (!image) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Image not found",
+        });
+      }
+
+      try {
+        await deleteImage(image.publicId);
+        await ctx.db.delete(images).where(eq(images.id, image.id));
+      } catch (error) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Error deleting image",
+        });
+      }
     }),
 });

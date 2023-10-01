@@ -13,7 +13,8 @@ import {
 import { customers } from "@/lib/db/schema/customers";
 import { allPlans } from "@/lib/plan";
 import { genId } from "@/lib/db";
-import { string, z } from "zod";
+import { deleteFolder, deleteImage } from "@/lib/cloudinary";
+import { images } from "@/lib/db/schema/images";
 
 export const spotsRouter = router({
   getSpotsCount: publicProcedure.query(async ({ ctx }) => {
@@ -75,7 +76,6 @@ export const spotsRouter = router({
     .input(updateSpotSchema)
     .mutation(async ({ ctx, input }) => {
       const updatedSpot = updateSpotSchema.parse(input);
-      console.log(updatedSpot);
       if (!updatedSpot.id) return;
       return await ctx.db
         .update(spots)
@@ -88,18 +88,37 @@ export const spotsRouter = router({
     .input(spotIdSchema)
     .mutation(async ({ ctx, input }) => {
       if (!input.id) return;
+      const imgs = await ctx.db
+        .select({
+          id: images.id,
+          publicId: images.publicId,
+        })
+        .from(images)
+        .where(
+          and(eq(images.spotId, input.id), eq(images.ownerId, ctx.auth.userId)),
+        )
+        .execute();
+
+      if (imgs.length > 0) {
+        try {
+          for (const img of imgs) {
+            await deleteImage(img.publicId);
+            await ctx.db.delete(images).where(eq(images.id, img.id));
+          }
+          const spotFolderPath = imgs[0].publicId
+            .split("/")
+            .slice(0, -1)
+            .join("/");
+          await deleteFolder(spotFolderPath);
+        } catch (error) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to delete images.",
+          });
+        }
+      }
       return await ctx.db
         .delete(spots)
         .where(and(eq(spots.id, input.id), eq(spots.ownerId, ctx.auth.userId)));
-    }),
-  deleteSpotsFromArrayIds: protectedProcedure
-    .input(z.string().array())
-    .mutation(async ({ ctx, input }) => {
-      if (!input) return;
-      for (const id of input) {
-        return await ctx.db
-          .delete(spots)
-          .where(and(eq(spots.id, id), eq(spots.ownerId, ctx.auth.userId)));
-      }
     }),
 });

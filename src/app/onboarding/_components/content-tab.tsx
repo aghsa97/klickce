@@ -25,7 +25,6 @@ function ContentTab({ data }: ContentTabProps) {
     const [selectedSpotsIds, setSelectedSpotsIds] = useState<string[]>([])
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isSelected, setSelected] = useState(false)
-    const [_, startTransition] = useTransition()
     const { toast } = useToastAction()
     const router = useRouter()
 
@@ -37,27 +36,35 @@ function ContentTab({ data }: ContentTabProps) {
         }
     }
 
-    function handleAction({ action, projectId }: { action: "delete" | "update", projectId?: string }) {
-        startTransition(async () => {
-            try {
-                for (const id of selectedSpotsIds) {
-                    if (action === 'delete') {
-                        await api.spots.deleteSpot.mutate({ id })
-                        setIsDialogOpen(false)
-                        toast('deleted')
-                    } else if (action === 'update') {
-                        await api.spots.updateSpot.mutate({ id, projectId })
-                        toast('updated')
-                    }
-                }
-                setSelectedSpotsIds([])
-                setSelected(false)
-                router.refresh()
-            } catch (error) {
-                console.log(error); // TODO: handle error
-                toast('error')
+    async function handleDelete() {
+        try {
+            for (const id of selectedSpotsIds) {
+                await api.spots.deleteSpot.mutate({ id })
+                setIsDialogOpen(false)
             }
-        })
+            toast('deleted', `Spot ${selectedSpotsIds.length > 1 ? 's' : ''} deleted`)
+            setSelectedSpotsIds([])
+            setSelected(false)
+            router.refresh()
+        } catch (error: any) {
+            console.log(error); // TODO: handle error
+            toast('error', error.message)
+        }
+    }
+
+    async function handleUpdate(projectId: string) {
+        try {
+            for (const id of selectedSpotsIds) {
+                await api.spots.updateSpot.mutate({ id, projectId })
+            }
+            toast('updated', `Spot ${selectedSpotsIds.length > 1 ? 's' : ''} updated`)
+            setSelectedSpotsIds([])
+            setSelected(false)
+            router.refresh()
+        } catch (error: any) {
+            console.log(error); // TODO: handle error
+            toast('error', error.message)
+        }
     }
 
     if (!Boolean(data.projects.length) && !Boolean(data.spots.length)) return <EmptyState />;
@@ -88,21 +95,21 @@ function ContentTab({ data }: ContentTabProps) {
                                 <Button variant="secondary" size="sm" onClick={() => setIsDialogOpen(!isDialogOpen)}>
                                     Cancel
                                 </Button>
-                                <Button variant="destructive" size="sm" onClick={() => handleAction({ action: "delete" })}>
+                                <Button variant="destructive" size="sm" onClick={handleDelete}>
                                     Delete
                                 </Button>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>
 
-                    <Select disabled={!isSelected} onValueChange={(projectId) => handleAction({ action: "update", projectId })}>
+                    <Select disabled={!isSelected} onValueChange={(projectId) => handleUpdate(projectId)}>
                         <SelectTrigger className="w-full min-w-[155px]">
                             <SelectValue placeholder="Select a project" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                {data.projects.map((project, index) => (
-                                    <SelectItem key={index} value={project.id}>
+                                {data.projects.map((project) => (
+                                    <SelectItem key={project.id} value={project.id}>
                                         {project.name}
                                     </SelectItem>
                                 ))}

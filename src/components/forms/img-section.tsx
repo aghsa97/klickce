@@ -26,7 +26,6 @@ function ImageSection({ spotId }: ImageSectionProps) {
     const [publicIds, setPublicIds] = useState<{ id: string, publicId: string }[]>([])
     const { toast } = useToastAction()
 
-
     useEffect(() => {
         function getPublicIds() {
             startTransition(async () => {
@@ -35,9 +34,6 @@ function ImageSection({ spotId }: ImageSectionProps) {
             })
         }
         getPublicIds()
-        return () => {
-            setPublicIds([])
-        }
     }, [spotId, router])
 
 
@@ -64,9 +60,9 @@ function ImageSection({ spotId }: ImageSectionProps) {
                             setPublicIds((prev) => [...prev, { id: result.id, publicId: result.publicId }])
                             toast('created')
                             router.refresh()
-                        } catch (error) {
+                        } catch (error: any) {
                             console.log(error); // TODO: handle error
-                            toast('error')
+                            toast('error', error.message)
                         }
                     })
                 }
@@ -75,16 +71,16 @@ function ImageSection({ spotId }: ImageSectionProps) {
             reader.readAsDataURL(file);
         }
     }
-    async function handleDeleteImg(id: string, publicId: string) {
+    async function handleDelete(id: string) {
         startTransition(async () => {
             try {
-                await api.images.deleteImage.mutate({ id, publicId })
+                await api.images.deleteImage.mutate({ id })
                 setPublicIds((prev) => prev.filter((img) => img.id !== id))
                 toast('deleted')
                 router.refresh()
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error')
+                toast('error', error.message)
             }
         })
     }
@@ -109,13 +105,13 @@ function ImageSection({ spotId }: ImageSectionProps) {
             </div>
             <div className={cn('grid grid-flow-col grid-cols-2 grid-rows-2 gap-2 h-[400px]',
                 !publicIds.length && 'border rounded-lg flex items-center justify-center')}>
-                {!publicIds.length && (<div className='flex flex-col items-center justify-center gap-2 text-center'>
+                {!publicIds.length && !isPending && (<div className='flex flex-col items-center justify-center gap-2 text-center'>
                     <Image src='/empty-imgs.svg' alt='empty-state' width={0} height={0} className="w-40" />
                     <h1 className='text-sm text-muted-foreground'>Your spot has no images yet</h1>
                 </div>
                 )}
                 {publicIds.map((img, index) => (
-                    <div key={index} className={cn("relative min-h-[100px]",
+                    <div key={img.id} className={cn("relative min-h-[100px]",
                         publicIds.length === 1 ? 'col-span-2 row-span-2' : 'col-span-1',
                         index === 0 ? 'row-span-2' : 'row-span-1',
                         publicIds.length === 4 && 'col-span-1 row-span-1',
@@ -136,7 +132,7 @@ function ImageSection({ spotId }: ImageSectionProps) {
                             />}
                         <Icon.Close
                             className='absolute top-2 right-2 p-1.5 w-8 h-8 text-white rounded-full bg-black/20 hover:bg-black/50 backdrop-filter backdrop-blur-[4px] cursor-pointer'
-                            onClick={() => handleDeleteImg(img.id, img.publicId)}
+                            onClick={() => handleDelete(img.id)}
                         />
                     </div>
                 ))}

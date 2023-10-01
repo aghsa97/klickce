@@ -14,6 +14,8 @@ import { api } from '@/lib/trpc/client';
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useToastAction } from "@/hooks/use-toast-action";
+import { env } from "@/env";
+import { Button } from "./ui/button";
 
 function Map() {
     const router = useRouter()
@@ -62,10 +64,10 @@ function Map() {
                     lng: event.lngLat.lng,
                 })
                 router.refresh()
-                toast('created')
-            } catch (error) {
+                toast('created', `Spot created with name ${extractLongNameAddress(result[0])}`)
+            } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error')
+                toast('error', error.message)
             }
         })
     }, [mapId, router, toast]);
@@ -89,19 +91,28 @@ function Map() {
 
     return (
         <ReactMap
-            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN}
+            mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_API_TOKEN}
             style={{
                 width: "100%",
                 height: "100%",
             }}
             maxPitch={60}
             maxZoom={20}
-            mapStyle={`mapbox://styles/agha97/${mapData?.style ?? "cl9y2s7es00ce14qtff13sdhn"}`}
+            mapStyle={`mapbox://styles/agha97/${mapData?.style ?? "clmuepcu300nu01qn7uen9v08"}`}
             {...viewport}
             onMove={(viewport) => setViewport(viewport.viewState)}
             ref={mapRef}
             onMoveEnd={onMapMoveEnd}
         >
+            <header className="relative z-50 p-6 h-24">
+                <div className='flex items-center justify-between bg-background pl-8 pr-2 max-w-xl min-h-[90px] p-2 rounded-full'
+                >
+                    <p className='text-5xl font-medium text-'>{mapData?.name}</p>
+                    <Button size={'sm'} variant="outline" className="w-16 h-16 rounded-full mr-2">
+                        <Icon.Menu className='w-10 h-10' strokeWidth={3} />
+                    </Button>
+                </div>
+            </header>
             {mapData?.spots.map((spot) => (
                 <Marker
                     key={spot.id}
@@ -127,6 +138,22 @@ function Map() {
                     </Marker>
                 })
             ))}
+            <div className='flex items-center justify-center absolute bottom-10 left-8 gap-3'>
+                {mapData?.projects.map((project) => (
+                    project.isVisible &&
+                    <div
+                        key={project.id}
+                        className={`flex justify-center items-center rounded-full px-6 py-3 bg-background`}
+                    >
+                        <div className="flex items-center justify-center gap-2">
+                            <div className='w-4 h-4 rounded-full'
+                                style={{ backgroundColor: project.color }}
+                            />
+                            <p style={{ color: project.color }}>{project.name}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
             {userLocation && <Marker
                 latitude={userLocation[0]}
                 longitude={userLocation[1]}

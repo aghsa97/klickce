@@ -22,9 +22,9 @@ function CreateMapBtn() {
                     name: "New Map",
                 })
                 router.push(`/onboarding/${mapId}`)
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error);
-                toast('error')
+                toast('error', error.message)
             }
         })
     }

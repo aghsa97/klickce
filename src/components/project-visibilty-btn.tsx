@@ -1,9 +1,10 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { useTransition } from 'react'
+
 import { useToastAction } from '@/hooks/use-toast-action'
 import { api } from '@/lib/trpc/client'
-import { useRouter } from 'next/navigation'
-import React, { useTransition } from 'react'
 import { Button } from './ui/button'
 
 function ProjectVisibiltyBtn({ data, eyeIcon }: { data: { id: string, isVisible: boolean }, eyeIcon: React.ReactNode }) {
@@ -18,7 +19,7 @@ function ProjectVisibiltyBtn({ data, eyeIcon }: { data: { id: string, isVisible:
                     id: data.id,
                     isVisible: !data.isVisible
                 })
-                toast('updated')
+                toast('updated', data.isVisible ? 'Project now is hidden' : 'Project now is visible')
                 router.refresh()
             } catch (error) {
                 console.log(error);

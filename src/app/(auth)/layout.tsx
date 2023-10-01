@@ -1,5 +1,5 @@
 import Link from "next/link";
-import * as React from "react";
+
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -25,7 +25,7 @@ export default function AuthLayout({
                         Start your mapping journey with us.
                     </h1>
                     <p className="text-muted-foreground">
-                        Create personalized maps with Spottz powerful platform.
+                        Create personalized maps with Klick<span className="text-primary">ce</span> powerful platform.
                         <br />
                         Your own maps your own spots.
                     </p>

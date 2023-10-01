@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/mysql-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
+import { customers } from "./customers";
 import { spots } from "./spots";
 
 export const images = mysqlTable(
@@ -17,13 +18,16 @@ export const images = mysqlTable(
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow(),
 
-    publicId: text("publicId").notNull(),
+    publicId: varchar("publicId", { length: 150 }).notNull().unique(),
 
     spotId: varchar("spotId", { length: 30 }).notNull(),
+    ownerId: varchar("ownerId", { length: 50 }).notNull(),
   },
   (table) => {
     return {
       spotIdIndex: index("spotId_index").on(table.spotId),
+      publicIdIndex: index("publicId_index").on(table.publicId),
+      ownerIdIndex: index("ownerId_index").on(table.ownerId),
     };
   },
 );
@@ -32,6 +36,10 @@ export const imagesRelations = relations(images, ({ one }) => ({
   spot: one(spots, {
     fields: [images.spotId],
     references: [spots.id],
+  }),
+  owner: one(customers, {
+    fields: [images.ownerId],
+    references: [customers.clerkUesrId],
   }),
 }));
 
