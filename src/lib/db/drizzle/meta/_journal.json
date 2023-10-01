@@ -1,0 +1,48 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1694770298855,
+      "tag": "0000_deep_wonder_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1694786555794,
+      "tag": "0001_chubby_romulus",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1694888080491,
+      "tag": "0002_calm_mercury",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1694908937239,
+      "tag": "0003_oval_avengers",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1695248984349,
+      "tag": "0004_dark_dazzler",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1695503948088,
+      "tag": "0005_nervous_thor",
+      "breakpoints": true
+    }
+  ]
+}
