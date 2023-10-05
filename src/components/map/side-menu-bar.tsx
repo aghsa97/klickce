@@ -8,7 +8,7 @@ import { Button } from '../ui/button'
 
 import * as Icon from '@/components/icons'
 import { RouterOutputs } from '@/lib/api'
-import { NavigateToGoogleMaps } from '@/lib/utils'
+import { cn, NavigateToGoogleMaps } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import useWindowSize from '@/hooks/use-window-size'
 
@@ -28,17 +28,22 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
     if (!spotData || isMobile) return null
     return (
         <div
-            className='hidden absolute top-0 z-50 md:flex gap-4 pb-12 mx-6 pt-6 w-fit h-full overflow-y-scroll'>
-            <header className={"flex flex-col bg-background/50 backdrop-blur-md rounded-[2.8rem] w-[35vw] h-fit shadow-md"}>
-                <div className={'flex items-center justify-between pl-8 pr-2 py-2 border-b'}>
+            className={cn('hidden absolute top-0 z-50 md:flex gap-4 pb-12 mx-6 pt-6 w-fit h-full overflow-y-scroll',
+                !spotData.description && 'flex-col',
+            )}>
+            <header className={"flex flex-col bg-background/50 backdrop-blur-md rounded-[2.8rem] w-[35vw] md:max-w-3xl h-fit shadow-md"}>
+                <div className={cn('flex items-center justify-between pl-8 pr-2 py-2',
+                    spotData.description && 'border-b'
+                )
+                }>
                     <div className="flex items-center justify-start gap-4">
-                        <div className='w-8 h-8 rounded-full border-4 border-white'
+                        <div className='w-8 h-8 rounded-full border-4 border-white flex-shrink-0'
                             style={{ backgroundColor: spotData.color }}
                         />
                         <div className='flex flex-col items-start justify-center'>
                             <p className='text-xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'
                             >{spotData.name}</p>
-                            <p className='text-base text-muted-foreground'
+                            <p className='text-base text-muted-foreground line-clamp-1'
                             >{spotData.address}</p>
                         </div>
                     </div>
@@ -60,13 +65,13 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
                         </Button>
                     </div>
                 </div>
-                <div className='p-4 pb-8'>
+                {spotData.description && <div className='p-4 pb-8'>
                     <p className='text-base'>
                         {spotData.description}
                     </p>
-                </div>
+                </div>}
             </header>
-            {publicIds.length > 0 && <div className={"w-[25vw] h-full flex flex-col gap-2 overflow-y-scroll"}>
+            {publicIds.length > 0 && <div className={"w-[35vw] md:max-w-3xl h-full flex flex-col gap-2 overflow-y-scroll"}>
                 {publicIds.map((publicId) => (
                     <CldImage
                         key={publicId}

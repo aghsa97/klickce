@@ -98,16 +98,16 @@
   -o-transition: opacity 0.5s;
   transition: opacity 0.5s;
   -webkit-clip-path: polygon(
-    0 16px,
-    calc(100% - var(--sbw, 0px)) 16px,
+    0 54px,
+    calc(100% - var(--sbw, 0px)) 54px,
     calc(100% - var(--sbw, 0px)) 0,
     100% 0,
     100% 100%,
     0 100%
   );
   clip-path: polygon(
-    0 16px,
-    calc(100% - var(--sbw, 0px)) 16px,
+    0 54px,
+    calc(100% - var(--sbw, 0px)) 54px,
     calc(100% - var(--sbw, 0px)) 0,
     100% 0,
     100% 100%,
@@ -148,16 +148,16 @@
 
 .clip.scrolled {
   -webkit-clip-path: polygon(
-    0 16px,
-    calc(100% - var(--sbw, 0px)) 16px,
+    0 54px,
+    calc(100% - var(--sbw, 0px)) 54px,
     calc(100% - var(--sbw, 0px)) 0,
     100% 0,
     100% 100%,
     0 100%
   );
   clip-path: polygon(
-    0 16px,
-    calc(100% - var(--sbw, 0px)) 16px,
+    0 54px,
+    calc(100% - var(--sbw, 0px)) 54px,
     calc(100% - var(--sbw, 0px)) 0,
     100% 0,
     100% 100%,

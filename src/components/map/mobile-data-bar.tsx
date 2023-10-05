@@ -59,13 +59,13 @@ function MobileDataBar({ spotData, publicIds }: SideMenuBarProps) {
                 <div className={'flex flex-col bg-background/50 backdrop-blur-md rounded-[2.8rem] shadow-md'}>
                     <div className={"flex items-center justify-between pl-6 pr-2 py-2 border-b"}>
                         <div className="flex items-center justify-start gap-2">
-                            <div className='w-6 h-6 rounded-full border-2 border-white'
+                            <div className='w-6 h-6 rounded-full border-2 border-white flex-shrink-0'
                                 style={{ backgroundColor: spotData.color }}
                             />
                             <div className='flex flex-col items-start justify-center'>
                                 <p className='text-base md:text-xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'
                                 >{spotData.name}</p>
-                                <p className='text-xs md:text-base text-muted-foreground'
+                                <p className='text-xs md:text-base text-muted-foreground line-clamp-1'
                                 >{spotData.address}</p>
                             </div>
                         </div>
@@ -87,9 +87,16 @@ function MobileDataBar({ spotData, publicIds }: SideMenuBarProps) {
                             </Button>
                         </div>
                     </div>
-                    <p className='text-base p-4 pb-8'>
+                    {spotData.description ? <p className='text-base p-4 pb-8'>
                         {spotData.description}
                     </p>
+                        :
+                        <div className='flex items-center justify-center p-4 pb-8 h-60'>
+                            <p className='text-base text-muted-foreground'>
+                                No description available
+                            </p>
+                        </div>
+                    }
                 </div>
                 {publicIds.length > 0 && <div className={"w-full flex flex-col gap-2 rounded-[2.8rem] pb-6"}>
                     {publicIds.map((publicId) => (

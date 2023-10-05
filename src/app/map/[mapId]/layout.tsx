@@ -13,7 +13,10 @@ async function MapLayout({ params, children }: { children: React.ReactNode, para
 
     if (!data) return notFound()
     return (
-        <div className='relative min-h-full box-border'
+        <div className='relative h-screen box-border overflow-hidden'
+            style={{
+                height: "calc(var(--vh, 1vh) * 100)",
+            }}
         >
             <MapMenu name={data.name} projects={data.projects} spots={data.spots} />
             <BrowseMap data={data} />

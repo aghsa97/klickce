@@ -16,8 +16,8 @@ export const uploadImage = async (url: string, publicId: string) => {
       transformation: {
         quality: "auto:best",
         fetch_format: "auto",
-        width: 800,
-        height: 600,
+        width: 1280,
+        height: 720,
         crop: "limit",
       },
     });

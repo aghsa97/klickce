@@ -52,7 +52,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                     className='flex flex-col gap-4 bg-background/50 backdrop-blur-md pl-6 md:pl-8 pr-2 h-full py-4 rounded-b-[2.8rem] overflow-y-auto'>
                     {projects.map((project) => (
                         <div key={project.id} className="flex items-center justify-start gap-4 pr-2">
-                            <div className='w-6 h-6 md:w-8 md:h-8 rounded-full border-2 md:border-4 border-white'
+                            <div className='w-6 h-6 md:w-8 md:h-8 rounded-full border-2 md:border-4 border-white flex-shrink-0'
                                 style={{ backgroundColor: project.color }}
                             />
                             <p className='text-3xl md:text-5xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'
@@ -64,7 +64,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                         {spots.map((spot) => (
                             <div key={spot.id} className="flex items-center justify-start gap-4"
                             >
-                                <div className='w-6 h-6 md:w-8 md:h-8 rounded-full border-2 md:border-4 border-white'
+                                <div className='w-6 h-6 md:w-8 md:h-8 rounded-full border-2 md:border-4 border-white flex-shrink-0'
                                     style={{ backgroundColor: spot.color }}
                                 />
                                 <div className='flex flex-col items-start justify-center'>
@@ -73,7 +73,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                                         href={`?spotId=${spot.id}`} className='text-xl md:text-3xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'>
                                         {spot.name}
                                     </Link>
-                                    <p className='text-base md:text-xl text-muted-foreground'
+                                    <p className='text-base md:text-xl text-muted-foreground line-clamp-1'
                                     >{spot.address}</p>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                             {selectedProject.spots.length > 0 && selectedProject.spots.map((spot) => (
                                 <div key={spot.id} className="flex items-center justify-start gap-4"
                                 >
-                                    <div className='w-6 h-6 md:w-8 md:h-8 rounded-full border-2 md:border-4 border-white'
+                                    <div className='w-6 h-6 md:w-8 md:h-8 rounded-full border-2 md:border-4 border-white flex-shrink-0'
                                         style={{ backgroundColor: selectedProject.color }}
                                     />
                                     <div className='flex flex-col items-start justify-center'>
@@ -104,7 +104,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                                             href={`?spotId=${spot.id}`} className='text-xl md:text-3xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'>
                                             {spot.name}
                                         </Link>
-                                        <p className='text-base md:text-xl text-muted-foreground'
+                                        <p className='text-base md:text-xl text-muted-foreground line-clamp-1'
                                         >{spot.address}</p>
                                     </div>
                                 </div>

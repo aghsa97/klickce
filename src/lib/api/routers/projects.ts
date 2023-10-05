@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 
-import { protectedProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 import {
   insertProjectSchema,
   projectIdSchema,
@@ -12,21 +12,14 @@ import { genId } from "@/lib/db";
 import { spots } from "@/lib/db/schema/spots";
 
 export const projectsRouter = router({
-  getProjectById: protectedProcedure
+  getProjectById: publicProcedure
     .input(projectIdSchema)
     .query(async ({ ctx, input }) => {
       if (!input.id) return;
       return selectProjectSchema.parse(
-        await ctx.db
-          .select()
-          .from(projects)
-          .where(
-            and(
-              eq(projects.id, input.id),
-              eq(projects.ownerId, ctx.auth.userId),
-            ),
-          )
-          .execute(),
+        await ctx.db.query.projects.findFirst({
+          where: eq(projects.id, input.id),
+        }),
       );
     }),
   createProject: protectedProcedure
