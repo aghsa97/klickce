@@ -5,12 +5,12 @@ import { z } from "zod";
 import { imageIdSchema, images } from "@/lib/db/schema/images";
 import { spotIdSchema } from "@/lib/db/schema/spots";
 
-import { protectedProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 import { genId } from "@/lib/db";
 import { deleteImage, uploadImage } from "@/lib/cloudinary";
 
 export const imagesRouter = router({
-  getImagesBySpotId: protectedProcedure
+  getImagesBySpotId: publicProcedure
     .input(spotIdSchema)
     .query(async ({ ctx, input }) => {
       return await ctx.db

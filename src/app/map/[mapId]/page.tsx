@@ -21,7 +21,7 @@ async function MapPage(props: { params: { mapId: string }, searchParams: { [key:
     const spotId = search.data.spotId
 
     const spot = spotId ? await api.spots.getSpotById.query({ spotIdSchema: { id: spotId }, mapIdSchema: { id: props.params.mapId } }) : null
-    const imgsIds = spotId && await api.images.getImagesBySpotId.query({ id: spotId })
+    const imgsIds = spot && spotId && await api.images.getImagesBySpotId.query({ id: spotId })
     const publicIds = imgsIds ? imgsIds.map((img) => img.publicId) : []
 
     if (!spot) return null
