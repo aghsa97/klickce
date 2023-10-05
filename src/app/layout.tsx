@@ -1,5 +1,7 @@
 import { Poppins } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
+import { NextUIProvider } from "@nextui-org/react";
+
 
 import '../styles/globals.css'
 import type { Metadata } from 'next'
@@ -7,6 +9,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster';
+import { Providers } from '@/providers';
 
 const font = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] })
 
@@ -23,10 +26,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={font.className}>
-          <ThemeProvider attribute="class" defaultTheme={'dark'} enableSystem>
-            {children}
-          </ThemeProvider>
+        <body className={font.className} style={{
+          boxSizing: 'border-box',
+        }}>
+          <Providers>
+            <ThemeProvider attribute="class" defaultTheme={'dark'} enableSystem>
+              {children}
+            </ThemeProvider>
+          </Providers>
           <Toaster />
           <Analytics />
         </body>

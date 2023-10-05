@@ -10,11 +10,13 @@ import {
   spots,
   updateSpotSchema,
 } from "@/lib/db/schema/spots";
+import { mapIdSchema } from "@/lib/db/schema/maps";
 import { customers } from "@/lib/db/schema/customers";
 import { allPlans } from "@/lib/plan";
 import { genId } from "@/lib/db";
 import { deleteFolder, deleteImage } from "@/lib/cloudinary";
 import { images } from "@/lib/db/schema/images";
+import { z } from "zod";
 
 export const spotsRouter = router({
   getSpotsCount: publicProcedure.query(async ({ ctx }) => {
@@ -25,18 +27,17 @@ export const spotsRouter = router({
 
     return count;
   }),
-  getSpotById: protectedProcedure
-    .input(spotIdSchema)
+  getSpotById: publicProcedure
+    .input(z.object({ spotIdSchema, mapIdSchema }))
     .query(async ({ ctx, input }) => {
-      if (!input.id) return;
+      if (!input.spotIdSchema.id || !input.mapIdSchema.id) return;
       return selectSpotSchema.parse(
-        await ctx.db
-          .select()
-          .from(spots)
-          .where(
-            and(eq(spots.id, input.id), eq(spots.ownerId, ctx.auth.userId)),
-          )
-          .execute(),
+        await ctx.db.query.spots.findFirst({
+          where: and(
+            eq(spots.id, input.spotIdSchema.id),
+            eq(spots.mapId, input.mapIdSchema.id),
+          ),
+        }),
       );
     }),
   createSpot: protectedProcedure

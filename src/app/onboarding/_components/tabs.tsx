@@ -29,7 +29,7 @@ function FormTabs({ styles, mapId, data }: FormTabsProps) {
     }, [data, setMapData])
 
     return (
-        <Tabs defaultValue="content" className='w-full h-full'>
+        <Tabs defaultValue="content" className='w-full h-full overflow-y-scroll'>
             <MapFormNavbar mapId={mapId} />
             <TabsContent value="content" className='h-full'>
                 <ContentTab data={data} />

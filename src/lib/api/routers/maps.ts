@@ -40,6 +40,60 @@ export const mapsRouter = router({
       .where(eq(maps.ownerId, ctx.auth.userId))
       .execute();
   }),
+  getMapById: publicProcedure
+    .input(mapIdSchema)
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.query.maps.findFirst({
+        where: and(eq(maps.id, input.id), eq(maps.isPublic, true)),
+        columns: {
+          id: true,
+          name: true,
+          style: true,
+          isPublic: true,
+          description: true,
+          hasLandingPage: true,
+          isUserCurrentLocationVisible: true,
+        },
+        with: {
+          projects: {
+            where: (projects, { eq }) => eq(projects.isVisible, true),
+            columns: {
+              id: true,
+              color: true,
+              name: true,
+            },
+            with: {
+              spots: {
+                columns: {
+                  id: true,
+                  name: true,
+                  address: true,
+                  lat: true,
+                  lng: true,
+                  color: true,
+                  description: true,
+                  projectId: true,
+                },
+              },
+            },
+          },
+          spots: {
+            where: (spots, { eq }) => eq(spots.projectId, ""),
+            columns: {
+              id: true,
+              name: true,
+              address: true,
+              lat: true,
+              lng: true,
+              color: true,
+              description: true,
+              projectId: true,
+            },
+            orderBy: (spots, { desc }) => [desc(spots.createdAt)],
+          },
+        },
+      });
+    }),
   getMapDataById: protectedProcedure
     .input(mapIdSchema)
     .query(async ({ ctx, input }) => {

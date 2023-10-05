@@ -18,6 +18,7 @@ import {
     MapPinIcon,
     MapPinOffIcon,
     MenuIcon,
+    MilestoneIcon,
     MonitorSmartphoneIcon,
     MoonIcon,
     PersonStandingIcon,
@@ -63,3 +64,4 @@ export const EyeOff = EyeOffIcon;
 export const Close = XIcon;
 export const Image = ImageIcon
 export const Menu = MenuIcon
+export const Milestone = MilestoneIcon

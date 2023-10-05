@@ -5,17 +5,22 @@ import type { MapRef } from "react-map-gl";
 import { useState, useEffect, useRef, useCallback, useTransition } from 'react'
 import { Map as ReactMap, Marker, MarkerDragEvent } from "react-map-gl";
 import { getGeocode } from 'use-places-autocomplete';
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { cn, extractLongNameAddress } from '@/lib/utils';
 import * as Icon from "@/components/icons";
 import { useMapStore } from '@/lib/store';
-import { api } from '@/lib/trpc/client';
+import { api, RouterOutputs } from '@/lib/trpc/client';
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useToastAction } from "@/hooks/use-toast-action";
 import { env } from "@/env";
-import { Button } from "./ui/button";
+import MapMenu from "./map/map-menu";
+import ProjectsBar from "./map/projects-bar";
+import ImgPopover from "./map/img-popover";
+import useWindowSize from "@/hooks/use-window-size";
+
+type data = NonNullable<RouterOutputs["maps"]["getMapById"]>
 
 function Map() {
     const router = useRouter()
@@ -25,6 +30,13 @@ function Map() {
 
     const [isPending, startTransition] = useTransition()
     const { setStoreMapZoom, isMovePin, setIsMovePin, mapData } = useMapStore()
+
+    const { isMobile } = useWindowSize()
+
+    const searchParams = useSearchParams()
+    const spotId = searchParams.get('spotId')
+    const projectId = searchParams.get('projectId')
+
 
     const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
     const [viewport, setViewport] = useState({
@@ -45,6 +57,21 @@ function Map() {
             });
         }
     }, [mapData]);
+
+    useEffect(() => {
+        if (mapRef.current && spotId && mapData) {
+            const spot = mapData.spots.find((spot) => spot.id === spotId) ?? mapData.projects.flatMap((project) => project.spots).find((spot) => spot.id === spotId)
+            const zoom = mapRef.current.getMap().getZoom()
+            if (!spot) return
+            mapRef.current?.easeTo({
+                center: [spot.lng, spot.lat],
+                offset: isMobile ? [0, -100] : [500, 0],
+                easing: (t) => t,
+                duration: 500,
+                zoom: zoom > 10 ? zoom : 10,
+            })
+        }
+    }, [spotId, mapData, isMobile]);
 
     const onMarkerDragEnd = useCallback(async (event: MarkerDragEvent) => {
         const result = await getGeocode({ location: { lat: event.lngLat.lat, lng: event.lngLat.lng, } })
@@ -89,12 +116,14 @@ function Map() {
         }
     }, [setStoreMapZoom, setIsMovePin]);
 
+    if (!mapData) return null
     return (
         <ReactMap
             mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_API_TOKEN}
             style={{
                 width: "100%",
                 height: "100%",
+                boxSizing: "border-box",
             }}
             maxPitch={60}
             maxZoom={20}
@@ -104,56 +133,15 @@ function Map() {
             ref={mapRef}
             onMoveEnd={onMapMoveEnd}
         >
-            <header className="relative z-50 p-6 h-24">
-                <div className='flex items-center justify-between bg-background pl-8 pr-2 max-w-xl min-h-[90px] p-2 rounded-full'
-                >
-                    <p className='text-5xl font-medium text-'>{mapData?.name}</p>
-                    <Button size={'sm'} variant="outline" className="w-16 h-16 rounded-full mr-2">
-                        <Icon.Menu className='w-10 h-10' strokeWidth={3} />
-                    </Button>
-                </div>
-            </header>
-            {mapData?.spots.map((spot) => (
-                <Marker
-                    key={spot.id}
-                    latitude={spot.lat}
-                    longitude={spot.lng}
-                >
-                    <div className='w-4 h-4 bg-yellow-500 border-2 rounded-full'
-                        style={{ backgroundColor: spot.color }}
-                    />
-                </Marker>
-            ))}
-            {mapData?.projects.map((project) => (
-                project.isVisible && project.spots.map((spot) => {
-                    const projectColor = project.color ?? "bg-yellow-500"
-                    return <Marker
-                        key={spot.id}
-                        latitude={spot.lat}
-                        longitude={spot.lng}
-                    >
-                        <div className={cn('w-4 h-4 border-2 rounded-full', projectColor)}
-                            style={{ backgroundColor: project.color }}
-                        />
-                    </Marker>
-                })
-            ))}
-            <div className='flex items-center justify-center absolute bottom-10 left-8 gap-3'>
-                {mapData?.projects.map((project) => (
-                    project.isVisible &&
-                    <div
-                        key={project.id}
-                        className={`flex justify-center items-center rounded-full px-6 py-3 bg-background`}
-                    >
-                        <div className="flex items-center justify-center gap-2">
-                            <div className='w-4 h-4 rounded-full'
-                                style={{ backgroundColor: project.color }}
-                            />
-                            <p style={{ color: project.color }}>{project.name}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            <MapMenu name={mapData.name} projects={mapData.projects} spots={mapData.spots} />
+            {!projectId && <ImgPopover data={mapData.spots} />}
+            {projectId && mapData.projects.map((project) => {
+                if (project.id !== projectId) return null
+                return <ImgPopover key={project.id} data={project.spots} projectColor={project.color} />
+            })
+            }
+            {!projectId && mapData.projects.map((project) => <ImgPopover key={project.id} data={project.spots} projectColor={project.color} />)}
+            <ProjectsBar projects={mapData.projects} />
             {userLocation && <Marker
                 latitude={userLocation[0]}
                 longitude={userLocation[1]}
