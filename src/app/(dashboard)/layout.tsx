@@ -1,7 +1,8 @@
 import dynamic from "next/dynamic";
 
-import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { UserButton } from "@clerk/nextjs";
+import Logo from "@/components/ui/logo";
 
 const ThemeToggle = dynamic(() => import("@/components/theme-toggle"), {
     ssr: false,
@@ -21,13 +22,11 @@ export default function DashboardLayout(props: { children: React.ReactNode }) {
         <div className="min-h-screen overflow-hidden rounded-[0.5rem] max-w-screen-md mx-auto">
             <nav className="container z-50 flex h-16 items-center justify-between border-b bg-background">
                 <div className="mr-8 hidden items-center md:flex">
-                    <p className="tracking-tighter text-2xl">spottz</p>
+                    <Logo size="lg" />
                 </div>
                 <div className="flex items-center gap-4">
                     <ThemeToggle />
-                    <div className="w-10 h-10">
-                        <UserButton afterSignOutUrl='/' appearance={{ elements: { avatarBox: 'w-10 h-10', } }} />
-                    </div>
+                    <UserButton afterSignOutUrl='/' />
                 </div>
             </nav>
             <main className="min-h-[calc(100vh-4rem)] flex flex-1 space-y-4 p-8 pt-6">

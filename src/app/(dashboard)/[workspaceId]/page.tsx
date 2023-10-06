@@ -1,11 +1,10 @@
-import React from 'react'
-import Link from 'next/link'
+import MapCard from '@/components/map-card'
+import { api } from '@/lib/trpc/api'
 
-import { buttonVariants } from '@/components/ui/button'
+import CreateMapBtn from '../_components/create-map-btn'
 
-export const runtime = 'edge'
-
-function DashboardPage() {
+async function DashboardPage() {
+    const maps = await api.maps.getCustomerMaps.query()
 
     return (
         <div className='w-full'>
@@ -18,12 +17,20 @@ function DashboardPage() {
                         Overview of all maps in workspace
                     </h2>
                 </div>
-                <Link href={'#'} className={buttonVariants({ variant: 'default' })}>
-                    Create new map
-                </Link>
+                <CreateMapBtn />
             </div>
             <ul className='grid grid-cols-2 gap-5'>
                 {/* Map cards go here */}
+                {maps.map((map) => (
+                    <MapCard
+                        key={map.id}
+                        id={map.id}
+                        name={map.name}
+                        views={map.views}
+                        tags={[]}
+                        style={''}
+                    />
+                ))}
             </ul>
         </div>
     )

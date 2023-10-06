@@ -1,8 +1,8 @@
-import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { authMiddleware } from "@clerk/nextjs/server";
 
 export default authMiddleware({
-  publicRoutes: ["/sign-in", "/sign-up", "/"],
+  publicRoutes: ["/sign-in", "/sign-up", "/", "/(map)(.*)", "/(api|trpc)(.*)"],
   afterAuth(auth, req) {
     const isPublicRoute = auth.isPublicRoute;
     const userId = auth.userId;
@@ -33,7 +33,6 @@ export default authMiddleware({
     if (isUser && userId !== workspaceId) {
       // User is accessing a user that's not them
       url.pathname = `/`;
-      console.log("User is accessing a user that's not them");
 
       return NextResponse.redirect(url);
     }
