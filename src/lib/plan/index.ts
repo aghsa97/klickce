@@ -16,7 +16,7 @@ export const allPlans: Record<"BASIC" | "PRO" | "ENTERPRISE", Plan> = {
   },
   PRO: {
     limits: {
-      maps: 10,
+      maps: 5,
       views: 10000, // 10k
       spots: 500,
     },

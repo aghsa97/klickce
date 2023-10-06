@@ -1,16 +1,20 @@
 import {
     ArrowLeftIcon,
     ArrowRightIcon,
+    BadgeCheckIcon,
     ChevronDownIcon,
     ChevronRightIcon,
     CogIcon,
+    CoinsIcon,
     ComponentIcon,
     DatabaseIcon,
     EditIcon,
     EyeIcon,
     EyeOffIcon,
+    FingerprintIcon,
     FolderKanbanIcon,
     GalleryHorizontalEndIcon,
+    HelpCircleIcon,
     ImageIcon,
     KanbanIcon,
     Loader2Icon,
@@ -23,11 +27,13 @@ import {
     MoonIcon,
     PersonStandingIcon,
     PlusIcon,
+    RocketIcon,
     ShareIcon,
     SortAscIcon,
     SortDescIcon,
     SunIcon,
     TrashIcon,
+    Wand2Icon,
     XIcon
 } from "lucide-react";
 import type { LucideProps } from "lucide-react";
@@ -65,3 +71,9 @@ export const Close = XIcon;
 export const Image = ImageIcon
 export const Menu = MenuIcon
 export const Milestone = MilestoneIcon
+export const Rocket = RocketIcon
+export const Wand2 = Wand2Icon
+export const HelpingHand = HelpCircleIcon
+export const FingerPrint = FingerprintIcon
+export const Coins = CoinsIcon
+export const Check = BadgeCheckIcon

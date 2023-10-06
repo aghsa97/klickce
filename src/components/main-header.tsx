@@ -30,7 +30,7 @@ function MainHeader() {
                     Sign In
                 </Link>
                 <Link href={"/sign-up"} className={cn(buttonVariants({ variant: 'default' }), 'group')}>
-                    Get Started <span className='ml-1 italic'> - it&apos;s free</span>
+                    Get Started <span className='ml-1 italic hidden md:block'> - it&apos;s free</span>
                     <Icons.ChevronRight className='w-4 h-4 ml-1 group-hover:translate-x-1 group-hover:animate-in' />
                 </Link>
             </div>
