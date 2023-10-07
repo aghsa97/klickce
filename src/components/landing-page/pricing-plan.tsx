@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 function PricingPlan() {
     return (
-        <div className='flex flex-col justify-center items-center gap-10 w-full border border-border rounded-lg p-6'>
+        <div className='flex flex-col justify-center items-center gap-16 w-full border border-border rounded-lg p-6'>
             <div className='flex flex-col items-center justify-center gap-2'>
                 <Button variant={'outline'} size="icon" className='w-16 h-16 rounded-full'>
                     <Icon.Coins className='w-8 h-8' />
