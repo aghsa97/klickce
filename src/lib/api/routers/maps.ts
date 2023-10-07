@@ -165,6 +165,14 @@ export const mapsRouter = router({
         .execute();
 
       const userPlan = currentCustomer[0].SubPlan;
+      if (!userPlan) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message:
+            "You don't have a plan, please subscribe to start using Klickce.",
+        });
+      }
+
       const limit = allPlans[userPlan].limits.maps;
 
       if (mapsCount.count >= limit) {
