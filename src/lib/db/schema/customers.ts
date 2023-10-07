@@ -25,12 +25,13 @@ export const customers = mysqlTable(
     updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow(),
 
     clerkUesrId: varchar("clerkUesrId", { length: 50 }).notNull().unique(),
+    email: varchar("email", { length: 256 }).notNull().unique(),
 
-    SubPlan: mysqlEnum("SubPlan", plan).notNull().default("BASIC"),
-    endsAt: timestamp("ends_at"),
-    paidUntil: timestamp("paid_until"),
     stripeId: varchar("stripe_id", { length: 256 }).unique(),
     subscriptionId: text("subscription_id"),
+    SubPlan: mysqlEnum("SubPlan", plan),
+    endsAt: timestamp("ends_at"),
+    paidUntil: timestamp("paid_until"),
 
     name: text("name").default(""),
   },

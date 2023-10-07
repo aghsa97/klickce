@@ -57,6 +57,13 @@ export const spotsRouter = router({
         .execute();
 
       const userPlan = currentCustomer[0].SubPlan;
+      if (!userPlan) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message:
+            "You don't have a plan, please subscribe to start using Klickce.",
+        });
+      }
       const limit = allPlans[userPlan].limits.spots;
 
       if (spotsCount.count >= limit) {
