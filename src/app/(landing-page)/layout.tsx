@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import MainHeader from "@/components/main-header";
+import Header from "@/components/landing-page/header";
 import Logo from "@/components/ui/logo";
 import AppFooter from "@/components/landing-page/landing-page-footer";
 
@@ -11,7 +11,7 @@ export default function LandingPageLayout(props: { children: ReactNode }) {
                 <div className="mr-8">
                     <Logo size="lg" />
                 </div>
-                <MainHeader />
+                <Header />
             </nav>
             <main className="flex-1">{props.children}</main>
             <AppFooter />

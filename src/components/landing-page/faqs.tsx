@@ -13,7 +13,7 @@ function FAQs() {
                 <Button variant={'outline'} size="icon" className='w-16 h-16 rounded-full'>
                     <Icon.HelpingHand className='w-8 h-8' />
                 </Button>
-                <h2 className="text-3xl font-semibold text-center">
+                <h2 className="text-xl md:text-3xl font-semibold text-center">
                     FAQs
                 </h2>
             </div>

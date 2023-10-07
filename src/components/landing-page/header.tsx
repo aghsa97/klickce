@@ -3,11 +3,11 @@ import dynamic from 'next/dynamic';
 
 import { cn } from '@/lib/utils';
 import { auth, UserButton } from '@clerk/nextjs';
-import { Button, buttonVariants } from './ui/button';
+import { Button, buttonVariants } from '../ui/button';
 
-import * as Icons from './icons';
+import * as Icons from '../icons';
 
-const ThemeToggle = dynamic(() => import("./theme-toggle"), {
+const ThemeToggle = dynamic(() => import("../theme-toggle"), {
     ssr: false,
     loading: () => (
         <Button
@@ -20,7 +20,7 @@ const ThemeToggle = dynamic(() => import("./theme-toggle"), {
     ),
 });
 
-function MainHeader() {
+function Header() {
     const { userId } = auth()
     if (!userId)
         return (
@@ -42,9 +42,9 @@ function MainHeader() {
                 Dashboard
                 <Icons.ArrowRight className='w-4 h-4 ml-1' />
             </Link>
-            <UserButton />
+            <UserButton afterSignOutUrl='/' />
         </div>
     )
 }
 
-export default MainHeader
+export default Header

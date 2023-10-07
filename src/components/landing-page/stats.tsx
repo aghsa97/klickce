@@ -10,7 +10,7 @@ type StatsCardProps = {
 
 function Stats({ mapsCount, spotsCount, viewsCount }: { mapsCount: number, spotsCount: number, viewsCount: number }) {
     return (
-        <div className='flex flex-col justify-center items-center gap-10 w-full border border-border rounded-lg px-4 md:px-20 py-6'>
+        <div className='flex flex-col justify-center items-center gap-16 w-full border border-border rounded-lg px-4 md:px-20 py-6'>
             <div className='flex flex-col items-center justify-center gap-2'>
                 <Button variant={'outline'} size="icon" className='w-16 h-16 rounded-full'>
                     <Icon.Rocket className='w-8 h-8' />

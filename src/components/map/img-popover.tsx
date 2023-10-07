@@ -112,7 +112,7 @@ function ImgPopover({ data, projectColor }: ImgPopoverProps) {
                                 className="relative z-10 right-6 top-6 w-72 h-52"
                             >
                                 <div className="w-full h-2/3 absolute rounded-t-3xl bg-gradient-to-b from-black/70 backdrop-blur-sm backdrop-opacity-20" />
-                                <p className=" absolute px-4 py-2 text-3xl font-medium text-accent-foreground">{popupInfo.name}</p>
+                                <p className=" absolute px-4 py-2 text-3xl font-medium text-white">{popupInfo.name}</p>
                                 <CldImage
                                     src={hoveredMarkerPics[currentImageIndex]}
                                     width="0"
