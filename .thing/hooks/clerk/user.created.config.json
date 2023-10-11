@@ -1,0 +1,8 @@
+{
+  "url": "http://localhost:3000/api/webhooks/clerk",
+  "headers": {
+    "svix-id": "msg_2WceqMFJ8rTdTo0hwPr9wDEbLsi",
+    "svix-timestamp": "1697036485",
+    "svix-signature": "v1,RbqMn5nGJzlrDW6RuVFU6fOHAvf9oNxKOCUsg9nxLSo="
+  }
+}

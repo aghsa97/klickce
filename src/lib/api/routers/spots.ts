@@ -56,7 +56,7 @@ export const spotsRouter = router({
         .where(eq(spots.ownerId, currentCustomer[0].clerkUesrId))
         .execute();
 
-      const userPlan = currentCustomer[0].SubPlan;
+      const userPlan = currentCustomer[0].subPlan;
       if (!userPlan) {
         throw new TRPCError({
           code: "FORBIDDEN",

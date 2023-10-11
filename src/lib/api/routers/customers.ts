@@ -1,7 +1,20 @@
-import { publicProcedure, router } from "../trpc";
+import {
+  customerClerkIdSchema,
+  customers,
+  selectCustomerSchema,
+} from "@/lib/db/schema/customers";
+import { eq } from "drizzle-orm";
+import { protectedProcedure, router } from "../trpc";
 
 export const customersRouter = router({
-  ping: publicProcedure.query(async () => {
-    return await Promise.resolve("pong");
+  getCustomerByClerkId: protectedProcedure.query(async ({ ctx }) => {
+    const customer = await ctx.db.query.customers.findFirst({
+      where: eq(customers.clerkUesrId, ctx.auth.userId),
+    });
+
+    if (!customer) {
+      throw new Error("Customer not found");
+    }
+    return selectCustomerSchema.parse(customer);
   }),
 });

@@ -21,9 +21,7 @@ export async function POST(req: NextRequest) {
   if (!svix_id || !svix_timestamp || !svix_signature) {
     return NextResponse.json(
       { error: "Error occured -- no svix headers" },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
@@ -78,7 +76,6 @@ export async function POST(req: NextRequest) {
 
     default:
       ((d: WebhookEvent) => console.error(`${d} not handled here`))(eventType);
-      console.log("event type", eventType);
       break;
   }
   return NextResponse.json({ success: true });

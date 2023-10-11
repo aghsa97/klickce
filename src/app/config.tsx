@@ -123,7 +123,7 @@ export const aboutUs = {
     ),
 }
 
-export type Plans = "BASIC" | "PRO" | "ENTERPRISE";
+export type Plans = "BASIC" | "PRO";
 
 export interface PlanProps {
     title: string;
@@ -164,38 +164,18 @@ export const plansConfig: Record<Plans, PlanProps> = {
     PRO: {
         title: "Pro",
         description: "For those who want to create more maps and spots.",
-        cost: 199,
+        cost: 299,
         features: [
             "5 maps",
-            "500 spots",
-            "10k views",
+            "200 spots (Across all maps)",
+            "3000 views (Across all maps)",
             "Analytics",
-            "Landing page",
-            "Custom domain"
+            "Own Landing page",
         ],
+        badge: "Early Adopter",
         action: {
             text: "Start Now",
             link: "/sign-up?plan=pro",
         },
-        disabled: true,
-    },
-    ENTERPRISE: {
-        title: "Enterprise",
-        description: "Scale your business with unlimited maps and spots.",
-        cost: 399,
-        features: [
-            "100 maps",
-            "5000 spots",
-            "100k views",
-            "Analytics",
-            "Landing page",
-            "Custom domain",
-            "Priority support"
-        ],
-        action: {
-            text: "Start Now",
-            link: "/sign-up?plan=enterprise",
-        },
-        disabled: true,
     },
 };

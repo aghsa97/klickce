@@ -11,7 +11,7 @@ function Hero() {
             <div className='flex flex-col items-center justify-center gap-2 mt-6'>
                 <Badge variant={'outline'}>Pre-Alpha</Badge>
                 <h1 className="flex items-center justify-center gap-2 text-foreground font-semibold text-2xl md:text-3xl">
-                    Map Your Dreams with  <Logo size='2xl' />
+                    Map Your Dreams with  <Logo size='2xl' className='md:text-3xl' />
                 </h1>
             </div>
             <p className="text-center text-muted-foreground font-medium text-base md:text-lg mt-2">

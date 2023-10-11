@@ -18,7 +18,6 @@ export const webhookRouter = router({
         where: eq(customers.clerkUesrId, input.data.data.id),
       });
       if (isCustomer) return;
-
       await ctx.db
         .insert(customers)
         .values({
@@ -26,6 +25,10 @@ export const webhookRouter = router({
           clerkUesrId: input.data.data.id,
           name:
             input.data.data.first_name || "" + input.data.data.last_name || "",
+          // 14 days trial
+          subPlan: "TRAIL",
+          endsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+          paidUntil: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         })
         .execute();
     }

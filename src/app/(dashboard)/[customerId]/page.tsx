@@ -5,7 +5,6 @@ import CreateMapBtn from '../_components/create-map-btn'
 
 async function DashboardPage() {
     const maps = await api.maps.getCustomerMaps.query()
-
     return (
         <div className='w-full'>
             <div className='mb-6 flex items-center justify-between'>
@@ -20,7 +19,7 @@ async function DashboardPage() {
                 <CreateMapBtn />
             </div>
             <ul className='grid grid-cols-2 gap-5'>
-                {/* Map cards go here */}
+                {/* Map cards go here needs to be redesigned*/}
                 {maps.map((map) => (
                     <MapCard
                         key={map.id}
