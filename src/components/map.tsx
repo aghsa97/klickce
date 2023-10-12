@@ -127,7 +127,7 @@ function Map() {
             }}
             maxPitch={60}
             maxZoom={20}
-            mapStyle={`mapbox://styles/agha97/${mapData?.style ?? "clmuepcu300nu01qn7uen9v08"}`}
+            mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${mapData.style}`}
             {...viewport}
             onMove={(viewport) => setViewport(viewport.viewState)}
             ref={mapRef}

@@ -12,7 +12,10 @@ export const uploadImage = async (url: string, publicId: string) => {
   try {
     const results = await cloudinary.uploader.upload(url, {
       public_id: publicId,
-      upload_preset: "o1ylfqms",
+      upload_preset:
+        process.env.NODE_ENV === "production"
+          ? env.NEXT_PUBLIC_CLOUDINARY_PROD_PRESET
+          : env.NEXT_PUBLIC_CLOUDINARY_DEV_PRESET,
       transformation: {
         quality: "auto:best",
         fetch_format: "auto",

@@ -77,7 +77,7 @@ function Map({ data }: MapProps) {
             }}
             maxPitch={60}
             maxZoom={20}
-            mapStyle={`mapbox://styles/agha97/${data?.style ?? "clmuepcu300nu01qn7uen9v08"}`}
+            mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${data.style}`}
             {...viewport}
             onMove={(viewport) => setViewport(viewport.viewState)}
             ref={mapRef}

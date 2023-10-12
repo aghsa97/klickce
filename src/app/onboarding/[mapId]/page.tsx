@@ -6,7 +6,7 @@ import FormSearch from '../_components/search'
 import Slider from '../_components/slider'
 import { env } from '@/env'
 
-const STYLE_TOKEN = env.KLICKCE_MAPBOX_API_TOKEN
+const STYLE_TOKEN = env.MAPBOX_STYLE_API_TOKEN
 const USERNAME = env.NEXT_PUBLIC_MAPBOX_USERNAME
 
 async function OnboardingPage(props: { params: { mapId: string } }) {
@@ -20,7 +20,6 @@ async function OnboardingPage(props: { params: { mapId: string } }) {
 
 
     if (!mapData) return notFound()
-
     return (
         <div className='flex h-full'>
             <div className='w-96 px-2 py-4 flex flex-col border-r'>

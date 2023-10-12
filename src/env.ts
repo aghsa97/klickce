@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    KLICKCE_MAPBOX_API_TOKEN: z.string().min(1),
+    MAPBOX_STYLE_API_TOKEN: z.string().min(1),
     CLOUDINARY_API_SECRET: z.string().min(1),
     CLERK_WEBHOOK_SECRET: z.string().min(1),
     STRIPE_WEBHOOK_SECRET_KEY: z.string().min(1),
@@ -14,6 +14,8 @@ export const env = createEnv({
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
+    NEXT_PUBLIC_CLOUDINARY_PROD_PRESET: z.string().min(1),
+    NEXT_PUBLIC_CLOUDINARY_DEV_PRESET: z.string().min(1),
   },
   runtimeEnv: {
     // Client only
@@ -24,9 +26,13 @@ export const env = createEnv({
     NEXT_PUBLIC_CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_CLOUDINARY_PROD_PRESET:
+      process.env.NEXT_PUBLIC_CLOUDINARY_PROD_PRESET,
+    NEXT_PUBLIC_CLOUDINARY_DEV_PRESET:
+      process.env.NEXT_PUBLIC_CLOUDINARY_DEV_PRESET,
 
     // Server only
-    KLICKCE_MAPBOX_API_TOKEN: process.env.KLICKCE_MAPBOX_API_TOKEN,
+    MAPBOX_STYLE_API_TOKEN: process.env.MAPBOX_STYLE_API_TOKEN,
     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
     STRIPE_WEBHOOK_SECRET_KEY: process.env.STRIPE_WEBHOOK_SECRET_KEY,

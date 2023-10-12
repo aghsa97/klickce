@@ -27,7 +27,7 @@ export const maps = mysqlTable(
     views: int("views").notNull().default(0),
     isPublic: boolean("isPublic").notNull().default(true),
 
-    style: text("style").notNull().default(""),
+    style: text("style").notNull().default("clnnkq3bb009q01plcj234b9v"),
     description: text("description").notNull().default(""),
 
     isUserCurrentLocationVisible: boolean("isUserCurrentLocationVisible")
