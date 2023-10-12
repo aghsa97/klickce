@@ -32,8 +32,6 @@ export const webhookRouter = router({
 
       const stripeCustomer = await stripe.customers.create({
         email: input.data.data.email_addresses[0].email_address,
-        name:
-          input.data.data.first_name || "" + input.data.data.last_name || "",
         metadata: {
           clerkUesrId: input.data.data.id,
         },
