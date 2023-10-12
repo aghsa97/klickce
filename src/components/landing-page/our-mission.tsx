@@ -6,7 +6,7 @@ import { aboutUs } from '@/app/config';
 
 function OurMission() {
     return (
-        <div className='flex flex-col justify-center items-center gap-10 w-full border border-border rounded-lg px-6 py-6'>
+        <div className='flex flex-col justify-center items-center gap-12 w-full border border-border rounded-lg px-6 py-6'>
             <div className='flex flex-col items-center justify-center gap-2'>
                 <Button variant={'outline'} size="icon" className='w-16 h-16 rounded-full'>
                     <Icon.FingerPrint className='w-8 h-8' />

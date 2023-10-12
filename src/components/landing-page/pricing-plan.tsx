@@ -1,17 +1,17 @@
-'use client'
-
+import Link from 'next/link';
 import React from 'react'
 
-import { Button } from '../ui/button'
-import * as Icon from '../icons';
 import { PlanProps, plansConfig } from '@/app/config';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { LoadingAnimation } from '../loading-animation';
+import { Button } from '../ui/button'
+import * as Icon from '../icons';
 
 function PricingPlan() {
     return (
-        <div className='flex flex-col justify-center items-center gap-16 w-full border border-border rounded-lg p-6'>
+        <div className='flex flex-col justify-center items-center gap-12 w-full border border-border rounded-lg p-6'>
             <div className='flex flex-col items-center justify-center gap-2'>
                 <Button variant={'outline'} size="icon" className='w-16 h-16 rounded-full'>
                     <Icon.Coins className='w-8 h-8' />
@@ -23,7 +23,6 @@ function PricingPlan() {
             <div className='w-full flex flex-wrap md:flex-nowrap md:items-center md:justify-between gap-4'>
                 <Plan {...plansConfig.BASIC} />
                 <Plan {...plansConfig.PRO} />
-                <Plan {...plansConfig.ENTERPRISE} />
             </div>
         </div>)
 }
@@ -34,7 +33,7 @@ interface Props extends PlanProps {
     className?: string;
 }
 
-function Plan({
+export function Plan({
     title,
     description,
     cost,
@@ -42,13 +41,15 @@ function Plan({
     action,
     className,
     badge,
+    loading,
     disabled
 }: Props) {
+
     return (
         <Card
             key={title}
             className={cn(
-                "flex justify-between w-full h-[550px] flex-col border-transparent shadow-lg",
+                "flex justify-between w-full h-[550px] flex-col border-border/50 shadow-lg",
                 className,
             )}
         >
@@ -90,12 +91,18 @@ function Plan({
                 {action ? (
                     <div>
                         {"link" in action ? (
-                            <Button asChild={!disabled} disabled={disabled}>
-                                {disabled ? "Contact us" : <Link href={action.link}>{action.text}</Link>}
+                            <Button asChild={!disabled} disabled={disabled || loading}>
+                                {loading ? "Contact us" : <Link prefetch={false} href={action.link}>{action.text}</Link>}
+                            </Button>
+                        ) : null}
+                        {"onClick" in action ? (
+                            <Button onClick={action.onClick} disabled={disabled || loading}>
+                                {loading ? <LoadingAnimation /> : action.text}
                             </Button>
                         ) : null}
                     </div>
                 ) : null}
+
             </CardFooter>
         </Card>
     );

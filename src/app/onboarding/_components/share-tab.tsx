@@ -7,9 +7,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
+const url =
+    process.env.NODE_ENV === "production"
+        ? "klickce.se"
+        : "http://localhost:3000";
+
 function ShareTab({ mapId }: { mapId: string }) {
-    const link = `${process.env.VERCEL_URL}/map/${mapId}`
-    const iFrame = `<iframe src='"${process.env.VERCEL_URL}/map/${mapId}"' width="100%" height="500px" frameborder="0" allowfullscreen />`
+    const link = `${url}/map/${mapId}`
+    const iFrame = `<iframe src='"${url}/map/${mapId}"' width="100%" height="500px" frameborder="0" allowfullscreen />`
 
     // TODO: copy to clipboard
     function copyToClipboard(valueType: 'map-link' | 'share-with-iframe') {

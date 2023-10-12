@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+  boolean,
   index,
   mysqlEnum,
   mysqlTable,
@@ -15,7 +16,7 @@ import { maps } from "./maps";
 import { projects } from "./projects";
 import { spots } from "./spots";
 
-export const plan = ["BASIC", "PRO", "ENTERPRISE"] as const;
+export const plan = ["BASIC", "PRO"] as const;
 
 export const customers = mysqlTable(
   "customers",
@@ -26,12 +27,13 @@ export const customers = mysqlTable(
 
     clerkUesrId: varchar("clerkUesrId", { length: 50 }).notNull().unique(),
     email: varchar("email", { length: 256 }).notNull().unique(),
+    onTrial: boolean("on_trial").default(false),
 
     stripeId: varchar("stripe_id", { length: 256 }).unique(),
     subscriptionId: text("subscription_id"),
-    SubPlan: mysqlEnum("SubPlan", plan),
-    endsAt: timestamp("ends_at"),
+    subPlan: mysqlEnum("SubPlan", plan),
     paidUntil: timestamp("paid_until"),
+    endsAt: timestamp("ends_at"),
 
     name: text("name").default(""),
   },
@@ -45,17 +47,19 @@ export const customers = mysqlTable(
 );
 
 export const customersRelations = relations(customers, ({ many }) => ({
-  maps: many(maps),
   projects: many(projects),
   spots: many(spots),
+  maps: many(maps),
 }));
 
 export const insertCustomerSchema = createInsertSchema(customers);
-export const selectCustomerSchema = createSelectSchema(customers).extend({
-  plan: z
-    .enum(plan)
-    .default("BASIC")
-    .transform((val) => val ?? "BASIC"),
+export const selectCustomerSchema = createSelectSchema(customers).pick({
+  clerkUesrId: true,
+  email: true,
+  subPlan: true,
+  paidUntil: true,
+  endsAt: true,
+  onTrial: true,
 });
 export const customerClerkIdSchema = selectCustomerSchema.pick({
   clerkUesrId: true,

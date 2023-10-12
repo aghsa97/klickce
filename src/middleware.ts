@@ -8,7 +8,8 @@ export default authMiddleware({
     "/",
     "/(map)(.*)",
     "/(api|trpc)(.*)",
-    "api/webhook/clerk",
+    "api/webhooks/clerk",
+    "api/webhooks/stripe",
   ],
   afterAuth(auth, req) {
     const isPublicRoute = auth.isPublicRoute;

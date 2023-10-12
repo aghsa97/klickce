@@ -1,0 +1,94 @@
+{
+  "id": "evt_1NzRMQIZx8HdAHbybsEB0nax",
+  "object": "event",
+  "api_version": "2023-08-16",
+  "created": 1696888294,
+  "data": {
+    "object": {
+      "id": "cs_test_a1SolX1ERgteEmyuyGggCEviFUIraefzmZ18lxhRTWuwUJrEb1T83sMVbS",
+      "object": "checkout.session",
+      "after_expiration": null,
+      "allow_promotion_codes": null,
+      "amount_subtotal": 9900,
+      "amount_total": 9900,
+      "automatic_tax": {
+        "enabled": false,
+        "status": null
+      },
+      "billing_address_collection": null,
+      "cancel_url": "http://localhost:3000/user_2UR2u3TCG3LExd1fR9ZCq6u27ai/settings",
+      "client_reference_id": null,
+      "consent": null,
+      "consent_collection": null,
+      "created": 1696888187,
+      "currency": "sek",
+      "currency_conversion": null,
+      "custom_fields": [],
+      "custom_text": {
+        "shipping_address": null,
+        "submit": null,
+        "terms_of_service_acceptance": null
+      },
+      "customer": "cus_On1KcTuiXF6JFO",
+      "customer_creation": null,
+      "customer_details": {
+        "address": {
+          "city": null,
+          "country": "SE",
+          "line1": null,
+          "line2": null,
+          "postal_code": null,
+          "state": null
+        },
+        "email": "mohammed.agha977@gmail.com",
+        "name": "tese test",
+        "phone": null,
+        "tax_exempt": "none",
+        "tax_ids": []
+      },
+      "customer_email": null,
+      "expires_at": 1696974587,
+      "invoice": "in_1NzRMMIZx8HdAHbyXcxTwqCD",
+      "invoice_creation": null,
+      "livemode": false,
+      "locale": null,
+      "metadata": {},
+      "mode": "subscription",
+      "payment_intent": null,
+      "payment_link": null,
+      "payment_method_collection": "always",
+      "payment_method_configuration_details": null,
+      "payment_method_options": null,
+      "payment_method_types": [
+        "card"
+      ],
+      "payment_status": "paid",
+      "phone_number_collection": {
+        "enabled": false
+      },
+      "recovered_from": null,
+      "setup_intent": null,
+      "shipping_address_collection": null,
+      "shipping_cost": null,
+      "shipping_details": null,
+      "shipping_options": [],
+      "status": "complete",
+      "submit_type": null,
+      "subscription": "sub_1NzRMMIZx8HdAHbyaCc2ZA9T",
+      "success_url": "http://localhost:3000/user_2UR2u3TCG3LExd1fR9ZCq6u27ai/settings?success=true",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 0,
+        "amount_tax": 0
+      },
+      "url": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}

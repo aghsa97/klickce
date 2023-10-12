@@ -1,6 +1,5 @@
 import { Poppins } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
-import { NextUIProvider } from "@nextui-org/react";
 
 
 import '../styles/globals.css'

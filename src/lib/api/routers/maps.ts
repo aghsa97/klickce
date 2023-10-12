@@ -164,7 +164,7 @@ export const mapsRouter = router({
         .where(eq(maps.ownerId, ctx.auth.userId))
         .execute();
 
-      const userPlan = currentCustomer[0].SubPlan;
+      const userPlan = currentCustomer[0].subPlan;
       if (!userPlan) {
         throw new TRPCError({
           code: "FORBIDDEN",

@@ -5,6 +5,7 @@ import { customersRouter } from "./customers";
 import { projectsRouter } from "./projects";
 import { imagesRouter } from "./images";
 import { clerkRouter } from "./clerk/webhook";
+import { stripeRouter } from "./stripe";
 
 export const appRouter = router({
   maps: mapsRouter,
@@ -13,6 +14,9 @@ export const appRouter = router({
   projects: projectsRouter,
   customers: customersRouter,
   clerkRouter: clerkRouter,
+  stripeRouter: stripeRouter,
 });
 
 export type AppRouter = typeof appRouter;
+
+export { stripe } from "./stripe/shared";

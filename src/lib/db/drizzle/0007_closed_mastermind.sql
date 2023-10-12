@@ -1,0 +1,1 @@
+ALTER TABLE `customers` MODIFY COLUMN `SubPlan` enum('TRAIL','BASIC','PRO');
