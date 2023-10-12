@@ -9,15 +9,7 @@ type Plan = {
   stripePriceId: string;
 };
 
-export const allPlans: Record<"TRAIL" | "BASIC" | "PRO", Plan> = {
-  TRAIL: {
-    limits: {
-      maps: 1,
-      views: 1000, // 1k
-      spots: 50,
-    },
-    stripePriceId: "",
-  },
+export const allPlans: Record<"BASIC" | "PRO", Plan> = {
   BASIC: {
     limits: {
       maps: 1,

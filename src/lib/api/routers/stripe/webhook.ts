@@ -53,23 +53,46 @@ export const webhookRouter = router({
       });
     }
 
-    if (currentCustomer.subscriptionId) {
-      await stripe.subscriptions.update(currentCustomer.subscriptionId, {
-        cancel_at_period_end: true,
+    if (subscription.id) {
+      await stripe.subscriptions.update(subscription.id, {
+        metadata: {
+          plan: session.metadata?.plan as Plans,
+        },
       });
     }
-
-    await ctx.db
-      .update(customers)
-      .set({
-        subscriptionId: subscription.id,
-        subPlan: session.metadata?.plan as Plans,
-        endsAt: new Date(subscription.current_period_end * 1000),
-        paidUntil: new Date(subscription.current_period_end * 1000),
-      })
-      .where(eq(customers.id, currentCustomer.id))
-      .execute();
   }),
+  customerSubscriptionUpdated: webhookProcedure.mutation(
+    async ({ input, ctx }) => {
+      const subscription = input.event.data.object as Stripe.Subscription;
+      const customerId =
+        typeof subscription.customer === "string"
+          ? subscription.customer
+          : subscription.customer.id;
+
+      const currentCustomer = await ctx.db.query.customers.findFirst({
+        where: eq(customers.stripeId, customerId),
+      });
+
+      if (!currentCustomer) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Customer not found",
+        });
+      }
+
+      await ctx.db
+        .update(customers)
+        .set({
+          subscriptionId: subscription.id,
+          subPlan: subscription.metadata.plan as Plans,
+          endsAt: new Date(subscription.current_period_end * 1000),
+          paidUntil: new Date(subscription.current_period_end * 1000),
+          onTrial: false,
+        })
+        .where(eq(customers.id, currentCustomer.id))
+        .execute();
+    },
+  ),
   customerSubscriptionDeleted: webhookProcedure.mutation(
     async ({ input, ctx }) => {
       const subscription = input.event.data.object as Stripe.Subscription;

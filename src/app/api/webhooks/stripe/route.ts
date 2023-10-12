@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const event = stripe.webhooks.constructEvent(
       payload,
       signature,
-      env.STRIPE_WEBHOOK_SECRET_KEY,
+      "whsec_14b4e46cb88916249f4c2294e1112ec7dc64997ab50c967d8692880d94e68de6",
     );
 
     /**
@@ -33,6 +33,16 @@ export async function POST(req: NextRequest) {
         await caller.stripeRouter.webhooks.customerSubscriptionDeleted({
           event,
         });
+        break;
+
+      case "customer.subscription.updated":
+        await caller.stripeRouter.webhooks.customerSubscriptionUpdated({
+          event,
+        });
+        break;
+
+      case "customer.subscription.trial_will_end":
+        console.log("customer.subscription.trial_will_end");
         break;
 
       default:
