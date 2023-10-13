@@ -1,19 +1,24 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
 import * as Icon from '@/components/icons'
 import { useMapStore } from '@/lib/store'
 import { api } from '@/lib/trpc/client'
 
-import SearchBox from '../../../components/location-search-bar'
-import { useToastAction } from '@/hooks/use-toast-action'
 
-function FormSearch({ mapId }: { mapId: string }) {
+import { useToastAction } from '@/hooks/use-toast-action'
+import SearchBox from '@/components/location-search-bar'
+
+
+
+function FormSearch() {
     const router = useRouter()
-    const { zoom, setIsMovePin, isMovePin } = useMapStore()
+    const { id: mapId } = useParams()
     const { toast } = useToastAction()
+    const { zoom, setIsMovePin, isMovePin } = useMapStore()
+
 
     const iconComp = zoom < 12 ? <Icon.MapPinOff /> : <Icon.MapPin onClick={() => setIsMovePin(!isMovePin)} />
 
@@ -25,7 +30,7 @@ function FormSearch({ mapId }: { mapId: string }) {
                 address: data.location.address,
                 lat: data.lat,
                 lng: data.lng,
-                mapId,
+                mapId: mapId as string,
             })
             toast('created', `Spot created with name ${data.location.locationName}`)
             router.refresh()

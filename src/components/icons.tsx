@@ -7,6 +7,7 @@ import {
     CogIcon,
     CoinsIcon,
     ComponentIcon,
+    CopyIcon,
     DatabaseIcon,
     EditIcon,
     EyeIcon,
@@ -77,3 +78,4 @@ export const HelpingHand = HelpCircleIcon
 export const FingerPrint = FingerprintIcon
 export const Coins = CoinsIcon
 export const Check = BadgeCheckIcon
+export const Copy = CopyIcon

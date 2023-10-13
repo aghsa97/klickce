@@ -21,7 +21,7 @@ type ImageSectionProps = {
 
 function ImageSection({ spotId }: ImageSectionProps) {
     const router = useRouter()
-    const { mapId } = useParams()
+    const { id: mapId } = useParams()
     const [isPending, startTransition] = useTransition()
     const [publicIds, setPublicIds] = useState<{ id: string, publicId: string }[]>([])
     const { toast } = useToastAction()

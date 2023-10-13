@@ -59,7 +59,7 @@ function MapCustomizeTabForm({ styles, data }: MapCustomizeTabFormProps) {
             try {
                 await api.maps.deleteMap.mutate({ id: data.id })
                 toast('deleted', `Map ${data.name} deleted`)
-                router.push('/dashboard')
+                router.push('/app')
             } catch (error) {
                 console.log(error); // TODO: handle error
                 toast('error')

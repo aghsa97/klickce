@@ -23,7 +23,7 @@ export const maps = mysqlTable(
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow(),
 
-    name: text("name").notNull(),
+    name: varchar("name", { length: 30 }).notNull(),
     views: int("views").notNull().default(0),
     isPublic: boolean("isPublic").notNull().default(true),
 

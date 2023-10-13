@@ -1,7 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useTransition } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 
 
 import { TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -11,16 +10,19 @@ import { api } from '@/lib/trpc/client'
 import * as Icon from '@/components/icons'
 import { genId } from '@/lib/db';
 import { useToastAction } from '@/hooks/use-toast-action'
+import { useFormStore } from '@/lib/store'
 
-function MapFormNavbar({ mapId }: { mapId: string }) {
+function MapFormNavbar() {
+    const { setIsFormOpen } = useFormStore()
     const { toast } = useToastAction()
+    const { id: mapId } = useParams()
     const router = useRouter()
 
     async function handleClick() {
         try {
             await api.projects.createProject.mutate({
                 name: "New project - " + genId().slice(0, 5), // add slugs names instead?
-                mapId: mapId,
+                mapId: mapId as string,
             })
             toast('created', 'Project created')
             router.refresh()
@@ -35,10 +37,10 @@ function MapFormNavbar({ mapId }: { mapId: string }) {
                 <TabsTrigger value="content">
                     <Icon.Database />
                 </TabsTrigger>
-                <TabsTrigger value='customize'>
+                <TabsTrigger value='customize' onClick={() => setIsFormOpen(false)}>
                     <Icon.Cog />
                 </TabsTrigger>
-                <TabsTrigger value='share'>
+                <TabsTrigger value='share' onClick={() => setIsFormOpen(false)}>
                     <Icon.Share />
                 </TabsTrigger>
             </TabsList>

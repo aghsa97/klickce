@@ -40,8 +40,8 @@ function ContentTab({ data }: ContentTabProps) {
         try {
             for (const id of selectedSpotsIds) {
                 await api.spots.deleteSpot.mutate({ id })
-                setIsDialogOpen(false)
             }
+            setIsDialogOpen(false)
             toast('deleted', `Spot ${selectedSpotsIds.length > 1 ? 's' : ''} deleted`)
             setSelectedSpotsIds([])
             setSelected(false)
@@ -81,11 +81,11 @@ function ContentTab({ data }: ContentTabProps) {
                     Select
                 </Button>
                 <div className='flex items-center gap-2'>
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <Dialog open={isDialogOpen && Boolean(selectedSpotsIds.length)} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger className={buttonVariants({ variant: "destructive", size: "sm" })} disabled={!isSelected}>Delete</DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+                                <DialogTitle>Are you absolutely sure?</DialogTitle>
                                 <DialogDescription>
                                     This action cannot be undone. This will permanently delete your spots
                                     and remove your data from our servers.
@@ -102,7 +102,7 @@ function ContentTab({ data }: ContentTabProps) {
                         </DialogContent>
                     </Dialog>
 
-                    <Select disabled={!isSelected} onValueChange={(projectId) => handleUpdate(projectId)}>
+                    <Select disabled={!isSelected && Boolean(selectedSpotsIds.length)} onValueChange={(projectId) => handleUpdate(projectId)}>
                         <SelectTrigger className="w-full min-w-[155px]">
                             <SelectValue placeholder="Select a project" />
                         </SelectTrigger>
@@ -118,7 +118,7 @@ function ContentTab({ data }: ContentTabProps) {
                     </Select>
                 </div>
             </div>
-            {/* Locations with no projects goes here */}
+            {/* Spots with no projects goes here */}
             {data.spots.map((spot, index) => (
                 <div key={index} className="h-full flex items-center justify-between gap-2">
                     {isSelected && <Checkbox key={index} onClick={() => handleSelection(spot.id)} />}

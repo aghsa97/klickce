@@ -2,7 +2,7 @@
 
 import type { MapRef } from "react-map-gl";
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Map as ReactMap, Marker } from "react-map-gl";
 import { useSearchParams } from "next/navigation";
 
@@ -14,6 +14,9 @@ import { RouterOutputs } from '@/lib/api';
 import { env } from "@/env";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import Logo from "@/components/ui/logo";
+import Link from "next/link";
+import mapboxgl from "mapbox-gl";
 
 type DataProps = NonNullable<RouterOutputs["maps"]["getMapById"]>
 
@@ -67,6 +70,21 @@ function Map({ data }: MapProps) {
         }
     }, []);
 
+    const onMapLoad = useCallback(() => {
+        const bounds = new mapboxgl.LngLatBounds();
+        data.spots.forEach((spot) => {
+            bounds.extend([spot.lng, spot.lat]);
+        });
+        data.projects.forEach((project) => {
+            project.spots.forEach((spot) => {
+                bounds.extend([spot.lng, spot.lat]);
+            });
+        });
+        mapRef.current?.fitBounds(bounds, {
+            padding: 200,
+            duration: 0,
+        });
+    }, [data])
     return (
         <ReactMap
             mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_API_TOKEN}
@@ -75,10 +93,11 @@ function Map({ data }: MapProps) {
                 height: "calc(var(--vh, 1vh) * 100)",
                 boxSizing: "border-box",
             }}
+            {...viewport}
             maxPitch={60}
             maxZoom={20}
             mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${data.style}`}
-            {...viewport}
+            onLoad={onMapLoad}
             onMove={(viewport) => setViewport(viewport.viewState)}
             ref={mapRef}
         >
@@ -93,8 +112,14 @@ function Map({ data }: MapProps) {
                 latitude={userLocation[0]}
                 longitude={userLocation[1]}
             >
-                <Icon.PersonStanding className='w-10 h-10 animate-pulse text-blue-500' strokeWidth={3} />
+                <Icon.PersonStanding className='w-8 h-8 animate-pulse text-blue-500' strokeWidth={3} />
             </Marker>}
+            <div className="absolute italic w-40 bottom-10 right-4 md:left-1/2 md:right-1/2 text-white bg-black/50 backdrop-blur-[2px] rounded-full px-4 py-2 gap-1.5 flex items-center justify-center">
+                <p>Powered By</p>
+                <Link href={'https://www.klickce.se/'} target="_blank">
+                    <Logo size="sm" />
+                </Link>
+            </div>
         </ReactMap>
     )
 }

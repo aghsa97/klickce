@@ -73,7 +73,6 @@
     position: absolute;
     bottom: 8px;
     left: -24px;
-    z-index: -1;
     border-bottom-left-radius: 8px;
   }
 }

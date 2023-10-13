@@ -24,16 +24,6 @@ async function Settings() {
 
     return (
         <div className='w-full'>
-            <div className='mb-6 flex items-center justify-between'>
-                <div>
-                    <h1 className='text-2xl font-semibold text-foreground'>
-                        Settings
-                    </h1>
-                    <h2 className='text-muted-foreground'>
-                        Your account settings
-                    </h2>
-                </div>
-            </div>
             <div className="col-span-full">
                 <Tabs defaultValue="billing" className="relative mr-auto w-full">
                     <TabsList className="h-9 w-full justify-start rounded-none border-b bg-transparent p-0">

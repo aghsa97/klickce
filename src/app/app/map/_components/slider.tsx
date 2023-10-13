@@ -12,8 +12,6 @@ function Slider() {
     const [spot, setSpot] = useState<any>(null) // TODO: Fix types
     const [project, setProject] = useState<any>(null) // TODO: fix types
 
-    // TODO: fix when switching tab slider (isFormOpen) set to close (False)
-
     useEffect(() => {
         const spot = mapData?.spots.find(spot => spot.id === id) ?? mapData?.projects.map(project => project.spots).flat().find(spot => spot.id === id)
         const project = mapData?.projects.find(project => project.id === spot?.projectId)
@@ -23,7 +21,6 @@ function Slider() {
 
 
     if (!isFormOpen || !mapData || !spot) return null
-
     return (
         <div>
             {isFormOpen && <div className='w-[500px] h-full p-4 flex flex-col border-r'>

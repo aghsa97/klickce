@@ -20,12 +20,10 @@ import ProjectsBar from "./map/projects-bar";
 import ImgPopover from "./map/img-popover";
 import useWindowSize from "@/hooks/use-window-size";
 
-type data = NonNullable<RouterOutputs["maps"]["getMapById"]>
-
 function Map() {
     const router = useRouter()
     const mapRef = useRef<MapRef>(null);
-    const { mapId } = useParams()
+    const { id: mapId } = useParams()
     const { toast } = useToastAction()
 
     const [isPending, startTransition] = useTransition()

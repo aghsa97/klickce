@@ -6,11 +6,14 @@ import { useTransition } from 'react'
 import { useToastAction } from '@/hooks/use-toast-action'
 import { api } from '@/lib/trpc/client'
 import { Button } from './ui/button'
+import * as Icon from './icons'
 
-function ProjectVisibiltyBtn({ data, eyeIcon }: { data: { id: string, isVisible: boolean }, eyeIcon: React.ReactNode }) {
+function ProjectVisibiltyBtn({ data }: { data: { id: string, isVisible: boolean } }) {
     const router = useRouter()
     const [_, startTransition] = useTransition()
     const { toast } = useToastAction()
+    const eyeIcon = data.isVisible ? <Icon.Eye className='w-5 h-5 hidden group-hover:block' /> : <Icon.EyeOff className='w-5 h-5' />
+
 
     async function updateVisibilty() {
         startTransition(async () => {

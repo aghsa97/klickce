@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import SpotPopover from '@/app/onboarding/_components/spot-popover'
+import SpotPopover from '@/app/app/map/_components/spot-popover'
 import { RouterOutputs } from '@/lib/api'
 import { cn } from '@/lib/utils'
 

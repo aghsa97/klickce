@@ -38,7 +38,7 @@ function Header() {
     return (
         <div className='flex items-center justify-center gap-2'>
             <ThemeToggle />
-            <Link href={"/dashboard"} className={buttonVariants({ variant: 'outline' })}>
+            <Link href={"/app"} className={buttonVariants({ variant: 'outline' })}>
                 Dashboard
                 <Icons.ArrowRight className='w-4 h-4 ml-1' />
             </Link>

@@ -6,19 +6,18 @@ import { Tabs, TabsContent } from '@/components/ui/tabs'
 import type { RouterOutputs } from '@/lib/api'
 import { useMapStore } from '@/lib/store'
 
-import CustomizeTab from './customize-tab'
 import ContentTab from './content-tab'
 import MapFormNavbar from './navbar'
 import ShareTab from './share-tab'
+import MapCustomizeTabForm from '@/components/forms/map-form'
 
 
 type FormTabsProps = {
-    mapId: string
     data: NonNullable<RouterOutputs["maps"]["getMapDataById"]>
     styles: string[]
 }
 
-function FormTabs({ styles, mapId, data }: FormTabsProps) {
+function FormTabs({ styles, data }: FormTabsProps) {
     const { setMapData } = useMapStore()
 
     useEffect(() => {
@@ -30,15 +29,15 @@ function FormTabs({ styles, mapId, data }: FormTabsProps) {
 
     return (
         <Tabs defaultValue="content" className='w-full h-full overflow-y-scroll'>
-            <MapFormNavbar mapId={mapId} />
+            <MapFormNavbar />
             <TabsContent value="content" className='h-full'>
                 <ContentTab data={data} />
             </TabsContent>
             <TabsContent value='customize'>
-                <CustomizeTab styles={styles} data={data} />
+                <MapCustomizeTabForm styles={styles} data={data} />
             </TabsContent>
             <TabsContent value='share'>
-                <ShareTab mapId={mapId} />
+                <ShareTab />
             </TabsContent>
         </Tabs>
     )
