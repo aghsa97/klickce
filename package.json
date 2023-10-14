@@ -11,7 +11,8 @@
     "db:introspect": "drizzle-kit introspect:mysql",
     "db:generate": "drizzle-kit generate:mysql",
     "db:push": "drizzle-kit push:mysql",
-    "db:drop": "drizzle-kit drop"
+    "db:drop": "drizzle-kit drop",
+    "seed": "bun /Users/agha/Desktop/Projects/spottz/src/lib/db/seed.mts"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.23.2",
