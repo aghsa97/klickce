@@ -32,11 +32,11 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
         <header className={cn("absolute z-[70] flex flex-col w-full md:w-[35vw] md:max-w-3xl h-fit md:mx-6 pt-4 md:pt-6 px-2 md:px-0 rounded-[2.8rem]",
             isOpen && 'h-full pb-4 md:pb-6 z-[70]'
         )}>
-            <div className={cn('flex items-center justify-between bg-background/50 backdrop-blur-md pl-6 md:pl-8 pr-2 py-2 rounded-[2.8rem] shadow-md',
+            <div className={cn('flex items-center justify-between bg-black/50 text-white backdrop-blur-[2px] pl-6 md:pl-8 pr-2 py-2 rounded-[2.8rem] shadow-md',
                 isOpen && 'rounded-b-none border-b shadow-none'
             )}>
                 <p className='text-3xl md:text-5xl font-medium'>{name}</p>
-                <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full mr-2 bg-background/50 backdrop-blur-md" onClick={() => { setIsOpen(!isOpen) }}>
+                <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full mr-2 bg-black/50 text-white backdrop-blur-[2px]" onClick={() => { setIsOpen(!isOpen) }}>
                     {!isOpen ?
                         <Icon.Menu className='w-10 h-10' strokeWidth={3} />
                         :
@@ -49,7 +49,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                     initial={{ opacity: 0.5, }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.2 }}
-                    className='flex flex-col gap-4 bg-background/50 backdrop-blur-md pl-6 md:pl-8 pr-2 h-full py-4 rounded-b-[2.8rem] overflow-y-auto'>
+                    className='flex flex-col gap-4 bg-black/50 text-white backdrop-blur-[2px] pl-6 md:pl-8 pr-2 h-full py-4 rounded-b-[2.8rem] overflow-y-auto'>
                     {projects.map((project) => (
                         <div key={project.id} className="flex items-center justify-start gap-4 pr-2">
                             <div className='w-6 h-6 md:w-8 md:h-8 rounded-full border-2 md:border-4 border-white flex-shrink-0'
@@ -83,7 +83,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
             }
             {isOpen && selectedProject &&
                 <div
-                    className='flex flex-col gap-4 bg-background/50 backdrop-blur-md pl-6 md:pl-8 pr-2 h-full py-2 rounded-b-[3rem] overflow-y-auto'>
+                    className='flex flex-col gap-4 bg-black/50 text-white backdrop-blur-[2px] pl-6 md:pl-8 pr-2 h-full py-2 rounded-b-[3rem] overflow-y-auto'>
                     <div className="flex flex-col items-start justify-center gap-4">
                         <div className='w-full flex items-center justify-between'>
                             <p className='text-3xl md:text-5xl' onClick={() => setSelectedProject(null)}>{selectedProject.name}</p>

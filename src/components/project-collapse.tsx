@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 
-import SpotPopover from '@/app/onboarding/_components/spot-popover'
 import { RouterOutputs } from '@/lib/api'
 import { cn } from '@/lib/utils'
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible'
 import { Button } from './ui/button'
 import * as Icon from './icons'
+import SpotPopover from '@/app/app/map/_components/spot-popover'
 
 type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 type ProjectSpotsCollapseProps = {

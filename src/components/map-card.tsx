@@ -14,7 +14,7 @@ type MapCardProps = {
 }
 function MapCard({ id, name, style, tags, views }: MapCardProps) {
     return (
-        <Link href={`/onboarding/${id}`}>
+        <Link href={`/app/map/${id}`}>
             <Card>
                 <CardHeader className='relative h-40 border-b border-border' style={{
                     backgroundImage: `url(/grainy.png)`,

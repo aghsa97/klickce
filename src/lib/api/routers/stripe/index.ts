@@ -46,7 +46,7 @@ export const stripeRouter = router({
 
     const session = await stripe.billingPortal.sessions.create({
       customer: stripeId,
-      return_url: `${url}/${currentCustomer.clerkUesrId}/settings`,
+      return_url: `${url}/app/settings`,
     });
 
     return session.url;
@@ -99,8 +99,8 @@ export const stripeRouter = router({
           plan: input.plan,
         },
         mode: "subscription",
-        success_url: `${url}/${currentCustomer.clerkUesrId}/settings?success=true`,
-        cancel_url: `${url}/${currentCustomer.clerkUesrId}/settings`,
+        success_url: `${url}/app/settings?success=true`,
+        cancel_url: `${url}/app/settings`,
       });
 
       return session;

@@ -32,7 +32,7 @@ function ProjectsBar({ projects }: ProjectsBarProps) {
                     style={{ backgroundColor: project.color }}
                 >
                     <Link href={project.id !== projectId ? `?projectId=${project.id}` : pathname}
-                        className={cn(`w-40 h-10 md:w-full md:h-full flex justify-center items-center text-sm rounded-full p-2 md:px-6 md:py-3 bg-background/50 backdrop-blur-md cursor-pointer`,
+                        className={cn(`w-40 md:w-full md:h-full flex justify-center items-center text-sm rounded-full p-2 md:px-6 md:py-2.5 bg-black/50 text-white backdrop-blur-[2px] cursor-pointer`,
                             project.id === projectId && 'bg-primary'
                         )}
                     >

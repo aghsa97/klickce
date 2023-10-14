@@ -7,10 +7,10 @@ import { Map as ReactMap, Marker, MarkerDragEvent } from "react-map-gl";
 import { getGeocode } from 'use-places-autocomplete';
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-import { cn, extractLongNameAddress } from '@/lib/utils';
+import { extractLongNameAddress } from '@/lib/utils';
 import * as Icon from "@/components/icons";
 import { useMapStore } from '@/lib/store';
-import { api, RouterOutputs } from '@/lib/trpc/client';
+import { api } from '@/lib/trpc/client';
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useToastAction } from "@/hooks/use-toast-action";
@@ -19,8 +19,7 @@ import MapMenu from "./map/map-menu";
 import ProjectsBar from "./map/projects-bar";
 import ImgPopover from "./map/img-popover";
 import useWindowSize from "@/hooks/use-window-size";
-
-type data = NonNullable<RouterOutputs["maps"]["getMapById"]>
+import mapboxgl from "mapbox-gl";
 
 function Map() {
     const router = useRouter()
@@ -116,6 +115,24 @@ function Map() {
         }
     }, [setStoreMapZoom, setIsMovePin]);
 
+    const onMapLoad = useCallback(() => {
+        // check of mapdata spots in projects and mapdata spots is empty
+        if (mapData?.spots.length === 0 && mapData?.projects.flatMap((project) => project.spots).length === 0) return
+        const bounds = new mapboxgl.LngLatBounds();
+        mapData?.spots.forEach((spot) => {
+            bounds.extend([spot.lng, spot.lat]);
+        });
+        mapData?.projects.forEach((project) => {
+            project.spots.forEach((spot) => {
+                bounds.extend([spot.lng, spot.lat]);
+            });
+        });
+        mapRef.current?.fitBounds(bounds, {
+            padding: 200,
+            duration: 0,
+        });
+    }, [mapData])
+
     if (!mapData) return null
     return (
         <ReactMap
@@ -129,6 +146,7 @@ function Map() {
             maxZoom={20}
             mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${mapData.style}`}
             {...viewport}
+            onLoad={onMapLoad}
             onMove={(viewport) => setViewport(viewport.viewState)}
             ref={mapRef}
             onMoveEnd={onMapMoveEnd}
