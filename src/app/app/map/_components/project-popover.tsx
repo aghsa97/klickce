@@ -19,7 +19,6 @@ type ProjectPopoverProps = {
 
 function ProjectPopover({ data, index, projects }: ProjectPopoverProps) {
     const [isOpen, setIsOpen] = useState(false)
-    const eyeIcon = data.isVisible ? <Icon.Eye className='w-5 h-5 hidden group-hover:block' /> : <Icon.EyeOff className='w-5 h-5' />
 
     return (
         <div className='flex flex-col'>
@@ -42,7 +41,7 @@ function ProjectPopover({ data, index, projects }: ProjectPopoverProps) {
                         />
                     </PopoverContent>
                 </Popover>
-                <ProjectVisibiltyBtn data={{ id: data.id, isVisible: data.isVisible }} eyeIcon={eyeIcon} />
+                <ProjectVisibiltyBtn data={{ id: data.id, isVisible: data.isVisible }} />
             </div>
             <ProjectCollapse project={data} projects={projects} index={index} />
         </div>

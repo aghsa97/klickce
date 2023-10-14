@@ -31,7 +31,7 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
             className={cn('hidden absolute top-0 z-50 md:flex gap-4 pb-12 mx-6 pt-6 w-fit h-full overflow-y-scroll',
                 !spotData.description && 'flex-col',
             )}>
-            <header className={"flex flex-col bg-background/50 backdrop-blur-md rounded-[2.8rem] w-[35vw] md:max-w-3xl h-fit shadow-md"}>
+            <header className={"flex flex-col bg-black/50 text-white backdrop-blur-[2px] rounded-[2.8rem] w-[35vw] md:max-w-3xl h-fit shadow-md"}>
                 <div className={cn('flex items-center justify-between pl-8 pr-2 py-2',
                     spotData.description && 'border-b'
                 )

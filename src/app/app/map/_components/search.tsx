@@ -7,7 +7,7 @@ import * as Icon from '@/components/icons'
 import { useMapStore } from '@/lib/store'
 import { api } from '@/lib/trpc/client'
 
-import SearchBox from '../../../components/location-search-bar'
+import SearchBox from '../../../../components/location-search-bar'
 import { useToastAction } from '@/hooks/use-toast-action'
 
 function FormSearch({ mapId }: { mapId: string }) {

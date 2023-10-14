@@ -20,31 +20,11 @@ export default authMiddleware({
     }
 
     const url = new URL(req.nextUrl.origin);
-    const parts = req.nextUrl.pathname.split("/").filter(Boolean);
-
     if (!userId) {
       // User is not signed in
       url.pathname = "/sign-in";
       return NextResponse.redirect(url);
     }
-
-    if (req.nextUrl.pathname === "/dashboard") {
-      // /dashboard should redirect to the user's dashboard
-      // use their current workspace, i.e. /:userId
-      url.pathname = `/${userId}`;
-      return NextResponse.redirect(url);
-    }
-
-    const workspaceId = parts[0];
-
-    const isUser = workspaceId?.startsWith("user_");
-    if (isUser && userId !== workspaceId) {
-      // User is accessing a user that's not them
-      url.pathname = `/`;
-
-      return NextResponse.redirect(url);
-    }
-
     return NextResponse.next();
   },
 });

@@ -56,7 +56,7 @@ function MobileDataBar({ spotData, publicIds }: SideMenuBarProps) {
                     paddingTop: "calc((var(--vh, 1vh) * 100) - 3px - 10px - (100vw - var(--sbw, 0px) - 20px) * .666)"
                 }}
             >
-                <div className={'flex flex-col bg-background/50 backdrop-blur-md rounded-[2.8rem] shadow-md'}>
+                <div className={'flex flex-col bg-black/50 text-white backdrop-blur-[2px] rounded-[2.8rem] shadow-md'}>
                     <div className={"flex items-center justify-between pl-6 pr-2 py-2 border-b"}>
                         <div className="flex items-center justify-start gap-2">
                             <div className='w-6 h-6 rounded-full border-2 border-white flex-shrink-0'

@@ -1,8 +1,4 @@
-import {
-  customerClerkIdSchema,
-  customers,
-  selectCustomerSchema,
-} from "@/lib/db/schema/customers";
+import { customers, selectCustomerSchema } from "@/lib/db/schema/customers";
 import { eq } from "drizzle-orm";
 import { protectedProcedure, router } from "../trpc";
 

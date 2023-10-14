@@ -6,6 +6,7 @@ import Map from "@/components/map";
 import Logo from "@/components/ui/logo";
 import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import AppHeader from "@/components/layouts/app-header";
 
 const ThemeToggle = dynamic(() => import("@/components/theme-toggle"), {
     ssr: false,
@@ -23,20 +24,7 @@ const ThemeToggle = dynamic(() => import("@/components/theme-toggle"), {
 export default async function OnboardingLayout(props: { children: React.ReactNode, params: { mapId: string } }) {
     return (
         <div className="w-full min-h-screen overflow-hidden">
-            <nav className="z-50 flex h-16 items-center justify-between border-b bg-background px-8">
-                <div className="flex items-center justify-between">
-                    <Link href={'/dashboard'} className="mr-8 hidden items-center md:flex">
-                        <Logo size="lg" />
-                    </Link>
-                    <Link href={'/dashboard'} className="ml-8 hidden items-center md:flex text-sm text-muted-foreground hover:text-secondary-foreground">
-                        Dashboard
-                    </Link>
-                </div>
-                <div className="flex items-center gap-4">
-                    <ThemeToggle />
-                    <UserButton afterSignOutUrl='/' />
-                </div>
-            </nav>
+            <AppHeader className="px-4" />
             <main className="min-h-[calc(100vh-4rem)] flex flex-1">
                 <div className='w-full flex'>
                     <aside className='flex h-full relative'>
