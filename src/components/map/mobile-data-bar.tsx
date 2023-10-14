@@ -73,7 +73,7 @@ function MobileDataBar({ spotData, publicIds }: SideMenuBarProps) {
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full mr-2" onClick={() => NavigateToGoogleMaps(spotData.address)}>
+                                        <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-black mr-2" onClick={() => NavigateToGoogleMaps(spotData.address)}>
                                             <Icon.Milestone className='w-8 h-8' strokeWidth={3} />
                                         </Button>
                                     </TooltipTrigger>
@@ -82,7 +82,7 @@ function MobileDataBar({ spotData, publicIds }: SideMenuBarProps) {
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
-                            <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full mr-2" onClick={() => router.push(pathname)}>
+                            <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-black mr-2" onClick={() => router.push(pathname)}>
                                 <Icon.Close className='w-8 h-8' strokeWidth={3} />
                             </Button>
                         </div>

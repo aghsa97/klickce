@@ -36,7 +36,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                 isOpen && 'rounded-b-none border-b shadow-none'
             )}>
                 <p className='text-3xl md:text-5xl font-medium'>{name}</p>
-                <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full mr-2 bg-black/50 text-white backdrop-blur-[2px]" onClick={() => { setIsOpen(!isOpen) }}>
+                <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full mr-2 bg-black" onClick={() => { setIsOpen(!isOpen) }}>
                     {!isOpen ?
                         <Icon.Menu className='w-10 h-10' strokeWidth={3} />
                         :
@@ -87,7 +87,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                     <div className="flex flex-col items-start justify-center gap-4">
                         <div className='w-full flex items-center justify-between'>
                             <p className='text-3xl md:text-5xl' onClick={() => setSelectedProject(null)}>{selectedProject.name}</p>
-                            <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full mr-2" onClick={() => setSelectedProject(null)}>
+                            <Button size={'sm'} variant="outline" className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-black mr-2" onClick={() => setSelectedProject(null)}>
                                 <Icon.ArrowLeft className='w-10 h-10 cursor-pointer' strokeWidth={3} />
                             </Button>
                         </div>
