@@ -22,7 +22,7 @@ function ProjectsBar({ projects }: ProjectsBarProps) {
     const pathname = usePathname()
 
     return (
-        <div className='flex flex-col md:flex-row items-start md:items-center justify-center absolute bottom-10 left-4 md:left-8 gap-2'>
+        <div className='flex flex-col md:flex-row items-start md:items-center justify-center absolute bottom-12 left-4 md:left-6 gap-2'>
             {projects.map((project) => (
                 <Badge
                     placement="top-right"

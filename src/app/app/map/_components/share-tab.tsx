@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useParams } from 'next/navigation'
 
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
@@ -12,9 +13,10 @@ const url =
         ? "klickce.se"
         : "http://localhost:3000";
 
-function ShareTab({ mapId }: { mapId: string }) {
-    const link = `${url}/map/${mapId}`
-    const iFrame = `<iframe src='"${url}/map/${mapId}"' width="100%" height="500px" frameborder="0" allowfullscreen />`
+function ShareTab() {
+    const params = useParams()
+    const link = `${url}/map/${params.mapId}`
+    const iFrame = `<iframe src='"${url}/map/${params.mapId}"' width="100%" height="500px" frameborder="0" allowfullscreen />`
 
     // TODO: copy to clipboard
     function copyToClipboard(valueType: 'map-link' | 'share-with-iframe') {

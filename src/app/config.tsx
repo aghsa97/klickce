@@ -155,7 +155,7 @@ export const plansConfig: Record<Plans, PlanProps> = {
             "1000 views",
             "Analytics",
         ],
-        badge: "14 days free trial",
+        badge: "30 days free trial",
         action: {
             text: "Start Now",
             link: "/sign-up?plan=basic",

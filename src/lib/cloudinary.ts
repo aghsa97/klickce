@@ -16,13 +16,6 @@ export const uploadImage = async (url: string, publicId: string) => {
         process.env.NODE_ENV === "production"
           ? env.NEXT_PUBLIC_CLOUDINARY_PROD_PRESET
           : env.NEXT_PUBLIC_CLOUDINARY_DEV_PRESET,
-      transformation: {
-        quality: "auto:best",
-        fetch_format: "auto",
-        width: 1280,
-        height: 720,
-        crop: "limit",
-      },
     });
     return { publicId: results.public_id };
   } catch (error) {

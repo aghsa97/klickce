@@ -10,6 +10,7 @@ import {
 } from "@/lib/db/schema/projects";
 import { genId } from "@/lib/db";
 import { spots } from "@/lib/db/schema/spots";
+import { mapIdSchema } from "@/lib/db/schema/maps";
 
 export const projectsRouter = router({
   getProjectById: publicProcedure
@@ -21,6 +22,17 @@ export const projectsRouter = router({
           where: eq(projects.id, input.id),
         }),
       );
+    }),
+  getProjectsByMapId: protectedProcedure
+    .input(mapIdSchema)
+    .query(async ({ ctx, input }) => {
+      if (!input.id) return;
+      return await ctx.db.query.projects.findMany({
+        where: and(
+          eq(projects.mapId, input.id),
+          eq(projects.ownerId, ctx.auth.userId),
+        ),
+      });
     }),
   createProject: protectedProcedure
     .input(insertProjectSchema)

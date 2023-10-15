@@ -65,7 +65,7 @@ function MobileDataBar({ spotData, publicIds }: SideMenuBarProps) {
                             <div className='flex flex-col items-start justify-center'>
                                 <p className='text-base md:text-xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'
                                 >{spotData.name}</p>
-                                <p className='text-xs md:text-base text-muted-foreground line-clamp-1'
+                                <p className='text-xs md:text-base text-muted/50 dark:text-muted-foreground line-clamp-1'
                                 >{spotData.address}</p>
                             </div>
                         </div>

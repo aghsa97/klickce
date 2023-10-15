@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 
 import { TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -11,15 +11,16 @@ import * as Icon from '@/components/icons'
 import { genId } from '@/lib/db';
 import { useToastAction } from '@/hooks/use-toast-action'
 
-function MapFormNavbar({ mapId }: { mapId: string }) {
-    const { toast } = useToastAction()
+function MapFormNavbar() {
     const router = useRouter()
+    const params = useParams()
+    const { toast } = useToastAction()
 
     async function handleClick() {
         try {
             await api.projects.createProject.mutate({
                 name: "New project - " + genId().slice(0, 5), // add slugs names instead?
-                mapId: mapId,
+                mapId: params.mapId as string,
             })
             toast('created', 'Project created')
             router.refresh()
@@ -42,7 +43,7 @@ function MapFormNavbar({ mapId }: { mapId: string }) {
                 </TabsTrigger>
             </TabsList>
             <div className='flex items-center gap-2'>
-                <Button variant={'outline'} className="w-full flex items-center justify-center gap-2" size={'sm'}
+                <Button variant={'outline'} className="w-full flex items-center justify-center gap-2"
                     onClick={handleClick}
                 >
                     Add a project
