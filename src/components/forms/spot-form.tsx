@@ -23,9 +23,8 @@ import { Input } from '../ui/input'
 type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 type SpotPopoverProps = {
     data: data["spots"][0]
-    projects: data["projects"]
+    projects: RouterOutputs["projects"]["getProjectsByMapId"]
     project?: data["projects"][0]
-    mapId: string
 }
 
 function SpotForm({ data, project, projects }: SpotPopoverProps) {
@@ -147,12 +146,13 @@ function SpotInputField({ name, form, description }: FormInputFieldProps) {
 }
 
 type SpotSelectProjectProps = {
-    projects: data["projects"]
+    projects: RouterOutputs["projects"]["getProjectsByMapId"]
     projectName?: string
     onValueChange: (value: string) => void
     defaultValue?: string
 }
 function SpotSelectProject({ projects, projectName, onValueChange, defaultValue }: SpotSelectProjectProps) {
+
     return (
         <Select onValueChange={onValueChange} defaultValue={defaultValue}>
             <FormControl>
@@ -165,7 +165,7 @@ function SpotSelectProject({ projects, projectName, onValueChange, defaultValue 
                     Select no project
                 </SelectItem>
                 <SelectSeparator />
-                {projects.map((project) => (
+                {projects?.map((project) => (
                     <SelectItem key={project.id} value={project.id}>
                         {project.name}
                     </SelectItem>

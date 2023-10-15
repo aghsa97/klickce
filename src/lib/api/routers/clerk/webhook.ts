@@ -40,7 +40,7 @@ export const webhookRouter = router({
       const subscription = await stripe.subscriptions.create({
         customer: stripeCustomer.id,
         items: [{ price: env.STRIPE_BASIC_MONTHLY_PRICE_ID }],
-        trial_period_days: 14,
+        trial_period_days: 30,
         trial_settings: {
           end_behavior: {
             missing_payment_method: "pause",

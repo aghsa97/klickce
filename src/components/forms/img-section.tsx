@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useTransition, type ChangeEvent } from 'react'
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
 import { CldImage } from 'next-cloudinary';
@@ -20,7 +20,6 @@ type ImageSectionProps = {
 }
 
 function ImageSection({ spotId }: ImageSectionProps) {
-    const router = useRouter()
     const { mapId } = useParams()
     const [isPending, startTransition] = useTransition()
     const [publicIds, setPublicIds] = useState<{ id: string, publicId: string }[]>([])
@@ -34,7 +33,7 @@ function ImageSection({ spotId }: ImageSectionProps) {
             })
         }
         getPublicIds()
-    }, [spotId, router])
+    }, [spotId])
 
 
     async function handleImgChange(e: ChangeEvent<HTMLInputElement>) {
@@ -59,7 +58,6 @@ function ImageSection({ spotId }: ImageSectionProps) {
                             setPublicIds((prev) => prev.filter((img) => img.publicId !== 'loading'))
                             setPublicIds((prev) => [...prev, { id: result.id, publicId: result.publicId }])
                             toast('created')
-                            router.refresh()
                         } catch (error: any) {
                             console.log(error); // TODO: handle error
                             toast('error', error.message)
@@ -77,7 +75,6 @@ function ImageSection({ spotId }: ImageSectionProps) {
                 await api.images.deleteImage.mutate({ id })
                 setPublicIds((prev) => prev.filter((img) => img.id !== id))
                 toast('deleted')
-                router.refresh()
             } catch (error: any) {
                 console.log(error); // TODO: handle error
                 toast('error', error.message)

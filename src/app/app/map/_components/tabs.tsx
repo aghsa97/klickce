@@ -1,44 +1,28 @@
-'use client'
-
-import { useEffect } from 'react'
-
+import MapCustomizeTabForm from '@/components/forms/map-form'
 import { Tabs, TabsContent } from '@/components/ui/tabs'
 import type { RouterOutputs } from '@/lib/api'
-import { useMapStore } from '@/lib/store'
 
-import CustomizeTab from './customize-tab'
 import ContentTab from './content-tab'
 import MapFormNavbar from './navbar'
 import ShareTab from './share-tab'
 
 
 type FormTabsProps = {
-    mapId: string
     data: NonNullable<RouterOutputs["maps"]["getMapDataById"]>
-    styles: string[]
 }
 
-function FormTabs({ styles, mapId, data }: FormTabsProps) {
-    const { setMapData } = useMapStore()
-
-    useEffect(() => {
-        setMapData(data)
-        return () => {
-            setMapData(undefined)
-        }
-    }, [data, setMapData])
-
+function FormTabs({ data }: FormTabsProps) {
     return (
-        <Tabs defaultValue="content" className='w-full h-full overflow-y-scroll'>
-            <MapFormNavbar mapId={mapId} />
+        <Tabs defaultValue="content" className='w-full h-full overflow-y-auto'>
+            <MapFormNavbar />
             <TabsContent value="content" className='h-full'>
                 <ContentTab data={data} />
             </TabsContent>
-            <TabsContent value='customize'>
-                <CustomizeTab styles={styles} data={data} />
+            <TabsContent value='customize' className='h-full'>
+                <MapCustomizeTabForm data={data} />
             </TabsContent>
-            <TabsContent value='share'>
-                <ShareTab mapId={mapId} />
+            <TabsContent value='share' className='min-h-max'>
+                <ShareTab />
             </TabsContent>
         </Tabs>
     )

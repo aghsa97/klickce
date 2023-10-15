@@ -85,7 +85,7 @@ function ContentTab({ data }: ContentTabProps) {
                         <DialogTrigger className={buttonVariants({ variant: "destructive", size: "sm" })} disabled={!isSelected}>Delete</DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+                                <DialogTitle>Are you absolutely sure?</DialogTitle>
                                 <DialogDescription>
                                     This action cannot be undone. This will permanently delete your spots
                                     and remove your data from our servers.

@@ -73,7 +73,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                                         href={`?spotId=${spot.id}`} className='text-xl md:text-3xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'>
                                         {spot.name}
                                     </Link>
-                                    <p className='text-base md:text-xl text-muted-foreground line-clamp-1'
+                                    <p className='text-base md:text-xl text-muted/50 dark:text-muted-foreground line-clamp-1'
                                     >{spot.address}</p>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                                             href={`?spotId=${spot.id}`} className='text-xl md:text-3xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'>
                                             {spot.name}
                                         </Link>
-                                        <p className='text-base md:text-xl text-muted-foreground line-clamp-1'
+                                        <p className='text-base md:text-xl text-muted/50 dark:text-muted-foreground line-clamp-1'
                                         >{spot.address}</p>
                                     </div>
                                 </div>

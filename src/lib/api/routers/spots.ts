@@ -31,14 +31,12 @@ export const spotsRouter = router({
     .input(z.object({ spotIdSchema, mapIdSchema }))
     .query(async ({ ctx, input }) => {
       if (!input.spotIdSchema.id || !input.mapIdSchema.id) return;
-      return selectSpotSchema.parse(
-        await ctx.db.query.spots.findFirst({
-          where: and(
-            eq(spots.id, input.spotIdSchema.id),
-            eq(spots.mapId, input.mapIdSchema.id),
-          ),
-        }),
-      );
+      return await ctx.db.query.spots.findFirst({
+        where: and(
+          eq(spots.id, input.spotIdSchema.id),
+          eq(spots.mapId, input.mapIdSchema.id),
+        ),
+      });
     }),
   createSpot: protectedProcedure
     .input(insertSpotSchema)

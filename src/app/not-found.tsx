@@ -13,7 +13,7 @@ export default function NotFound() {
                         <h1>404</h1>
                         <p>Sorry, this page could not be found.</p>
                         <Button variant="link" asChild>
-                            <Link href="/">Homepage</Link>
+                            <Link href="/app">Homepage</Link>
                         </Button>
                     </div>
                 </div>

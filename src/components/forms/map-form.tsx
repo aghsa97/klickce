@@ -13,22 +13,27 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Switch } from '../ui/switch'
 import ActionBtns from './action-btns'
-import MapStyle from '../map-style'
-import { useMapStore } from '@/lib/store'
 import { useToastAction } from '@/hooks/use-toast-action'
+import Image from 'next/image'
+import { cn } from '@/lib/utils'
+import { env } from '@/env'
+import { Label } from '../ui/label'
+import { Button } from '../ui/button'
+import Link from 'next/link'
+
+
+const STYLE_TOKEN = env.NEXT_PUBLIC_MAPBOX_API_TOKEN
+const USERNAME = env.NEXT_PUBLIC_MAPBOX_USERNAME
 
 type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
-
 type MapCustomizeTabFormProps = {
     data: data
-    styles: string[]
 }
 
-function MapCustomizeTabForm({ styles, data }: MapCustomizeTabFormProps) {
+function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
     const router = useRouter()
-    const { mapData, setMapData } = useMapStore()
-    const [_, startTransition] = useTransition()
     const { toast } = useToastAction()
+    const [_, startTransition] = useTransition()
 
     const form = useForm<z.infer<typeof updateMapSchema>>({
         resolver: zodResolver(updateMapSchema),
@@ -67,13 +72,6 @@ function MapCustomizeTabForm({ styles, data }: MapCustomizeTabFormProps) {
         })
     }
 
-    function handleStyleClick(style: string) {
-        if (!mapData) return
-        mapData.style = style
-        setMapData(mapData)
-        form.setValue('style', style)
-    }
-
     return (
         <Form {...form}>
             <form onSubmit={async (e) => { e.preventDefault(), form.handleSubmit(handleUpdate)(e) }} className="w-full space-y-4">
@@ -89,17 +87,29 @@ function MapCustomizeTabForm({ styles, data }: MapCustomizeTabFormProps) {
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="style"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Map Style</FormLabel>
-                                <MapStyle styles={styles} onClick={handleStyleClick} defaultValue={field.value ?? ""} />
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                    <div className='flex flex-col gap-2'>
+                        <div className='flex items-center justify-between'>
+                            <div className='flex flex-col gap-1'>
+                                <Label className='text-sm font-semibold'>Map style</Label>
+                                <h3 className='text-muted-foreground text-xs'>
+                                    You can view all styles here.
+                                </h3>
+                            </div>
+                            <Link href='?styles=true'>
+                                <Button variant={'outline'} size="sm">View all styles</Button>
+                            </Link>
+                        </div>
+                        <Image
+                            width="0"
+                            height="0"
+                            sizes="100vw"
+                            alt="Map style"
+                            className={cn(`w-full h-48 rounded-lg cursor-pointer`,
+                                // styleClicked === style ? 'border-4 border-yellow-500' : 'border-none'
+                            )}
+                            src={`https://api.mapbox.com/styles/v1/${USERNAME}/${data.style}/static/-73.99,40.70,12/500x300?access_token=${STYLE_TOKEN}`}
+                        />
+                    </div>
                     <FormField
                         control={form.control}
                         name="isPublic"
