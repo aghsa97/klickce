@@ -8,7 +8,7 @@ type StatsCardProps = {
     value: number;
 }
 
-function Stats({ mapsCount, spotsCount, viewsCount }: { mapsCount: number, spotsCount: number, viewsCount: number }) {
+function Stats({ mapsCount, spotsCount, imagesCount }: { mapsCount: number, spotsCount: number, imagesCount: number }) {
     return (
         <div className='flex flex-col justify-center items-center gap-12 w-full border border-border rounded-lg px-4 md:px-20 py-6'>
             <div className='flex flex-col items-center justify-center gap-2'>
@@ -22,7 +22,7 @@ function Stats({ mapsCount, spotsCount, viewsCount }: { mapsCount: number, spots
             <div className='w-full flex items-center justify-between'>
                 <StatsCard title='Maps to explore' value={mapsCount} />
                 <StatsCard title='Spots to discover' value={spotsCount} />
-                <StatsCard title='Views and counting' value={viewsCount} />
+                <StatsCard title='Views and counting' value={imagesCount} />
             </div>
         </div>
     )

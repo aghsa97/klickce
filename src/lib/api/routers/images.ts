@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { imageIdSchema, images } from "@/lib/db/schema/images";
@@ -10,6 +10,13 @@ import { genId } from "@/lib/db";
 import { deleteImage, uploadImage } from "@/lib/cloudinary";
 
 export const imagesRouter = router({
+  getImagesCount: publicProcedure.query(async ({ ctx }) => {
+    const [count] = await ctx.db
+      .select({ count: sql<number>`count(*)` })
+      .from(images)
+      .execute();
+    return count;
+  }),
   getImagesBySpotId: publicProcedure
     .input(spotIdSchema)
     .query(async ({ ctx, input }) => {
