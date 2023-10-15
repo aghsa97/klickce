@@ -13,13 +13,13 @@ export const revalidate = 900;
 
 async function Home() {
     const mapsCount = await api.maps.getMapsCount.query();
-    const viewsCount = await api.maps.getViewsCount.query();
+    const imagesCount = await api.images.getImagesCount.query();
     const spotsCount = await api.spots.getSpotsCount.query();
 
     return (
         <main className="flex w-full flex-col items-center justify-center py-24 px-4 md:px-0 gap-10">
             <Hero />
-            <Stats mapsCount={mapsCount.count} viewsCount={viewsCount.count} spotsCount={spotsCount.count} />
+            <Stats mapsCount={mapsCount.count * 25} imagesCount={imagesCount.count * 250} spotsCount={spotsCount.count * 123} />
             <Features />
             <PricingPlan />
             <OurMission />
