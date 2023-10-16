@@ -3,7 +3,7 @@
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useTransition } from 'react'
+import { useEffect, useTransition } from 'react'
 import { z } from 'zod'
 
 import { useToastAction } from '@/hooks/use-toast-action'
@@ -32,7 +32,6 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
     const [_, startTransition] = useTransition()
     const { toast } = useToastAction()
 
-
     const form = useForm<z.infer<typeof updateSpotSchema>>({
         resolver: zodResolver(updateSpotSchema),
         defaultValues: {
@@ -43,6 +42,19 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
             description: data.description,
         }
     })
+
+    // update form values when data changes
+    useEffect(() => {
+        form.reset({
+            id: data.id,
+            name: data.name,
+            color: data.color,
+            projectId: data.projectId,
+            description: data.description,
+        })
+    }, [data, form])
+
+
     async function handleUpdate(data: z.infer<typeof updateSpotSchema>) {
         startTransition(async () => {
             try {

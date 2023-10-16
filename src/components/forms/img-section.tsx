@@ -55,12 +55,16 @@ function ImageSection({ spotId }: ImageSectionProps) {
                                 mapId: mapId as string,
                                 spotId,
                             })
-                            setPublicIds((prev) => prev.filter((img) => img.publicId !== 'loading'))
                             setPublicIds((prev) => [...prev, { id: result.id, publicId: result.publicId }])
                             toast('created')
                         } catch (error: any) {
                             console.log(error); // TODO: handle error
-                            toast('error', error.message)
+                            if (error.message === 'Maximum number of images reached') {
+                                toast('error', error.message)
+                            } else
+                                toast('error', 'Could not upload image, try again later.')
+                        } finally {
+                            setPublicIds((prev) => prev.filter((img) => img.publicId !== 'loading'))
                         }
                     })
                 }
