@@ -175,7 +175,11 @@ export const mapsRouter = router({
 
       const limit = allPlans[userPlan].limits.maps;
 
-      if (mapsCount.count >= limit) {
+      if (
+        mapsCount.count >= limit &&
+        currentCustomer[0].id !== 1 &&
+        currentCustomer[0].id !== 2 // HOT FIX FOR DEMO ACCOUNTS CHANGE IT LATER
+      ) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "You have reached the limit for your plan.",
