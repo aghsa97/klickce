@@ -1,6 +1,6 @@
 'use client'
 
-import type { RouterOutputs } from '@/lib/api'
+import type { RouterOutputs } from '@/server/api'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion } from "framer-motion";
 import { Marker } from 'react-map-gl'
 
-import type { RouterOutputs } from '@/lib/api'
+import type { RouterOutputs } from '@/server/api'
 import { CldImage } from 'next-cloudinary'
 import { api } from '@/lib/trpc/client';
 

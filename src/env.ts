@@ -7,15 +7,16 @@ export const env = createEnv({
     CLOUDINARY_API_SECRET: z.string().min(1),
     CLERK_WEBHOOK_SECRET: z.string().min(1),
     STRIPE_WEBHOOK_SECRET_KEY: z.string().min(1),
+    NODE_ENV: z.enum(["development", "production"]).default("development"),
   },
   client: {
     NEXT_PUBLIC_MAPBOX_API_TOKEN: z.string().min(1),
     NEXT_PUBLIC_MAPBOX_USERNAME: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string().min(1),
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_PROD_PRESET: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_DEV_PRESET: z.string().min(1),
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
   },
   runtimeEnv: {
     // Client only
@@ -36,5 +37,6 @@ export const env = createEnv({
     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
     STRIPE_WEBHOOK_SECRET_KEY: process.env.STRIPE_WEBHOOK_SECRET_KEY,
+    NODE_ENV: process.env.NODE_ENV,
   },
 });

@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
 import * as Icon from '@/components/icons'
-import { useMapStore } from '@/lib/store'
+import { useMapStore } from '@/config/store'
 import { api } from '@/lib/trpc/client'
 
 import SearchBox from '../../../../components/location-search-bar'

@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { customers } from "@/lib/db/schema/customers";
-import { allPlans } from "@/lib/plan";
+import { customers } from "@/server/db/schema/customers";
+import { allPlans } from "@/config/plan";
 
 import { router, protectedProcedure } from "../../trpc";
 import { webhookRouter } from "./webhook";

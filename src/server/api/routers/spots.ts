@@ -9,13 +9,13 @@ import {
   spotIdSchema,
   spots,
   updateSpotSchema,
-} from "@/lib/db/schema/spots";
-import { mapIdSchema } from "@/lib/db/schema/maps";
-import { customers } from "@/lib/db/schema/customers";
-import { allPlans } from "@/lib/plan";
-import { genId } from "@/lib/db";
+} from "@/server/db/schema/spots";
+import { mapIdSchema } from "@/server/db/schema/maps";
+import { customers } from "@/server/db/schema/customers";
+import { allPlans } from "@/config/plan";
+import { genId } from "@/server/db";
 import { deleteFolder, deleteImage } from "@/lib/cloudinary";
-import { images } from "@/lib/db/schema/images";
+import { images } from "@/server/db/schema/images";
 import { z } from "zod";
 
 export const spotsRouter = router({

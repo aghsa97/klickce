@@ -1,4 +1,4 @@
-import { env } from "../api/env";
+import { env } from "../../server/api/env";
 
 type Plan = {
   limits: {

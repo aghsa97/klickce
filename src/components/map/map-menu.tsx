@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import * as Icon from '../icons'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
-import { RouterOutputs } from '@/lib/api'
+import { RouterOutputs } from '@/server/api'
 import { useSearchParams } from 'next/navigation'
 import useWindowSize from '@/hooks/use-window-size'
 

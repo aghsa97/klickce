@@ -1,6 +1,6 @@
 import MapCustomizeTabForm from '@/components/forms/map-form'
 import { Tabs, TabsContent } from '@/components/ui/tabs'
-import type { RouterOutputs } from '@/lib/api'
+import type { RouterOutputs } from '@/server/api'
 
 import ContentTab from './content-tab'
 import MapFormNavbar from './navbar'

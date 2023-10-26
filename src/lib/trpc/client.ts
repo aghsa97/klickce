@@ -1,7 +1,7 @@
 import { loggerLink } from "@trpc/client";
 import { experimental_createTRPCNextAppDirClient } from "@trpc/next/app-dir/client";
 import superjson from "superjson";
-import { AppRouter } from "../api/routers/_app";
+import { AppRouter } from "../../server/api/routers/_app";
 
 import { endingLink } from "./shared";
 
@@ -21,4 +21,4 @@ export const api = experimental_createTRPCNextAppDirClient<AppRouter>({
   },
 });
 
-export { type RouterInputs, type RouterOutputs } from "../api";
+export { type RouterInputs, type RouterOutputs } from "../../server/api";

@@ -3,7 +3,7 @@
 import React from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 
-import { RouterOutputs } from '@/lib/api'
+import { RouterOutputs } from '@/server/api'
 import * as Icon from '@/components/icons'
 import useUpdateSearchParams from '@/hooks/update-search-params'
 import SpotForm from '@/components/forms/spot-form'

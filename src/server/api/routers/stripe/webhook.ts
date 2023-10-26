@@ -5,7 +5,7 @@ import type Stripe from "stripe";
 
 import { router, publicProcedure } from "../../trpc";
 import { stripe } from "./shared";
-import { customers } from "@/lib/db/schema/customers";
+import { customers } from "@/server/db/schema/customers";
 import { eq } from "drizzle-orm";
 import { Plans } from "@/app/config";
 

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { api } from '@/lib/trpc/client'
 
 import * as Icon from '@/components/icons'
-import { genId } from '@/lib/db';
+import { genId } from '@/server/db';
 import { useToastAction } from '@/hooks/use-toast-action'
 
 function MapFormNavbar() {

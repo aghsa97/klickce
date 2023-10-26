@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { RouterOutputs } from '@/lib/api'
+import { RouterOutputs } from '@/server/api'
 import { cn } from '@/lib/utils'
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible'

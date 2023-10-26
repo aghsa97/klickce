@@ -1,7 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
-import { appRouter } from "../api/routers/_app";
+import { appRouter } from "../../server/api/routers/_app";
 import { loggerLink } from "@trpc/client";
 import { experimental_createTRPCNextAppDirServer as createTRPCNextAppDirServer } from "@trpc/next/app-dir/server";
 import SuperJSON from "superjson";
@@ -25,4 +25,4 @@ export const api = createTRPCNextAppDirServer<typeof appRouter>({
   },
 });
 
-export { type RouterInputs, type RouterOutputs } from "../api";
+export { type RouterInputs, type RouterOutputs } from "../../server/api";

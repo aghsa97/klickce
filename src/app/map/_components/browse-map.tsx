@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 import ImgPopover from "@/components/map/img-popover";
 import useWindowSize from "@/hooks/use-window-size";
 import * as Icon from "@/components/icons";
-import { RouterOutputs } from '@/lib/api';
+import { RouterOutputs } from '@/server/api';
 import { env } from "@/env";
 
 import "mapbox-gl/dist/mapbox-gl.css";

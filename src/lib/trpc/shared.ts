@@ -1,6 +1,6 @@
 import type { HTTPBatchLinkOptions, HTTPHeaders, TRPCLink } from "@trpc/client";
 import { httpBatchLink } from "@trpc/client";
-import { AppRouter } from "../api/routers/_app";
+import { AppRouter } from "../../server/api/routers/_app";
 
 export const getBaseUrl = () => {
   if (typeof window !== "undefined") return "";

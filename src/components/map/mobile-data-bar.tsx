@@ -7,7 +7,7 @@ import { CldImage } from 'next-cloudinary'
 import { Button } from '../ui/button'
 
 import * as Icon from '@/components/icons'
-import { RouterOutputs } from '@/lib/api'
+import { RouterOutputs } from '@/server/api'
 import { NavigateToGoogleMaps } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import useWindowSize from '@/hooks/use-window-size'

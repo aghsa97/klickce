@@ -4,7 +4,7 @@ import { useTransition } from "react";
 
 import type { z } from "zod";
 
-import { selectCustomerSchema } from "@/lib/db/schema/customers";
+import { selectCustomerSchema } from "@/server/db/schema/customers";
 import { Plan } from "@/components/landing-page/pricing-plan";
 import { PlanProps, Plans, plansConfig } from "@/app/config";
 import { getStripe } from "@/lib/stipe/client";

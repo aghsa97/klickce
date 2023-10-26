@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Badge } from "@nextui-org/react";
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { RouterOutputs } from '@/lib/api'
+import { RouterOutputs } from '@/server/api'
 import { cn } from '@/lib/utils';
 
 

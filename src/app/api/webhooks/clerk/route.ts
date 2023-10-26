@@ -5,9 +5,9 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { clerkEvent } from "@/lib/api/routers/clerk/type";
-import { appRouter } from "@/lib/api/routers/_app";
-import { createTRPCContext } from "@/lib/api";
+import { clerkEvent } from "@/server/api/routers/clerk/type";
+import { appRouter } from "@/server/api/routers/_app";
+import { createTRPCContext } from "@/server/api";
 import { env } from "@/env";
 
 const WEBHOOK_SECRET = env.CLERK_WEBHOOK_SECRET || "";

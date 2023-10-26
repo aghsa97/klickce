@@ -7,10 +7,10 @@ import {
   projects,
   selectProjectSchema,
   updateProjectSchema,
-} from "@/lib/db/schema/projects";
-import { genId } from "@/lib/db";
-import { spots } from "@/lib/db/schema/spots";
-import { mapIdSchema } from "@/lib/db/schema/maps";
+} from "@/server/db/schema/projects";
+import { genId } from "@/server/db";
+import { spots } from "@/server/db/schema/spots";
+import { mapIdSchema } from "@/server/db/schema/maps";
 
 export const projectsRouter = router({
   getProjectById: publicProcedure

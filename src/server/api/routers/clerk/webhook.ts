@@ -1,4 +1,4 @@
-import { customers } from "@/lib/db/schema/customers";
+import { customers } from "@/server/db/schema/customers";
 import { eq } from "drizzle-orm";
 import * as z from "zod";
 import { env } from "../../env";

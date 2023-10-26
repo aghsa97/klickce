@@ -7,7 +7,7 @@ import { useEffect, useTransition } from 'react'
 import { z } from 'zod'
 
 import { useToastAction } from '@/hooks/use-toast-action'
-import { updateSpotSchema } from '@/lib/db/schema/spots'
+import { updateSpotSchema } from '@/server/db/schema/spots'
 import { api, RouterOutputs } from '@/lib/trpc/client'
 
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '../ui/select'

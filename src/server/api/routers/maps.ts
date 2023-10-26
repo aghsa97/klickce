@@ -8,13 +8,13 @@ import {
   mapIdSchema,
   maps,
   updateMapSchema,
-} from "@/lib/db/schema/maps";
-import { customers } from "@/lib/db/schema/customers";
-import { allPlans } from "@/lib/plan";
-import { genId } from "@/lib/db";
-import { projects } from "@/lib/db/schema/projects";
-import { spots } from "@/lib/db/schema/spots";
-import { images } from "@/lib/db/schema/images";
+} from "@/server/db/schema/maps";
+import { customers } from "@/server/db/schema/customers";
+import { allPlans } from "@/config/plan";
+import { genId } from "@/server/db";
+import { projects } from "@/server/db/schema/projects";
+import { spots } from "@/server/db/schema/spots";
+import { images } from "@/server/db/schema/images";
 import { deleteFolder, deleteImage } from "@/lib/cloudinary";
 
 export const mapsRouter = router({

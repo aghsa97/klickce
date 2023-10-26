@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { RouterOutputs } from "../api";
+import { RouterOutputs } from "../../server/api";
 
 type MapStore = {
   zoom: number;

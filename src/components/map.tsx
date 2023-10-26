@@ -9,7 +9,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { extractLongNameAddress } from '@/lib/utils';
 import * as Icon from "@/components/icons";
-import { useMapStore } from '@/lib/store';
+import { useMapStore } from '@/config/store';
 import { api } from '@/lib/trpc/client';
 
 import "mapbox-gl/dist/mapbox-gl.css";

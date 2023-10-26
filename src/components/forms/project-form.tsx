@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { useTransition } from "react"
 import { z } from "zod"
 
-import { updateProjectSchema } from "@/lib/db/schema/projects"
+import { updateProjectSchema } from "@/server/db/schema/projects"
 import { api, RouterOutputs } from "@/lib/trpc/client"
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"

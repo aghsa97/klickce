@@ -17,7 +17,7 @@ import { extractLongNameAddress } from '@/lib/utils';
 import useWindowSize from "@/hooks/use-window-size";
 import MapMenu from "@/components/map/map-menu";
 import * as Icon from "@/components/icons";
-import { useMapStore } from '@/lib/store';
+import { useMapStore } from '@/config/store';
 import Logo from "@/components/ui/logo";
 import { env } from "@/env";
 

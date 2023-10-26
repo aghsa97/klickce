@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form'
 import { useTransition } from 'react'
 import { z } from 'zod'
 
-import { updateMapSchema } from '@/lib/db/schema/maps'
-import { RouterOutputs } from '@/lib/api'
+import { updateMapSchema } from '@/server/db/schema/maps'
+import { RouterOutputs } from '@/server/api'
 import { api } from '@/lib/trpc/client'
 
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'

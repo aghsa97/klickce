@@ -2,10 +2,10 @@ import type { NextRequest } from "next/server";
 import { TRPCError } from "@trpc/server";
 import { getHTTPStatusCodeFromError } from "@trpc/server/http";
 
-import { appRouter, stripe } from "@/lib/api/routers/_app";
+import { appRouter, stripe } from "@/server/api/routers/_app";
 
 import { env } from "@/env";
-import { createTRPCContext } from "@/lib/api";
+import { createTRPCContext } from "@/server/api";
 
 export async function POST(req: NextRequest) {
   const payload = await req.text();
