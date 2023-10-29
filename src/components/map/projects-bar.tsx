@@ -27,7 +27,7 @@ function ProjectsBar({ projects }: ProjectsBarProps) {
     const [isOpen, setIsOpen] = React.useState<boolean>(false)
 
     return (
-        <div className='flex flex-col md:flex-row items-start md:items-center justify-center absolute bottom-10 right-4 md:bottom-full md:top-12 md:right-6'>
+        <div className='flex flex-col md:flex-row items-start md:items-center justify-center absolute bottom-10 left-2'>
             <Popover open={isOpen} onOpenChange={setIsOpen}>
                 {projectId && <div className='w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-white absolute top-0.5 md:-top-8 -left-1 z-10'
                     style={{ backgroundColor: projects.find((project) => project.id === projectId)?.color }}
@@ -41,7 +41,7 @@ function ProjectsBar({ projects }: ProjectsBarProps) {
                         <Icon.Filter className='w-14 h-14 md:w-16 md:h-16 text-white' />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className='mr-4 md:mr-0 md:absolute -top-16 right-10 bg-black/50 rounded-3xl backdrop-blur-[2px] border-none'>
+                <PopoverContent className='ml-2 bg-black/50 rounded-3xl backdrop-blur-[2px] border-none'>
                     <div className="grid grid-cols-1 gap-4">
                         {projects.map((project) => (
                             <div key={project.id} className='group w-full flex items-center justify-start gap-8 cursor-pointer'
