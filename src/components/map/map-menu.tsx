@@ -3,13 +3,14 @@
 import React from 'react'
 import Link from 'next/link'
 import { motion } from "framer-motion"
+import { useSearchParams } from 'next/navigation'
+
+import { cn } from '@/lib/utils'
+import { RouterOutputs } from '@/server/api'
+import useWindowSize from '@/hooks/use-window-size'
 
 import * as Icon from '../icons'
-import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
-import { RouterOutputs } from '@/server/api'
-import { useSearchParams } from 'next/navigation'
-import useWindowSize from '@/hooks/use-window-size'
 
 type data = NonNullable<RouterOutputs["maps"]["getMapById"]>
 
@@ -30,7 +31,7 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
     if (spotId && !isMobile) return null
     return (
         <header className={cn("absolute z-[70] flex flex-col w-full md:w-[35vw] md:max-w-3xl h-fit md:mx-6 pt-4 md:pt-6 px-2 md:px-0 rounded-[2.8rem]",
-            isOpen && 'h-full pb-4 md:pb-6 z-[70]'
+            isOpen && 'h-full md:h-fit max-h-full pb-4 md:pb-6 z-[70]'
         )}>
             <div className={cn('flex items-center justify-between bg-black/50 text-white backdrop-blur-[2px] pl-6 md:pl-8 pr-2 py-2 rounded-[2.8rem] shadow-md',
                 isOpen && 'rounded-b-none border-b shadow-none'
@@ -91,7 +92,9 @@ function MapMenu({ name, projects, spots, }: MapMenuProps) {
                                 <Icon.ArrowLeft className='w-10 h-10 cursor-pointer' strokeWidth={3} />
                             </Button>
                         </div>
-                        <div className='flex flex-col items-start justify-center gap-4'>
+                        <div className={cn('flex flex-col items-start justify-center gap-4',
+                            selectedProject.spots.length > 0 && 'pb-6'
+                        )}>
                             {selectedProject.spots.length > 0 && selectedProject.spots.map((spot) => (
                                 <div key={spot.id} className="flex items-center justify-start gap-4"
                                 >

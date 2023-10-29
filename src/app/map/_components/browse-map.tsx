@@ -83,10 +83,10 @@ function Map({ data }: MapProps) {
             });
         });
         mapRef.current?.fitBounds(bounds, {
-            padding: 200,
+            padding: isMobile ? 50 : 200,
             duration: 0,
         });
-    }, [data])
+    }, [data, isMobile])
 
     return (
         <ReactMap
@@ -117,9 +117,9 @@ function Map({ data }: MapProps) {
             >
                 <Icon.PersonStanding className='w-10 h-10 animate-pulse text-blue-500' strokeWidth={3} />
             </Marker>}
-            <div className="absolute text-xs italic w-max bottom-1 right-4 md:left-1/2 md:right-1/2 text-white bg-black/50 backdrop-blur-[2px] rounded-full px-3 py-1.5 gap-1.5 flex items-center justify-center">
+            <div className="absolute w-max text-xs bottom-3 right-10 md:left-1/2 md:right-1/2 text-white rounded-full gap-1.5 flex items-center justify-center bg-black/50 backdrop-blur-[2px] px-2 py-0.5">
                 <p>Powered By</p>
-                <Link href={'https://www.klickce.se/'} target="_blank">
+                <Link href={'https://www.klickce.se/'} target="_blank" className="underline">
                     <Logo size="xs" />
                 </Link>
             </div>
