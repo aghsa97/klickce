@@ -9,17 +9,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { useToastAction } from '@/hooks/use-toast-action'
 import { insertMapSchema } from '@/server/db/schema/maps'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import * as Icon from '@/components/icons'
 import { api } from '@/lib/trpc/client'
+import { toast } from 'sonner'
 
 function CreateMapBtn() {
     const router = useRouter()
-    const { toast } = useToastAction()
     const [isPending, startTransition] = useTransition()
 
     const form = useForm<z.infer<typeof insertMapSchema>>({
@@ -38,7 +37,7 @@ function CreateMapBtn() {
                 router.push(`/app/map/${mapId}`)
             } catch (error: any) {
                 console.log(error);
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
     }

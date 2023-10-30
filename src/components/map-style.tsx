@@ -6,8 +6,8 @@ import { useTransition } from "react"
 import { cn } from "@/lib/utils"
 import { env } from "@/env"
 import { useParams, useRouter } from "next/navigation"
-import { useToastAction } from "@/hooks/use-toast-action"
 import { api } from "@/lib/trpc/client"
+import { toast } from "sonner"
 
 type MapStyleProps = {
     styles: string[]
@@ -19,7 +19,6 @@ const USERNAME = env.NEXT_PUBLIC_MAPBOX_USERNAME
 function MapStyle({ styles }: MapStyleProps) {
     const router = useRouter()
     const params = useParams()
-    const { toast } = useToastAction()
     const [_, startTransition] = useTransition()
 
 
@@ -30,11 +29,11 @@ function MapStyle({ styles }: MapStyleProps) {
                     id: params.mapId as string,
                     style: style,
                 })
-                toast('updated', `Map style updated`)
+                toast.success('Map style updated')
                 router.refresh()
             } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
     }

@@ -8,12 +8,11 @@ import { useMapStore } from '@/config/store'
 import { api } from '@/lib/trpc/client'
 
 import SearchBox from '../../../../components/location-search-bar'
-import { useToastAction } from '@/hooks/use-toast-action'
+import { toast } from 'sonner'
 
 function FormSearch() {
     const router = useRouter()
     const params = useParams()
-    const { toast } = useToastAction()
     const { zoom, setIsMovePin, isMovePin } = useMapStore()
 
     const iconComp = zoom < 12 ? <Icon.MapPinOff /> : <Icon.MapPin onClick={() => setIsMovePin(!isMovePin)} />
@@ -28,11 +27,11 @@ function FormSearch() {
                 lng: data.lng,
                 mapId: params?.mapId as string,
             })
-            toast('created', `Spot created with name ${data.location.locationName}`)
+            toast.success('Spot created with name ' + data.location.locationName)
             router.refresh()
         } catch (error: any) {
             console.log(error); // TODO: handle error
-            toast('error', error.message)
+            toast.error(error.message)
         }
     }
 

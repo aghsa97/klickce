@@ -9,12 +9,11 @@ import { api } from '@/lib/trpc/client'
 
 import * as Icon from '@/components/icons'
 import { genId } from '@/server/db';
-import { useToastAction } from '@/hooks/use-toast-action'
+import { toast } from 'sonner'
 
 function MapFormNavbar() {
     const router = useRouter()
     const params = useParams()
-    const { toast } = useToastAction()
 
     async function handleClick() {
         try {
@@ -22,11 +21,11 @@ function MapFormNavbar() {
                 name: "New project - " + genId().slice(0, 5), // add slugs names instead?
                 mapId: params.mapId as string,
             })
-            toast('created', 'Project created')
+            toast.success('Project created')
             router.refresh()
         } catch (error: any) {
             console.log(error); // TODO: handle error
-            toast('error', error.message)
+            toast.error(error.message)
         }
     }
     return (

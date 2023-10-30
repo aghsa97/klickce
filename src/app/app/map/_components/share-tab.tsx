@@ -1,12 +1,14 @@
 'use client'
 
 import React from 'react'
+import { toast } from 'sonner'
 import { useParams } from 'next/navigation'
 
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import * as Icon from '@/components/icons'
 
 const url =
     process.env.NODE_ENV === "production"
@@ -22,9 +24,11 @@ function ShareTab() {
     function copyToClipboard(valueType: 'map-link' | 'share-with-iframe') {
         if (valueType === 'map-link') {
             navigator.clipboard.writeText(link)
+            toast.success('Copied to clipboard')
         }
         else if (valueType === 'share-with-iframe') {
             navigator.clipboard.writeText(iFrame)
+            toast.success('Copied to clipboard')
         }
     }
 
@@ -37,6 +41,7 @@ function ShareTab() {
                             Map Link
                         </p>
                         <Button variant={"link"} size="sm" className='p-0' onClick={() => copyToClipboard("map-link")}>
+                            <Icon.Copy className='w-4 h-4 mr-1.5' />
                             Copy
                         </Button>
                     </div>
@@ -45,7 +50,6 @@ function ShareTab() {
                     id='map-link'
                     name="Map Link"
                     defaultValue={link}
-                    className="text-muted-foreground"
                     disabled
                 />
             </div>
@@ -56,6 +60,7 @@ function ShareTab() {
                             Map iframe
                         </p>
                         <Button variant={"link"} size="sm" className='p-0' onClick={() => copyToClipboard("share-with-iframe")}>
+                            <Icon.Copy className='w-4 h-4 mr-1.5' />
                             Copy
                         </Button>
                     </div>
@@ -65,7 +70,7 @@ function ShareTab() {
                     id='share-with-iframe'
                     name="Share with iFrame"
                     defaultValue={iFrame}
-                    className="text-muted-foreground h-full max-h-full"
+                    className="h-full"
                     disabled
                 />
             </div>

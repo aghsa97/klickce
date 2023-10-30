@@ -13,19 +13,18 @@ import { useMapStore } from '@/config/store';
 import { api } from '@/lib/trpc/client';
 
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useToastAction } from "@/hooks/use-toast-action";
 import { env } from "@/env";
 import MapMenu from "./map/map-menu";
 import ProjectsBar from "./map/projects-bar";
 import ImgPopover from "./map/img-popover";
 import useWindowSize from "@/hooks/use-window-size";
 import mapboxgl from "mapbox-gl";
+import { toast } from "sonner";
 
 function Map() {
     const router = useRouter()
     const mapRef = useRef<MapRef>(null);
     const { mapId } = useParams()
-    const { toast } = useToastAction()
 
     const [isPending, startTransition] = useTransition()
     const { setStoreMapZoom, isMovePin, setIsMovePin, mapData } = useMapStore()
@@ -90,13 +89,13 @@ function Map() {
                     lng: event.lngLat.lng,
                 })
                 router.refresh()
-                toast('created', `Spot created with name ${extractLongNameAddress(result[0])}`)
+                toast.success(`Spot created with name ${extractLongNameAddress(result[0])}`)
             } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
-    }, [mapId, router, toast]);
+    }, [mapId, router]);
 
     const onMapMoveEnd = useCallback(() => {
         if (mapRef.current) {

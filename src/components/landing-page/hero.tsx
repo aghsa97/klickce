@@ -3,7 +3,6 @@ import React from 'react'
 
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import Logo from '../ui/logo'
 
 function Hero() {
     return (

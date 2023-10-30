@@ -1,3 +1,4 @@
+import { Toaster } from 'sonner';
 import { Poppins } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 
@@ -7,7 +8,7 @@ import type { Metadata } from 'next'
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/toaster';
+
 import { Providers } from '@/providers';
 
 const font = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] })
@@ -33,7 +34,7 @@ export default function RootLayout({
               {children}
             </ThemeProvider>
           </Providers>
-          <Toaster />
+          <Toaster richColors position='bottom-center' />
           <Analytics />
         </body>
       </html>

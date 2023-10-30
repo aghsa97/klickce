@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useTransition } from "react"
+import { toast } from "sonner"
 import { z } from "zod"
 
 import { updateProjectSchema } from "@/server/db/schema/projects"
@@ -13,7 +14,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import ColorPicker from "../color-picker"
 import ActionBtns from "./action-btns"
 import { Input } from "../ui/input"
-import { useToastAction } from "@/hooks/use-toast-action"
 
 type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 
@@ -34,7 +34,6 @@ function ProjectForm({ data, setIsOpen }: ContentTabProps) {
     })
 
     const router = useRouter()
-    const { toast } = useToastAction()
     const [_, startTransition] = useTransition()
 
     async function handleUpdate(data: z.infer<typeof updateProjectSchema>) {
@@ -45,11 +44,11 @@ function ProjectForm({ data, setIsOpen }: ContentTabProps) {
                     ...data
                 })
                 setIsOpen(false)
-                toast('updated', `Project ${data.name} updated`)
+                toast.success(`Project ${data.name} updated`)
                 router.refresh()
             } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
     }
@@ -59,11 +58,11 @@ function ProjectForm({ data, setIsOpen }: ContentTabProps) {
             try {
                 await api.projects.deleteProject.mutate({ id: data.id })
                 setIsOpen(false)
-                toast('deleted', `Project ${data.name} deleted`)
+                toast.success(`Project ${data.name} deleted`)
                 router.refresh()
             } catch (error: any) {
                 console.log(error);
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
     }

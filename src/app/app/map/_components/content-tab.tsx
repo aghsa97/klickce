@@ -8,13 +8,13 @@ import { useRouter } from 'next/navigation'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { useToastAction } from '@/hooks/use-toast-action'
 import { Checkbox } from "@/components/ui/checkbox"
 import { api } from '@/lib/trpc/client'
 
 import ProjectPopover from './project-popover'
 import SpotPopover from './spot-popover'
 import EmptyState from './empty-state'
+import { toast } from 'sonner'
 
 
 type ContentTabProps = {
@@ -25,7 +25,6 @@ function ContentTab({ data }: ContentTabProps) {
     const [selectedSpotsIds, setSelectedSpotsIds] = useState<string[]>([])
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isSelected, setSelected] = useState(false)
-    const { toast } = useToastAction()
     const router = useRouter()
 
     function handleSelection(id: string) {
@@ -42,13 +41,13 @@ function ContentTab({ data }: ContentTabProps) {
                 await api.spots.deleteSpot.mutate({ id })
                 setIsDialogOpen(false)
             }
-            toast('deleted', `Spot ${selectedSpotsIds.length > 1 ? 's' : ''} deleted`)
+            toast.success(`Spot${selectedSpotsIds.length > 1 ? 's' : ''} deleted`)
             setSelectedSpotsIds([])
             setSelected(false)
             router.refresh()
         } catch (error: any) {
             console.log(error); // TODO: handle error
-            toast('error', error.message)
+            toast.error(error.message)
         }
     }
 
@@ -57,13 +56,13 @@ function ContentTab({ data }: ContentTabProps) {
             for (const id of selectedSpotsIds) {
                 await api.spots.updateSpot.mutate({ id, projectId })
             }
-            toast('updated', `Spot ${selectedSpotsIds.length > 1 ? 's' : ''} updated`)
+            toast.success(`Spot${selectedSpotsIds.length > 1 ? 's' : ''} updated`)
             setSelectedSpotsIds([])
             setSelected(false)
             router.refresh()
         } catch (error: any) {
             console.log(error); // TODO: handle error
-            toast('error', error.message)
+            toast.error(error.message)
         }
     }
 

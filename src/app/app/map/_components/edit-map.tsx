@@ -9,7 +9,6 @@ import { getGeocode } from 'use-places-autocomplete';
 import mapboxgl from "mapbox-gl";
 import Link from "next/link";
 
-import { useToastAction } from "@/hooks/use-toast-action";
 import ProjectsBar from "@/components/map/projects-bar";
 import { api, RouterOutputs } from '@/lib/trpc/client';
 import ImgPopover from "@/components/map/img-popover";
@@ -22,6 +21,7 @@ import Logo from "@/components/ui/logo";
 import { env } from "@/env";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import { toast } from "sonner";
 
 type MapProps = {
     data: NonNullable<RouterOutputs["maps"]["getMapDataById"]>
@@ -30,7 +30,6 @@ type MapProps = {
 function Map({ data: mapData }: MapProps) {
     const router = useRouter()
     const { mapId } = useParams()
-    const { toast } = useToastAction()
     const mapRef = useRef<MapRef>(null);
 
     const [isPending, startTransition] = useTransition()
@@ -96,13 +95,13 @@ function Map({ data: mapData }: MapProps) {
                     lng: event.lngLat.lng,
                 })
                 router.refresh()
-                toast('created', `Spot created with name ${extractLongNameAddress(result[0])}`)
+                toast.success(`Spot created with name ${extractLongNameAddress(result[0])}`)
             } catch (error: any) {
                 console.log(error); // TODO: handle error
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
-    }, [mapId, router, toast]);
+    }, [mapId, router]);
 
     const onMapMoveEnd = useCallback(() => {
         if (mapRef.current) {
