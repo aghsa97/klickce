@@ -49,7 +49,7 @@ function Map() {
     });
 
     useEffect(() => {
-        if (mapData?.isUserCurrentLocationVisible) {
+        if (mapData?.map.isUserCurrentLocationVisible) {
             navigator.geolocation.getCurrentPosition((position) => {
                 setUserLocation([position.coords.latitude, position.coords.longitude]);
             });
@@ -143,14 +143,14 @@ function Map() {
             }}
             maxPitch={60}
             maxZoom={20}
-            mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${mapData.style}`}
+            mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${mapData.map.style}`}
             {...viewport}
             onLoad={onMapLoad}
             onMove={(viewport) => setViewport(viewport.viewState)}
             ref={mapRef}
             onMoveEnd={onMapMoveEnd}
         >
-            <MapMenu name={mapData.name} projects={mapData.projects} spots={mapData.spots} />
+            <MapMenu name={mapData.map.name} projects={mapData.projects} spots={mapData.spots} />
             {!projectId && <ImgPopover data={mapData.spots} />}
             {projectId && mapData.projects.map((project) => {
                 if (project.id !== projectId) return null
