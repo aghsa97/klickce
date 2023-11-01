@@ -12,12 +12,12 @@ const USERNAME = env.NEXT_PUBLIC_MAPBOX_USERNAME
 async function MapFromPage({ params, searchParams }: { params: { mapId: string }, searchParams: any }) {
 
     if (searchParams.spotId) {
-        const data = await api.spots.getSpotById.query({ spotIdSchema: { id: searchParams.spotId }, mapIdSchema: { id: params.mapId } })
-        const projects = await api.projects.getProjectsByMapId.query({ id: params.mapId })
-        if (!data) return null
+        const spotdata = await api.spots.getSpotById.query({ spotIdSchema: { id: searchParams.spotId }, mapIdSchema: { id: params.mapId } })
+        const projectsdata = await api.projects.getProjectsByMapId.query({ id: params.mapId })
+        if (!spotdata || !projectsdata) return null
         return (
             <div className='w-[500px] h-full overflow-y-auto p-4 flex flex-col border-r'>
-                <SpotFormSlider data={data} projects={projects} />
+                <SpotFormSlider spot={spotdata} projects={projectsdata} />
             </div>
         )
     }

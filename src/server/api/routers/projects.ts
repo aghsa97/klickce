@@ -27,12 +27,13 @@ export const projectsRouter = router({
     .input(mapIdSchema)
     .query(async ({ ctx, input }) => {
       if (!input.id) return;
-      return await ctx.db.query.projects.findMany({
+      const projectsdata = await ctx.db.query.projects.findMany({
         where: and(
           eq(projects.mapId, input.id),
           eq(projects.ownerId, ctx.auth.userId),
         ),
       });
+      return projectsdata.map((project) => selectProjectSchema.parse(project));
     }),
   createProject: protectedProcedure
     .input(insertProjectSchema)

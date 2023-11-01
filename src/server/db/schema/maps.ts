@@ -27,7 +27,7 @@ export const maps = mysqlTable(
     views: int("views").notNull().default(0),
     isPublic: boolean("isPublic").notNull().default(true),
 
-    style: text("style").notNull().default("clnnkq3bb009q01plcj234b9v"),
+    style: text("style").notNull().default("clnnkq3bb009q01plcj234b9v"), // Dark mode
     description: text("description").notNull().default(""),
 
     isUserCurrentLocationVisible: boolean("isUserCurrentLocationVisible")
@@ -41,7 +41,6 @@ export const maps = mysqlTable(
     return {
       mapIdIndex: index("map_id_index").on(table.id),
       ownerIdIndex: index("ownerId_index").on(table.ownerId),
-      viewsIndex: index("views_index").on(table.views),
     };
   },
 );
@@ -57,15 +56,14 @@ export const mapsRelations = relations(maps, ({ many, one }) => ({
 
 export const insertMapSchema = createInsertSchema(maps).pick({
   name: true,
-  style: true,
-  description: true,
 });
 
-export const selectMapSchema = createSelectSchema(maps).omit({
-  isAccessible: true,
-  createdAt: true,
-  updatedAt: true,
-  ownerId: true,
+export const selectMapSchema = createSelectSchema(maps).pick({
+  id: true,
+  name: true,
+  style: true,
+  isPublic: true,
+  isUserCurrentLocationVisible: true,
 });
 export const mapIdSchema = selectMapSchema.pick({ id: true });
 export const updateMapSchema = selectMapSchema
@@ -74,14 +72,12 @@ export const updateMapSchema = selectMapSchema
     name: true,
     style: true,
     isPublic: true,
-    description: true,
     isUserCurrentLocationVisible: true,
   })
   .partial({
     name: true,
     style: true,
     isPublic: true,
-    description: true,
     isUserCurrentLocationVisible: true,
   });
 

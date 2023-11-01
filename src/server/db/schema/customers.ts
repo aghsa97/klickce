@@ -54,20 +54,12 @@ export const customersRelations = relations(customers, ({ many }) => ({
 
 export const insertCustomerSchema = createInsertSchema(customers);
 export const selectCustomerSchema = createSelectSchema(customers).pick({
-  clerkUesrId: true,
-  email: true,
   subPlan: true,
   paidUntil: true,
   endsAt: true,
   onTrial: true,
 });
-export const customerClerkIdSchema = selectCustomerSchema.pick({
-  clerkUesrId: true,
-});
 export const updateCustomerSchema = selectCustomerSchema;
 
 export type Customer = z.infer<typeof selectCustomerSchema>;
 export type NewCustomer = z.infer<typeof insertCustomerSchema>;
-export type CustomerClerkId = z.infer<
-  typeof customerClerkIdSchema
->["clerkUesrId"];

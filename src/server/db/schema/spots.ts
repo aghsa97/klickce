@@ -64,10 +64,15 @@ export const insertSpotSchema = createInsertSchema(spots).omit({
   updatedAt: true,
 });
 
-export const selectSpotSchema = createSelectSchema(spots).omit({
-  ownerId: true,
-  createdAt: true,
-  updatedAt: true,
+export const selectSpotSchema = createSelectSchema(spots).pick({
+  id: true,
+  name: true,
+  address: true,
+  lat: true,
+  lng: true,
+  color: true,
+  description: true,
+  projectId: true,
 });
 
 export const updateSpotSchema = createInsertSchema(spots)

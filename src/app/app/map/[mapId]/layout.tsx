@@ -8,9 +8,8 @@ import FormTabs from "../_components/tabs";
 import Map from "../_components/edit-map";
 
 export default async function OnboardingLayout(props: { children: React.ReactNode, modal: React.ReactNode, params: { mapId: string } }) {
-    const data = await api.maps.getMapDataById.query({ id: props.params.mapId })
+    const mapdata = await api.maps.getMapDataById.query({ id: props.params.mapId })
 
-    if (!data) return notFound()
     return (
         <div className="w-full min-h-screen overflow-hidden">
             <AppHeader className="px-4" />
@@ -18,7 +17,7 @@ export default async function OnboardingLayout(props: { children: React.ReactNod
                 <aside className='flex relative'>
                     <div className='w-96 min-h-[calc(100vh-4rem)]  px-2 py-4 flex flex-col border-r'>
                         <FormSearch />
-                        <FormTabs data={data} />
+                        <FormTabs data={mapdata} />
                     </div>
                     {props.children}
                 </aside>
@@ -29,7 +28,7 @@ export default async function OnboardingLayout(props: { children: React.ReactNod
                         <div className='h-3 w-3 rounded-full bg-green-400'></div>
                     </div>
                     {props.modal}
-                    <Map data={data} />
+                    <Map mapdata={mapdata} />
                 </div>
             </main>
         </div>

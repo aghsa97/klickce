@@ -71,7 +71,7 @@ function ContentTab({ data }: ContentTabProps) {
         <div className='flex flex-col'>
             {data.projects.map((project, index) => (
                 <div key={project.id} className='flex flex-col cursor-pointer group relative pb-2'>
-                    <ProjectPopover index={index} data={project} projects={data.projects} />
+                    <ProjectPopover index={index} project={project} projects={data.projects} />
                 </div>
             ))}
             {/* Spots header goes here */}
@@ -121,7 +121,7 @@ function ContentTab({ data }: ContentTabProps) {
             {data.spots.map((spot, index) => (
                 <div key={index} className="h-full flex items-center justify-between gap-2">
                     {isSelected && <Checkbox key={index} onClick={() => handleSelection(spot.id)} />}
-                    <SpotPopover data={spot} padding="p-2" />
+                    <SpotPopover spot={spot} padding="p-2" />
                 </div>
             ))}
         </div>

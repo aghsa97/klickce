@@ -24,10 +24,10 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { toast } from "sonner";
 
 type MapProps = {
-    data: NonNullable<RouterOutputs["maps"]["getMapDataById"]>
+    mapdata: NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 };
 
-function Map({ data: mapData }: MapProps) {
+function Map({ mapdata }: MapProps) {
     const router = useRouter()
     const { mapId } = useParams()
     const mapRef = useRef<MapRef>(null);
@@ -55,16 +55,16 @@ function Map({ data: mapData }: MapProps) {
     });
 
     useEffect(() => {
-        if (mapData?.isUserCurrentLocationVisible) {
+        if (mapdata.map.isUserCurrentLocationVisible) {
             navigator.geolocation.getCurrentPosition((position) => {
                 setUserLocation([position.coords.latitude, position.coords.longitude]);
             });
         }
-    }, [mapData]);
+    }, [mapdata]);
 
     useEffect(() => {
-        if (mapRef.current && spotId && mapData) {
-            const spot = mapData.spots.find((spot) => spot.id === spotId) ?? mapData.projects.flatMap((project) => project.spots).find((spot) => spot.id === spotId)
+        if (mapRef.current && spotId && mapdata) {
+            const spot = mapdata.spots.find((spot) => spot.id === spotId) ?? mapdata.projects.flatMap((project) => project.spots).find((spot) => spot.id === spotId)
             const zoom = mapRef.current.getMap().getZoom()
             if (!spot) return
             mapRef.current?.easeTo({
@@ -75,7 +75,7 @@ function Map({ data: mapData }: MapProps) {
                 zoom: zoom > 10 ? zoom : 10,
             })
         }
-    }, [spotId, mapData, isMobile]);
+    }, [spotId, mapdata, isMobile]);
 
     const onMarkerDragEnd = useCallback(async (event: MarkerDragEvent) => {
         const result = await getGeocode({ location: { lat: event.lngLat.lat, lng: event.lngLat.lng, } })
@@ -124,12 +124,12 @@ function Map({ data: mapData }: MapProps) {
 
     const onMapLoad = useCallback(() => {
         // check of mapdata spots in projects and mapdata spots is empty
-        if (mapData?.spots.length === 0 && mapData?.projects.flatMap((project) => project.spots).length === 0) return
+        if (mapdata?.spots.length === 0 && mapdata?.projects.flatMap((project) => project.spots).length === 0) return
         const bounds = new mapboxgl.LngLatBounds();
-        mapData?.spots.forEach((spot) => {
+        mapdata?.spots.forEach((spot) => {
             bounds.extend([spot.lng, spot.lat]);
         });
-        mapData?.projects.forEach((project) => {
+        mapdata?.projects.forEach((project) => {
             project.spots.forEach((spot) => {
                 bounds.extend([spot.lng, spot.lat]);
             });
@@ -138,9 +138,9 @@ function Map({ data: mapData }: MapProps) {
             padding: 200,
             duration: 0,
         });
-    }, [mapData])
+    }, [mapdata])
 
-    if (!mapData) return null
+    if (!mapdata) return null
     return (
         <ReactMap
             mapboxAccessToken={env.NEXT_PUBLIC_MAPBOX_API_TOKEN}
@@ -157,15 +157,15 @@ function Map({ data: mapData }: MapProps) {
             onLoad={onMapLoad}
             onMoveEnd={onMapMoveEnd}
             onMove={(viewport) => setViewport(viewport.viewState)}
-            mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${mapData.style}`}
+            mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${mapdata.map.style}`}
         >
-            <MapMenu name={mapData.name} projects={mapData.projects} spots={mapData.spots} />
-            <ProjectsBar projects={mapData.projects} />
+            <MapMenu name={mapdata.map.name} projects={mapdata.projects} spots={mapdata.spots} />
+            <ProjectsBar projects={mapdata.projects} />
             {!projectId &&
-                mapData.projects.map((project) => project.isVisible && <ImgPopover key={project.id} data={project.spots} projectColor={project.color} />)}
+                mapdata.projects.map((project) => project.isVisible && <ImgPopover key={project.id} data={project.spots} projectColor={project.color} />)}
             {!projectId &&
-                <ImgPopover data={mapData.spots} />}
-            {projectId && mapData.projects.map((project) => {
+                <ImgPopover data={mapdata.spots} />}
+            {projectId && mapdata.projects.map((project) => {
                 if (project.id !== projectId || !project.isVisible) return null
                 return <ImgPopover key={project.id} data={project.spots} projectColor={project.color} />
             })

@@ -18,10 +18,8 @@ import Link from "next/link";
 import Logo from "@/components/ui/logo";
 import mapboxgl from "mapbox-gl";
 
-type DataProps = NonNullable<RouterOutputs["maps"]["getMapById"]>
-
 type MapProps = {
-    data: DataProps
+    data: NonNullable<RouterOutputs["maps"]["getPublicMapById"]>
 }
 
 function Map({ data }: MapProps) {
@@ -41,7 +39,7 @@ function Map({ data }: MapProps) {
     });
 
     useEffect(() => {
-        if (data.isUserCurrentLocationVisible) {
+        if (data.map.isUserCurrentLocationVisible) {
             navigator.geolocation.getCurrentPosition((position) => {
                 setUserLocation([position.coords.latitude, position.coords.longitude]);
             });
@@ -98,7 +96,7 @@ function Map({ data }: MapProps) {
             }}
             maxPitch={60}
             maxZoom={20}
-            mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${data.style}`}
+            mapStyle={`mapbox://styles/${env.NEXT_PUBLIC_MAPBOX_USERNAME}/${data.map.style}`}
             {...viewport}
             onLoad={onMapLoad}
             onMove={(viewport) => setViewport(viewport.viewState)}

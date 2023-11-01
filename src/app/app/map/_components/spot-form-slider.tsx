@@ -9,13 +9,12 @@ import useUpdateSearchParams from '@/hooks/update-search-params'
 import SpotForm from '@/components/forms/spot-form'
 
 
-type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 type Props = {
-  data: data["spots"][0]
-  projects: RouterOutputs["projects"]["getProjectsByMapId"]
+  spot: NonNullable<RouterOutputs["spots"]["getSpotById"]>
+  projects: NonNullable<RouterOutputs["projects"]["getProjectsByMapId"]>
 }
 
-function SpotFormSlider({ data, projects }: Props) {
+function SpotFormSlider({ spot, projects }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const updateSearchParams = useUpdateSearchParams()
@@ -27,7 +26,7 @@ function SpotFormSlider({ data, projects }: Props) {
           styles: null,
         })}`,
       )} />
-      <SpotForm data={data} projects={projects} />
+      <SpotForm spot={spot} projects={projects} />
     </div>
   )
 }

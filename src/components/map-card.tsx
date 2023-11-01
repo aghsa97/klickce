@@ -1,52 +1,27 @@
+import { RouterOutputs } from '@/server/api'
 import Link from 'next/link'
 
 import * as Icons from './icons'
-import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 
 type MapCardProps = {
-    id: string
-    name: string
-    style: string
-    views: number
-    tags: string[]
+    map: RouterOutputs["maps"]["getCustomerMaps"][0]
 }
-function MapCard({ id, name, style, tags, views }: MapCardProps) {
+function MapCard({ map }: MapCardProps) {
     return (
-        <Link href={`/app/map/${id}`}>
+        <Link href={`/app/map/${map.id}`}>
             <Card>
                 <CardHeader className='relative h-40 border-b border-border' style={{
                     backgroundImage: `url(/grainy.png)`,
                 }}>
-                    {style}
                     <Button variant='outline' className='absolute top-2 right-2'>
                         <Icons.Share className='w-4 h-4 text-muted-foreground' />
                     </Button>
                 </CardHeader>
                 <CardContent className='mt-6'>
-                    <CardTitle className=''>{name}</CardTitle>
+                    <CardTitle className=''>{map.name}</CardTitle>
                 </CardContent>
-                <CardFooter className='flex justify-between items-center'>
-                    <div className='flex items-center gap-2'>
-                        <Icons.Eye className='w-4 h-4 text-muted-foreground text-sm' />
-                        <p className='text-muted-foreground text-sm'>{views}</p>
-                    </div>
-                    <div className='flex items-center gap-2'>
-                        {tags.map((tag, index) => (
-                            // Show first two tags and then a +{n} badge only once for the rest
-                            index < 2 ?
-                                <Badge key={tag} variant='outline'>
-                                    {tag}
-                                </Badge>
-                                :
-                                index === 2 &&
-                                <Badge key={tag} variant='outline'>
-                                    +{tags.length - 2}
-                                </Badge>
-                        ))}
-                    </div>
-                </CardFooter>
             </Card>
         </Link>
     )

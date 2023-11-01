@@ -2,7 +2,7 @@
 
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useTransition } from 'react'
+import { useEffect, useMemo, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -19,39 +19,37 @@ import ActionBtns from './action-btns'
 import { Input } from '../ui/input'
 
 
-
-type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 type SpotPopoverProps = {
-    data: data["spots"][0]
+    spot: NonNullable<RouterOutputs["spots"]["getSpotById"]>
     projects: RouterOutputs["projects"]["getProjectsByMapId"]
-    project?: data["projects"][0]
 }
 
-function SpotForm({ data, project, projects }: SpotPopoverProps) {
+function SpotForm({ spot, projects }: SpotPopoverProps) {
     const router = useRouter()
     const [_, startTransition] = useTransition()
+    const project = projects?.find(project => project.id === spot.projectId)
 
     const form = useForm<z.infer<typeof updateSpotSchema>>({
         resolver: zodResolver(updateSpotSchema),
         defaultValues: {
-            id: data.id,
-            name: data.name,
-            color: data.color,
-            projectId: data.projectId,
-            description: data.description,
+            id: spot.id,
+            name: spot.name,
+            color: spot.color,
+            projectId: spot.projectId,
+            description: spot.description,
         }
     })
 
     // update form values when data changes
     useEffect(() => {
         form.reset({
-            id: data.id,
-            name: data.name,
-            color: data.color,
-            projectId: data.projectId,
-            description: data.description,
+            id: spot.id,
+            name: spot.name,
+            color: spot.color,
+            projectId: spot.projectId,
+            description: spot.description,
         })
-    }, [data, form])
+    }, [spot, form])
 
 
     async function handleUpdate(data: z.infer<typeof updateSpotSchema>) {
@@ -70,8 +68,8 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
     async function handleDelete() {
         startTransition(async () => {
             try {
-                await api.spots.deleteSpot.mutate({ id: data.id })
-                toast.success(`Spot ${data.name} deleted`)
+                await api.spots.deleteSpot.mutate({ id: spot.id })
+                toast.success(`Spot ${spot.name} deleted`)
                 router.refresh()
             } catch (error: any) {
                 console.log(error); // TODO: handle error
@@ -85,12 +83,12 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
             <form onSubmit={async (e) => { e.preventDefault(), form.handleSubmit(handleUpdate)(e) }}>
                 <div className="grid gap-4">
                     <div className='flex flex-col gap-1.5'>
-                        <h4 className="font-medium leading-none">{data.name}</h4>
-                        <p className="text-sm text-muted-foreground">{data.address}</p>
+                        <h4 className="font-medium leading-none">{spot.name}</h4>
+                        <p className="text-sm text-muted-foreground">{spot.address}</p>
                     </div>
                     <div className="grid border-b pb-6">
                         <SpotInputField name="name" form={form} />
-                        {!project?.color && <SpotInputField name="color" form={form} />}
+                        {!spot.projectId && <SpotInputField name="color" form={form} />}
                         <FormField
                             control={form.control}
                             name="projectId"
@@ -114,11 +112,11 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
                             </FormItem>
                         )}
                     />
-                    <ImageSection spotId={data.id} />
+                    <ImageSection spotId={spot.id} />
                     <div className='flex flex-row-reverse items-center justify-between border-t py-4'>
                         <ActionBtns
                             message={`This action cannot be undone. This will permanently delete
-                        ${data.name} and remove the spot form the map.`}
+                        ${spot.name} and remove the spot form the map.`}
                             onDelete={handleDelete} />
                     </div>
                 </div>

@@ -1,5 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { authMiddleware } from "@clerk/nextjs/server";
+
+const before = (req: NextRequest) => {
+  const url = req.nextUrl.clone();
+
+  if (url.pathname.includes("api/trpc")) {
+    return NextResponse.next();
+  }
+
+  return NextResponse.next();
+};
 
 export default authMiddleware({
   publicRoutes: [
@@ -11,6 +21,7 @@ export default authMiddleware({
     "api/webhooks/clerk",
     "api/webhooks/stripe",
   ],
+  beforeAuth: before,
   afterAuth(auth, req) {
     const isPublicRoute = auth.isPublicRoute;
     const userId = auth.userId;

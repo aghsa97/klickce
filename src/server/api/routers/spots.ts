@@ -31,12 +31,20 @@ export const spotsRouter = router({
     .input(z.object({ spotIdSchema, mapIdSchema }))
     .query(async ({ ctx, input }) => {
       if (!input.spotIdSchema.id || !input.mapIdSchema.id) return;
-      return await ctx.db.query.spots.findFirst({
+      const spot = await ctx.db.query.spots.findFirst({
         where: and(
           eq(spots.id, input.spotIdSchema.id),
           eq(spots.mapId, input.mapIdSchema.id),
         ),
       });
+      if (!spot) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Spot not found",
+        });
+      }
+
+      return selectSpotSchema.parse(spot);
     }),
   createSpot: protectedProcedure
     .input(insertSpotSchema)

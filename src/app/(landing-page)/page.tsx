@@ -1,14 +1,11 @@
 import React from 'react'
 
-
-import Hero from '@/components/landing-page/hero';
-import Features from '@/components/landing-page/features';
-import FAQs from '@/components/landing-page/faqs';
-import OurMission from '@/components/landing-page/our-mission';
 import PricingPlan from '@/components/landing-page/pricing-plan';
+import OurMission from '@/components/landing-page/our-mission';
+import Features from '@/components/landing-page/features';
 import TrustedBy from '@/components/landing-page/stats';
-
-export const revalidate = 900;
+import Hero from '@/components/landing-page/hero';
+import FAQs from '@/components/landing-page/faqs';
 
 async function Home() {
     return (

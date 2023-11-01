@@ -2,7 +2,11 @@ import { TRPCError } from "@trpc/server";
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
-import { imageIdSchema, images } from "@/server/db/schema/images";
+import {
+  imageIdSchema,
+  images,
+  selectImageSchema,
+} from "@/server/db/schema/images";
 import { spotIdSchema } from "@/server/db/schema/spots";
 
 import { protectedProcedure, publicProcedure, router } from "../trpc";
@@ -20,20 +24,23 @@ export const imagesRouter = router({
   getImagesBySpotId: publicProcedure
     .input(spotIdSchema)
     .query(async ({ ctx, input }) => {
-      return await ctx.db
+      const imagesdata = await ctx.db
         .select()
         .from(images)
         .where(eq(images.spotId, input.id))
         .execute();
+
+      return imagesdata.map((image) => selectImageSchema.parse(image));
     }),
   getImageById: protectedProcedure
     .input(imageIdSchema)
     .query(async ({ ctx, input }) => {
-      return await ctx.db
+      const img = await ctx.db
         .select()
         .from(images)
         .where(eq(images.id, input.id))
         .execute();
+      return selectImageSchema.parse(img[0]);
     }),
   createImage: protectedProcedure
     .input(z.object({ spotId: z.string(), url: z.string(), mapId: z.string() }))

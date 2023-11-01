@@ -1,6 +1,7 @@
 'use client'
 
 import { z } from 'zod'
+import { toast } from 'sonner'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
@@ -15,7 +16,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import * as Icon from '@/components/icons'
 import { api } from '@/lib/trpc/client'
-import { toast } from 'sonner'
 
 function CreateMapBtn() {
     const router = useRouter()
@@ -29,6 +29,7 @@ function CreateMapBtn() {
     })
 
     function handleClick(data: z.infer<typeof insertMapSchema>) {
+        if (data.name === '') return toast.error('Please enter a name for your map')
         startTransition(async () => {
             try {
                 const mapId = await api.maps.createMap.mutate({
@@ -37,7 +38,7 @@ function CreateMapBtn() {
                 router.push(`/app/map/${mapId}`)
             } catch (error: any) {
                 console.log(error);
-                toast.error(error.message)
+                toast.error(error.message, { duration: 20000 })
             }
         })
     }
@@ -47,7 +48,7 @@ function CreateMapBtn() {
             <form>
                 <Dialog>
                     <DialogTrigger asChild>
-                        <Button>Create New Map</Button>
+                        <Button>Create new map</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>

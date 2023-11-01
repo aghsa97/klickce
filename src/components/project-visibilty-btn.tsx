@@ -8,7 +8,7 @@ import { Button } from './ui/button'
 import * as Icon from './icons'
 import { toast } from 'sonner'
 
-function ProjectVisibiltyBtn({ data }: { data: { id: string, isVisible: boolean } }) {
+function ProjectVisibiltyBtn({ id, isVisible }: { id: string, isVisible: boolean }) {
     const router = useRouter()
     const [_, startTransition] = useTransition()
 
@@ -16,10 +16,10 @@ function ProjectVisibiltyBtn({ data }: { data: { id: string, isVisible: boolean 
         startTransition(async () => {
             try {
                 await api.projects.updateProject.mutate({
-                    id: data.id,
-                    isVisible: !data.isVisible
+                    id: id,
+                    isVisible: !isVisible
                 })
-                toast.success(data.isVisible ? 'Project now is hidden' : 'Project now is visible')
+                toast.success(isVisible ? 'Project now is hidden' : 'Project now is visible')
                 router.refresh()
             } catch (error) {
                 console.log(error);
@@ -31,7 +31,7 @@ function ProjectVisibiltyBtn({ data }: { data: { id: string, isVisible: boolean 
     return (
         <div className='flex items-center justify-center gap-2'>
             <Button variant="ghost" size="sm" onClick={updateVisibilty}>
-                {data.isVisible ? <Icon.Eye className='w-5 h-5 hidden group-hover:block' /> : <Icon.EyeOff className='w-5 h-5' />}
+                {isVisible ? <Icon.Eye className='w-5 h-5 hidden group-hover:block' /> : <Icon.EyeOff className='w-5 h-5' />}
                 <span className="sr-only">Toggle</span>
             </Button>
         </div>

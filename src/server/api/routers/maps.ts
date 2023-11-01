@@ -6,14 +6,21 @@ import { protectedProcedure, publicProcedure, router } from "../trpc";
 import {
   insertMapSchema,
   mapIdSchema,
-  maps,
+  maps as mapsTable,
+  selectMapSchema,
   updateMapSchema,
 } from "@/server/db/schema/maps";
 import { customers } from "@/server/db/schema/customers";
 import { allPlans } from "@/config/plan";
 import { genId } from "@/server/db";
-import { projects } from "@/server/db/schema/projects";
-import { spots } from "@/server/db/schema/spots";
+import {
+  projects as projectsTable,
+  selectProjectSchema,
+} from "@/server/db/schema/projects";
+import {
+  selectSpotSchema,
+  spots as spotsTable,
+} from "@/server/db/schema/spots";
 import { images } from "@/server/db/schema/images";
 import { deleteFolder, deleteImage } from "@/lib/cloudinary";
 
@@ -21,132 +28,151 @@ export const mapsRouter = router({
   getMapsCount: publicProcedure.query(async ({ ctx }) => {
     const [count] = await ctx.db
       .select({ count: sql<number>`count(*)` })
-      .from(maps)
+      .from(mapsTable)
       .execute();
     return count;
   }),
   getViewsCount: publicProcedure.query(async ({ ctx }) => {
     const [count] = await ctx.db
       .select({ count: sql<number>`SUM(views)` })
-      .from(maps)
+      .from(mapsTable)
       .execute();
 
     return count;
   }),
   getCustomerMaps: protectedProcedure.query(async ({ ctx }) => {
-    return await ctx.db
-      .select()
-      .from(maps)
-      .where(eq(maps.ownerId, ctx.auth.userId))
+    const customerMaps = await ctx.db
+      .select({
+        id: mapsTable.id,
+        name: mapsTable.name,
+      })
+      .from(mapsTable)
+      .where(eq(mapsTable.ownerId, ctx.auth.userId))
       .execute();
+
+    return customerMaps;
   }),
-  getMapById: publicProcedure
+  getPublicMapById: publicProcedure
     .input(mapIdSchema)
     .query(async ({ ctx, input }) => {
-      return await ctx.db.query.maps.findFirst({
-        where: and(eq(maps.id, input.id), eq(maps.isPublic, true)),
-        columns: {
-          id: true,
-          name: true,
-          style: true,
-          isPublic: true,
-          description: true,
-          hasLandingPage: true,
-          isUserCurrentLocationVisible: true,
-        },
-        with: {
-          projects: {
-            where: (projects, { eq }) => eq(projects.isVisible, true),
-            columns: {
-              id: true,
-              color: true,
-              name: true,
-            },
-            with: {
-              spots: {
-                columns: {
-                  id: true,
-                  name: true,
-                  address: true,
-                  lat: true,
-                  lng: true,
-                  color: true,
-                  description: true,
-                  projectId: true,
-                },
-              },
-            },
-          },
-          spots: {
-            where: (spots, { eq }) => eq(spots.projectId, ""),
-            columns: {
-              id: true,
-              name: true,
-              address: true,
-              lat: true,
-              lng: true,
-              color: true,
-              description: true,
-              projectId: true,
-            },
-            orderBy: (spots, { desc }) => [desc(spots.createdAt)],
-          },
-        },
-      });
+      const mapdata = await ctx.db
+        .select()
+        .from(mapsTable)
+        .where(eq(mapsTable.id, input.id))
+        .execute();
+
+      if (mapdata.length === 0) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Map not found.",
+        });
+      }
+
+      const customer = await ctx.db
+        .select()
+        .from(customers)
+        .where(eq(customers.clerkUesrId, mapdata[0].ownerId))
+        .execute();
+
+      const now = new Date();
+      if (
+        !customer[0].subPlan ||
+        !customer[0].paidUntil ||
+        !customer[0].endsAt ||
+        customer[0].paidUntil < now ||
+        customer[0].endsAt < now
+      ) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message:
+            "This map is not available now. Please contact the owner of this map.",
+        });
+      }
+      const map = selectMapSchema.parse(mapdata[0]);
+
+      if (!map.isPublic) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Map is set to private from the owner.",
+        });
+      }
+
+      const projectsdata = await ctx.db
+        .select()
+        .from(projectsTable)
+        .where(
+          and(
+            eq(projectsTable.mapId, map.id),
+            eq(projectsTable.isVisible, true),
+          ),
+        )
+        .execute();
+
+      const spotsdata = await ctx.db
+        .select()
+        .from(spotsTable)
+        .where(eq(spotsTable.mapId, map.id))
+        .execute();
+
+      const spotsparsed = spotsdata.map((spot) => ({
+        ...selectSpotSchema.parse(spot),
+      }));
+
+      const projects = projectsdata.map((project) => ({
+        ...selectProjectSchema.parse(project),
+        spots: spotsparsed.filter((spot) => spot.projectId === project.id),
+      }));
+
+      const spots = spotsparsed.filter((spot) => spot.projectId === "");
+
+      return { map, projects, spots };
     }),
   getMapDataById: protectedProcedure
     .input(mapIdSchema)
     .query(async ({ ctx, input }) => {
-      return await ctx.db.query.maps.findFirst({
-        where: and(eq(maps.id, input.id), eq(maps.ownerId, ctx.auth.userId)),
-        columns: {
-          id: true,
-          name: true,
-          style: true,
-          isPublic: true,
-          description: true,
-          hasLandingPage: true,
-          isUserCurrentLocationVisible: true,
-        },
-        with: {
-          projects: {
-            columns: {
-              id: true,
-              color: true,
-              name: true,
-              isVisible: true,
-            },
-            with: {
-              spots: {
-                columns: {
-                  id: true,
-                  name: true,
-                  address: true,
-                  lat: true,
-                  lng: true,
-                  color: true,
-                  description: true,
-                  projectId: true,
-                },
-              },
-            },
-          },
-          spots: {
-            where: (spots, { eq }) => eq(spots.projectId, ""),
-            columns: {
-              id: true,
-              name: true,
-              address: true,
-              lat: true,
-              lng: true,
-              color: true,
-              description: true,
-              projectId: true,
-            },
-            orderBy: (spots, { desc }) => [desc(spots.createdAt)],
-          },
-        },
-      });
+      const maps = await ctx.db
+        .select()
+        .from(mapsTable)
+        .where(
+          and(
+            eq(mapsTable.id, input.id),
+            eq(mapsTable.ownerId, ctx.auth.userId),
+          ),
+        )
+        .execute();
+
+      if (maps.length === 0) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Map not found.",
+        });
+      }
+      const map = selectMapSchema.parse(maps[0]);
+
+      const projectsdata = await ctx.db
+        .select()
+        .from(projectsTable)
+        .where(eq(projectsTable.mapId, map.id))
+        .execute();
+
+      const spotsdata = await ctx.db
+        .select()
+        .from(spotsTable)
+        .where(eq(spotsTable.mapId, map.id))
+        .execute();
+
+      const spotsparsed = spotsdata.map((spot) => ({
+        ...selectSpotSchema.parse(spot),
+      }));
+
+      const projects = projectsdata.map((project) => ({
+        ...selectProjectSchema.parse(project),
+        spots: spotsparsed.filter((spot) => spot.projectId === project.id),
+      }));
+      // parse with selectSpotSchema
+      const spots = spotsparsed.filter((spot) => spot.projectId === "");
+
+      return { map, projects, spots };
     }),
   createMap: protectedProcedure
     .input(insertMapSchema)
@@ -158,21 +184,32 @@ export const mapsRouter = router({
         .execute();
       if (!currentCustomer) return;
 
-      const [mapsCount] = await ctx.db
-        .select({ count: sql<number>`count(*)` })
-        .from(maps)
-        .where(eq(maps.ownerId, ctx.auth.userId))
-        .execute();
-
+      // Check if user has a plan and if it's not expired
       const userPlan = currentCustomer[0].subPlan;
-      if (!userPlan) {
+      const userPaidUntil = currentCustomer[0].paidUntil;
+      const userEndsAt = currentCustomer[0].endsAt;
+      const now = new Date();
+      if (!userPlan || !userPaidUntil || !userEndsAt) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message:
             "You don't have a plan, please subscribe to start using Klickce.",
         });
       }
+      if (userPaidUntil < now || userEndsAt < now) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message:
+            "Your plan has expired, please subscribe to continue using Klickce.",
+        });
+      }
 
+      // Check if user has reached the limit of maps for his plan
+      const [mapsCount] = await ctx.db
+        .select({ count: sql<number>`count(*)` })
+        .from(mapsTable)
+        .where(eq(mapsTable.ownerId, ctx.auth.userId))
+        .execute();
       const limit = allPlans[userPlan].limits.maps;
 
       if (
@@ -188,9 +225,8 @@ export const mapsRouter = router({
 
       const id = `map_${genId()}`;
       const newMap = insertMapSchema.parse({ ...input });
-
       await ctx.db
-        .insert(maps)
+        .insert(mapsTable)
         .values({ ...newMap, id, ownerId: ctx.auth.userId });
       return id;
     }),
@@ -201,40 +237,48 @@ export const mapsRouter = router({
       const newMap = updateMapSchema.parse(input);
       if (!newMap.id) return;
       await ctx.db
-        .update(maps)
+        .update(mapsTable)
         .set(newMap)
-        .where(and(eq(maps.id, input.id), eq(maps.ownerId, ctx.auth.userId)));
+        .where(
+          and(
+            eq(mapsTable.id, input.id),
+            eq(mapsTable.ownerId, ctx.auth.userId),
+          ),
+        );
     }),
   deleteMap: protectedProcedure
     .input(mapIdSchema)
     .mutation(async ({ ctx, input }) => {
       // TODO: delete all projects and spots related to this map? (no delete cascade in db)
       const projectIds = await ctx.db
-        .select({ id: projects.id })
-        .from(projects)
+        .select({ id: projectsTable.id })
+        .from(projectsTable)
         .where(
           and(
-            eq(projects.mapId, input.id),
-            eq(projects.ownerId, ctx.auth.userId),
+            eq(projectsTable.mapId, input.id),
+            eq(projectsTable.ownerId, ctx.auth.userId),
           ),
         )
         .execute();
 
       const spotIds = await ctx.db
-        .select({ id: spots.id })
-        .from(spots)
+        .select({ id: spotsTable.id })
+        .from(spotsTable)
         .where(
-          and(eq(spots.mapId, input.id), eq(spots.ownerId, ctx.auth.userId)),
+          and(
+            eq(spotsTable.mapId, input.id),
+            eq(spotsTable.ownerId, ctx.auth.userId),
+          ),
         )
         .execute();
 
       if (projectIds.length > 0) {
         await ctx.db
-          .delete(projects)
+          .delete(projectsTable)
           .where(
             and(
-              eq(projects.mapId, input.id),
-              eq(projects.ownerId, ctx.auth.userId),
+              eq(projectsTable.mapId, input.id),
+              eq(projectsTable.ownerId, ctx.auth.userId),
             ),
           );
       }
@@ -275,14 +319,22 @@ export const mapsRouter = router({
         }
 
         await ctx.db
-          .delete(spots)
+          .delete(spotsTable)
           .where(
-            and(eq(spots.mapId, input.id), eq(spots.ownerId, ctx.auth.userId)),
+            and(
+              eq(spotsTable.mapId, input.id),
+              eq(spotsTable.ownerId, ctx.auth.userId),
+            ),
           );
       }
 
       await ctx.db
-        .delete(maps)
-        .where(and(eq(maps.id, input.id), eq(maps.ownerId, ctx.auth.userId)));
+        .delete(mapsTable)
+        .where(
+          and(
+            eq(mapsTable.id, input.id),
+            eq(mapsTable.ownerId, ctx.auth.userId),
+          ),
+        );
     }),
 });

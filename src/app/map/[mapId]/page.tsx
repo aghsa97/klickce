@@ -19,15 +19,17 @@ async function MapPage(props: { params: { mapId: string }, searchParams: { [key:
     if (!search.success) return notFound()
 
     const spotId = search.data.spotId
+    if (!spotId) return null
 
-    const spot = spotId ? await api.spots.getSpotById.query({ spotIdSchema: { id: spotId }, mapIdSchema: { id: props.params.mapId } }) : null
-    const project = spot && spot.projectId ? await api.projects.getProjectById.query({ id: spot.projectId }) : null
-    const imgsIds = spot && spotId ? await api.images.getImagesBySpotId.query({ id: spotId }) : null
-
-    const spotData = spot && { ...spot, color: project?.color ?? spot?.color }
-    const publicIds = imgsIds ? imgsIds.map((img) => img.publicId) : []
-
+    const spot = await api.spots.getSpotById.query({ spotIdSchema: { id: spotId }, mapIdSchema: { id: props.params.mapId } })
     if (!spot) return null
+
+    const project = spot.projectId ? await api.projects.getProjectById.query({ id: spot.projectId }) : null
+    const imgsIds = await api.images.getImagesBySpotId.query({ id: spotId })
+
+    const spotData = { ...spot, color: project?.color ?? spot?.color }
+    const publicIds = imgsIds.map((img) => img.publicId)
+
     return (
         <>
             <SideMenuBar spotData={spotData} publicIds={publicIds} />

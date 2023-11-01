@@ -11,15 +11,15 @@ type FormTabsProps = {
     data: NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 }
 
-function FormTabs({ data }: FormTabsProps) {
+function FormTabs({ data: mapdata }: FormTabsProps) {
     return (
         <Tabs defaultValue="content" className='w-full h-full overflow-y-auto'>
             <MapFormNavbar />
             <TabsContent value="content" className='h-full'>
-                <ContentTab data={data} />
+                <ContentTab data={mapdata} />
             </TabsContent>
             <TabsContent value='customize' className='h-full'>
-                <MapCustomizeTabForm data={data} />
+                <MapCustomizeTabForm data={mapdata.map} />
             </TabsContent>
             <TabsContent value='share' className='min-h-max'>
                 <ShareTab />

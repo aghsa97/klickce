@@ -12,12 +12,12 @@ import * as Icon from '@/components/icons'
 type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 type ProjectPopoverProps = {
     index: number,
-    data: data["projects"][0]
+    project: data["projects"][0],
     projects: data["projects"]
 }
 
 
-function ProjectPopover({ data, index, projects }: ProjectPopoverProps) {
+function ProjectPopover({ project, index, projects }: ProjectPopoverProps) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -27,23 +27,23 @@ function ProjectPopover({ data, index, projects }: ProjectPopoverProps) {
                     <PopoverTrigger asChild className='hover:bg-secondary p-2 rounded-lg'>
                         <div className='w-full flex items-center gap-2'>
                             <Icon.FolderKanban />
-                            <span className='text-sm font-medium'>{data.name}</span>
+                            <span className='text-sm font-medium'>{project.name}</span>
                         </div>
                     </PopoverTrigger>
                     <PopoverContent className="w-full ml-2.5 min-w-[350px]">
                         <ProjectForm data={{
-                            id: data.id,
-                            name: data.name,
-                            color: data.color,
-                            isVisible: data.isVisible
+                            id: project.id,
+                            name: project.name,
+                            color: project.color,
+                            isVisible: project.isVisible
                         }}
                             setIsOpen={setIsOpen}
                         />
                     </PopoverContent>
                 </Popover>
-                <ProjectVisibiltyBtn data={{ id: data.id, isVisible: data.isVisible }} />
+                <ProjectVisibiltyBtn id={project.id} isVisible={project.isVisible} />
             </div>
-            <ProjectCollapse project={data} projects={projects} index={index} />
+            <ProjectCollapse project={project} projects={projects} index={index} />
         </div>
     )
 }

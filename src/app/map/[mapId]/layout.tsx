@@ -9,7 +9,7 @@ import ProjectsBar from '@/components/map/projects-bar';
 
 async function MapLayout({ params, children }: { children: React.ReactNode, params: { mapId: string } }) {
     const mapId = params.mapId
-    const data = await api.maps.getMapById.query({ id: mapId })
+    const data = await api.maps.getPublicMapById.query({ id: mapId })
 
     if (!data) return notFound()
     return (
@@ -18,7 +18,7 @@ async function MapLayout({ params, children }: { children: React.ReactNode, para
                 height: "calc(var(--vh, 1vh) * 100)",
             }}
         >
-            <MapMenu name={data.name} projects={data.projects} spots={data.spots} />
+            <MapMenu name={data.map.name} projects={data.projects} spots={data.spots} />
             <BrowseMap data={data} />
             {children}
             <ProjectsBar projects={data.projects} />

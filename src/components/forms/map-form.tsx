@@ -25,9 +25,8 @@ import { toast } from 'sonner'
 const STYLE_TOKEN = env.NEXT_PUBLIC_MAPBOX_API_TOKEN
 const USERNAME = env.NEXT_PUBLIC_MAPBOX_USERNAME
 
-type data = NonNullable<RouterOutputs["maps"]["getMapDataById"]>
 type MapCustomizeTabFormProps = {
-    data: data
+    data: NonNullable<RouterOutputs["maps"]["getMapDataById"]["map"]>
 }
 
 function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {

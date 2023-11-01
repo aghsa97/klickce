@@ -54,7 +54,7 @@ function ProjectCollapse({ project, projects, index }: ProjectSpotsCollapseProps
                     <ul className="sub-menu">
                         {project.spots.map((spot) => (
                             <div key={spot.id}>
-                                <SpotPopover data={spot} color={project.color} />
+                                <SpotPopover spot={spot} color={project.color} />
                             </div>
                         ))}
                     </ul>

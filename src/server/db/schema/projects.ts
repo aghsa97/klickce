@@ -52,10 +52,11 @@ export const insertProjectSchema = createInsertSchema(projects).pick({
   name: true,
   mapId: true,
 });
-export const selectProjectSchema = createSelectSchema(projects).omit({
-  ownerId: true,
-  createdAt: true,
-  updatedAt: true,
+export const selectProjectSchema = createSelectSchema(projects).pick({
+  id: true,
+  name: true,
+  color: true,
+  isVisible: true,
 });
 export const updateProjectSchema = createInsertSchema(projects)
   .pick({
