@@ -12,7 +12,7 @@ import { NavigateToGoogleMaps } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import useWindowSize from '@/hooks/use-window-size'
 
-type data = NonNullable<RouterOutputs["maps"]["getMapById"]>
+type data = NonNullable<RouterOutputs["maps"]["getPublicMapById"]>
 
 type SideMenuBarProps = {
     spotData: data["spots"][0] | data["projects"][0]["spots"][0] | null | undefined,

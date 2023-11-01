@@ -6,7 +6,7 @@ type MapStore = {
   isMovePin: boolean;
   setStoreMapZoom: (zoom: number) => void;
   setIsMovePin: (isMovePin: boolean) => void;
-  mapData: RouterOutputs["maps"]["getMapDataById"];
+  mapData: RouterOutputs["maps"]["getMapDataById"] | undefined;
   setMapData: (mapData: RouterOutputs["maps"]["getMapDataById"]) => void;
   isLoaded: boolean;
   setIsLoaded: (isLoaded: boolean) => void;

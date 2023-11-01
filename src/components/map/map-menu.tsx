@@ -12,7 +12,7 @@ import useWindowSize from '@/hooks/use-window-size'
 import * as Icon from '../icons'
 import { Button } from '../ui/button'
 
-type data = NonNullable<RouterOutputs["maps"]["getMapById"]>
+type data = NonNullable<RouterOutputs["maps"]["getPublicMapById"]>
 
 type MapMenuProps = {
     name: string

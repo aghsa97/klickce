@@ -12,7 +12,7 @@ import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 
-type data = NonNullable<RouterOutputs["maps"]["getMapById"]>
+type data = NonNullable<RouterOutputs["maps"]["getPublicMapById"]>
 
 type ProjectsBarProps = {
     projects: data["projects"]
