@@ -27,7 +27,7 @@ type SpotPopoverProps = {
 function SpotForm({ spot, projects }: SpotPopoverProps) {
     const router = useRouter()
     const [_, startTransition] = useTransition()
-    const project = projects?.find(project => project.id === spot.projectId)
+    const project = useMemo(() => projects?.find(project => project.id === spot.projectId), [projects, spot.projectId])
 
     const form = useForm<z.infer<typeof updateSpotSchema>>({
         resolver: zodResolver(updateSpotSchema),
@@ -95,7 +95,7 @@ function SpotForm({ spot, projects }: SpotPopoverProps) {
                             render={({ field }) => (
                                 <FormItem className="grid grid-cols-3 items-center">
                                     <FormLabel>Project</FormLabel>
-                                    <SpotSelectProject onValueChange={field.onChange} defaultValue={field.value} projects={projects} projectName={project?.name} />
+                                    <SpotSelectProject key={field.value} onValueChange={field.onChange} defaultValue={field.value} projects={projects} projectName={project?.name} />
                                     <FormMessage />
                                 </FormItem>
                             )}

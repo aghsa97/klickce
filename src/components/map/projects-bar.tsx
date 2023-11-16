@@ -27,35 +27,36 @@ function ProjectsBar({ projects }: ProjectsBarProps) {
     const [isOpen, setIsOpen] = React.useState<boolean>(false)
 
     return (
-        <div className='flex flex-col md:flex-row items-start md:items-center justify-center absolute bottom-10 left-2'>
+        <div className='flex flex-col md:flex-row items-start md:items-center justify-center absolute bottom-10 left-3'>
             <Popover open={isOpen} onOpenChange={setIsOpen}>
-                {projectId && <div className='w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-white absolute top-0.5 md:-top-8 -left-1 z-10'
+                {projectId && <div className='w-6 h-6 rounded-full border-3 border-white absolute -top-1 -left-1 z-10'
                     style={{ backgroundColor: projects.find((project) => project.id === projectId)?.color }}
                 />}
                 <PopoverTrigger asChild className='relative'>
                     <Button
-                        asChild
-                        className="bg-black/50 backdrop-blur-[2px] p-4 rounded-full cursor-pointer"
+                        size={'icon'}
+                        className="w-14 h-14 bg-black/50 backdrop-blur-[2px] rounded-full cursor-pointer"
                         onClick={() => setIsOpen(!isOpen)}
                     >
-                        <Icon.Filter className='w-14 h-14 md:w-16 md:h-16 text-white' />
+                        <Icon.Filter className='w-6 h-6 text-white' />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className='ml-2 bg-black/50 rounded-3xl backdrop-blur-[2px] border-none'>
+                <PopoverContent className='ml-3 bg-black/50 rounded-2xl backdrop-blur-[2px] border-none'>
                     <div className="grid grid-cols-1 gap-4">
                         {projects.map((project) => (
-                            <div key={project.id} className='group w-full flex items-center justify-start gap-8 cursor-pointer'
+                            project.spots.length > 0 &&
+                            <div key={project.id} className='group w-full flex items-center justify-start gap-4 cursor-pointer'
                                 onClick={() => router.replace(
                                     `${pathname}?${updateSearchParams({
                                         projectId: projectId !== project.id ? project.id : null,
                                     })}`,
                                 )}
                             >
-                                <div className='w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-white shrink-0'
-                                    style={{ backgroundColor: project.color, opacity: projectId === project.id ? 1 : 0.5 }}
+                                <div className='w-6 h-6 rounded-full border-3 border-white shrink-0'
+                                    style={{ backgroundColor: project.color, opacity: projectId === project.id ? 1 : 1 }}
                                 />
-                                <p className={cn(`text-white/75 group-hover:text-white capitalize`,
-                                    projectId === project.id && 'text-white'
+                                <p className={cn(`text-white group-hover:text-primary capitalize`,
+                                    projectId === project.id && 'text-primary'
                                 )}>
                                     {project.name}
                                 </p>

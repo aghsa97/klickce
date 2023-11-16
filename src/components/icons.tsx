@@ -3,6 +3,7 @@ import {
     ArrowRightIcon,
     BadgeCheckIcon,
     ChevronDownIcon,
+    ChevronLeftIcon,
     ChevronRightIcon,
     CogIcon,
     CoinsIcon,
@@ -56,6 +57,7 @@ export const Sun = SunIcon;
 export const ArrowRight = ArrowRightIcon;
 export const ArrowLeft = ArrowLeftIcon;
 export const ChevronRight = ChevronRightIcon;
+export const ChevronLeft = ChevronLeftIcon;
 export const Eye = EyeIcon;
 export const SortAsc = SortAscIcon;
 export const SortDesc = SortDescIcon;

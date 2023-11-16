@@ -53,10 +53,10 @@ function Map({ data }: MapProps) {
             if (!spot) return
             mapRef.current?.easeTo({
                 center: [spot.lng, spot.lat],
-                offset: isMobile ? [-100, -100] : [600, 0],
+                offset: isMobile ? [0, -100] : [200, 0],
                 easing: (t) => t,
                 duration: 500,
-                zoom: zoom > 10 ? zoom : 10,
+                zoom: zoom > 15 ? zoom : 15,
             })
         }
     }, [spotId, data, isMobile]);
@@ -115,10 +115,10 @@ function Map({ data }: MapProps) {
             >
                 <Icon.PersonStanding className='w-10 h-10 animate-pulse text-blue-500' strokeWidth={3} />
             </Marker>}
-            <div className="absolute w-max text-xs bottom-3 right-10 md:left-1/2 md:right-1/2 text-white rounded-full gap-1.5 flex items-center justify-center bg-black/50 backdrop-blur-[2px] px-2 py-0.5">
+            <div className="absolute w-max text-[10px] md:text-xs bottom-2 right-10 md:left-1/2 md:right-1/2 text-white rounded-full gap-1 flex items-center justify-center bg-black/50 backdrop-blur-[2px] px-2 md:px-3 py-[1px] md:py-1.5">
                 <p>Powered By</p>
                 <Link href={'https://www.klickce.se/'} target="_blank" className="underline">
-                    <Logo size="xs" />
+                    <Logo size="10px" className="md:text-xs" />
                 </Link>
             </div>
         </ReactMap>

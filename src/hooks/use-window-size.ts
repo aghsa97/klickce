@@ -32,10 +32,10 @@ export default function useWindowSize() {
 
   return {
     windowSize,
-    isMobile: typeof windowSize?.width === "number" && windowSize?.width < 640,
+    isMobile: typeof windowSize?.width === "number" && windowSize?.width < 768,
     isTablet:
       typeof windowSize?.width === "number" &&
-      windowSize?.width >= 640 &&
+      windowSize?.width >= 768 &&
       windowSize?.width < 1024,
     isDesktop:
       typeof windowSize?.width === "number" && windowSize?.width >= 1024,

@@ -45,6 +45,9 @@ function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
     })
 
     async function handleUpdate(data: z.infer<typeof updateMapSchema>) {
+        // TODO: temporary fix for map name, should be handled by zod and form validation
+        if (!data.name) return toast.error('Map name cannot be empty')
+        if (data.name.length > 30) return toast.error('Map name cannot be longer than 30 characters')
         startTransition(async () => {
             try {
                 await api.maps.updateMap.mutate({ ...data })

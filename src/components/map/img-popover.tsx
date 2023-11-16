@@ -88,15 +88,15 @@ function ImgPopover({ data, projectColor }: ImgPopoverProps) {
                     latitude={spot.lat}
                     longitude={spot.lng}
                 >
-                    <div className={'w-5 h-5 border-2 border-white rounded-full cursor-pointer relative z-50 flex items-center justify-center'}
+                    <div className={'w-6 h-6 border-3 border-white rounded-full cursor-pointer relative z-50 flex items-center justify-center'}
                         style={{ backgroundColor: projectColor ?? spot.color }}
                         onMouseEnter={async () => await handleMouseEnter(spot)}
                         onClick={() => router.push(`?spotId=${spot.id}${projectId ? `&projectId=${projectId}` : ''}`)}
                     >
                         {spotId === spot.id && <motion.div
-                            animate={{ scale: [0, 1.3], opacity: [0, 0.5, 0] }}
+                            animate={{ scale: [0, 1.3], opacity: [0, 1, 0] }}
                             transition={{ duration: 2, repeat: Infinity, repeatType: "loop" }}
-                            className={'absolute w-10 h-10 rounded-full cursor-pointer z-40'}
+                            className={'absolute w-10 h-10 rounded-full cursor-pointer z-10'}
                             style={{ backgroundColor: projectColor ?? spot.color }}
                         />}
                     </div>
@@ -109,17 +109,17 @@ function ImgPopover({ data, projectColor }: ImgPopoverProps) {
                             <motion.div
                                 animate={{ scale: [1, 1.1, 1] }}
                                 transition={{ duration: 0.2 }}
-                                className="relative z-10 right-6 top-6 w-72 h-52"
+                                className="relative z-10 right-6 top-6 w-56 h-40 md:w-72 md:h-48"
                             >
-                                <div className="w-full h-2/3 absolute rounded-t-3xl bg-gradient-to-b from-black/70 backdrop-blur-sm backdrop-opacity-20" />
-                                <p className=" absolute px-4 py-2 text-3xl font-medium text-white">{popupInfo.name}</p>
+                                <div className={"w-full h-full absolute rounded-2xl z-10 bg-gradient-to-b from-black/70 backdrop-blur-[2px] backdrop-opacity-20 to-50%"} />
+                                <p className=" absolute px-4 py-2 text-xl md:text-3xl font-bold text-white z-20">{popupInfo.name}</p>
                                 <CldImage
                                     src={hoveredMarkerPics[currentImageIndex]}
                                     width="0"
                                     height="0"
                                     sizes="100vw"
                                     alt="Description of my image"
-                                    className={"w-full h-full rounded-3xl object-cover"}
+                                    className={"w-full h-full rounded-2xl object-cover bg-black/50 backdrop-blur-[2px]"}
                                 />
                             </motion.div>
                         </Marker>

@@ -97,22 +97,23 @@ export const mapsRouter = router({
         });
       }
 
-      const projectsdata = await ctx.db
-        .select()
-        .from(projectsTable)
-        .where(
-          and(
-            eq(projectsTable.mapId, map.id),
-            eq(projectsTable.isVisible, true),
-          ),
-        )
-        .execute();
-
-      const spotsdata = await ctx.db
-        .select()
-        .from(spotsTable)
-        .where(eq(spotsTable.mapId, map.id))
-        .execute();
+      const [projectsdata, spotsdata] = await Promise.all([
+        ctx.db
+          .select()
+          .from(projectsTable)
+          .where(
+            and(
+              eq(projectsTable.mapId, map.id),
+              eq(projectsTable.isVisible, true),
+            ),
+          )
+          .execute(),
+        ctx.db
+          .select()
+          .from(spotsTable)
+          .where(eq(spotsTable.mapId, map.id))
+          .execute(),
+      ]);
 
       const spotsparsed = spotsdata.map((spot) => ({
         ...selectSpotSchema.parse(spot),
