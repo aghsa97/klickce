@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CldImage } from 'next-cloudinary'
 
 import { Button } from '../ui/button'
@@ -11,6 +11,7 @@ import { RouterOutputs } from '@/server/api'
 import { cn, NavigateToGoogleMaps } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import useWindowSize from '@/hooks/use-window-size'
+import { Textarea } from '../ui/textarea'
 
 type data = NonNullable<RouterOutputs["maps"]["getPublicMapById"]>
 
@@ -26,7 +27,17 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
     const { isMobile } = useWindowSize()
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isTimeToRender, setIsTimeToRender] = useState(false);
+
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const adjustHeight = () => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+    };
 
 
     // Function to handle going to the next ID
@@ -43,18 +54,19 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
     };
 
     useEffect(() => {
+        adjustHeight(); // Adjust height on initial render
         setTimeout(() => {
             setCurrentIndex(0)
-            setIsPlaying(true)
+            setIsTimeToRender(true)
         }, 500)
     }, [spotData])
 
     if (!spotData || isMobile) return null
     return (
         <div
-            className={cn('hidden absolute top-0 z-50 md:flex flex-col gap-2 w-full h-fit max-h-full py-1.5 px-1.5 md:w-[50vw] md:max-w-xl md:mx-3 md:py-3 md:px-0 2xl:w-[35vw]')}>
+            className='hidden absolute top-0 z-50 md:flex flex-col gap-2 w-full h-fit max-h-full py-1.5 px-1.5 md:w-[50vw] md:max-w-xl md:mx-3 md:py-3 md:px-0 2xl:w-[35vw]'>
             <header className={"flex flex-col bg-black/50 text-white backdrop-blur-[2px] rounded-5xl h-fit shadow-md"}>
-                <div className={cn('flex items-center justify-between pl-4 pr-2 py-2')}>
+                <div className='flex items-center justify-between pl-4 pr-2 py-2'>
                     <div className="flex items-center justify-start gap-4">
                         <div className='w-8 h-8 rounded-full border-4 border-white flex-shrink-0'
                             style={{ backgroundColor: spotData.color }}
@@ -90,15 +102,18 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
                 </div>
             </header>
             <div className={"h-full flex flex-col gap-2 overflow-y-scroll"}>
-                {spotData.description && <div className={cn('flex flex-col items-start justify-start bg-black/50 text-white backdrop-blur-[2px] rounded-3xl shadow-md p-4 gap-1.5')}>
+                {spotData.description && <div className='flex flex-col items-start justify-start bg-black/50 text-white backdrop-blur-[2px] rounded-3xl shadow-md p-4 gap-1.5'>
                     <h1 className='text-xl font-bold'>
                         Description
                     </h1>
-                    <p className='text-base'>
-                        {spotData.description}
-                    </p>
+                    <Textarea
+                        ref={textareaRef}
+                        onInput={adjustHeight}
+                        className='resize-none flex flex-grow h-full w-full rounded-none border-0 p-0 bg-transparent text-base cursor-text ring-offset-0 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0'
+                        readOnly
+                        value={spotData.description} />
                 </div>}
-                {publicIds.length > 0 && isPlaying && <div className="relative w-full mx-auto flex flex-col items-center justify-center bg-black/50 backdrop-blur-[2px] rounded-3xl">
+                {publicIds.length > 0 && isTimeToRender && <div className="relative w-full mx-auto flex flex-col items-center justify-center bg-black/50 backdrop-blur-[2px] rounded-3xl">
                     <div className="w-16 h-7 absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center justify-center gap-1 text-white">
                         {publicIds.map((_, index) => (
                             <div
@@ -110,7 +125,7 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
                             />
                         ))}
                     </div>
-                    <div className="absolute top-2 right-20">
+                    <div className="absolute top-2 left-4">
                         <Button
                             className="w-12 md:w-14 h-12 md:h-14 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-[2px] text-white"
                             size={'icon'}
@@ -127,7 +142,6 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
                         alt="Description of my image"
                         sizes="100vw"
                         className={"w-full h-fit object-cover shadow-md rounded-3xl"}
-                        priority={currentIndex === 0} // Prefetch the first image
                     />
                     <div className="absolute top-2 right-4">
                         <Button

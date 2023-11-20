@@ -3,7 +3,7 @@
 import type { RouterOutputs } from '@/server/api'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -26,6 +26,7 @@ function ContentTab({ data }: ContentTabProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isSelected, setSelected] = useState(false)
     const router = useRouter()
+    const pathname = usePathname()
 
     function handleSelection(id: string) {
         if (selectedSpotsIds.includes(id)) {
@@ -44,6 +45,7 @@ function ContentTab({ data }: ContentTabProps) {
             toast.success(`Spot${selectedSpotsIds.length > 1 ? 's' : ''} deleted`)
             setSelectedSpotsIds([])
             setSelected(false)
+            router.push(pathname)
             router.refresh()
         } catch (error: any) {
             console.log(error); // TODO: handle error

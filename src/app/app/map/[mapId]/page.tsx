@@ -11,16 +11,16 @@ const USERNAME = env.NEXT_PUBLIC_MAPBOX_USERNAME
 
 async function MapFromPage({ params, searchParams }: { params: { mapId: string }, searchParams: any }) {
 
-    if (searchParams.spotId) {
-        const spotdata = await api.spots.getSpotById.query({ spotIdSchema: { id: searchParams.spotId }, mapIdSchema: { id: params.mapId } })
-        const projectsdata = await api.projects.getProjectsByMapId.query({ id: params.mapId })
-        if (!spotdata || !projectsdata) return null
-        return (
-            <div className='w-[500px] h-full overflow-y-auto p-4 flex flex-col border-r'>
-                <SpotFormSlider spot={spotdata} projects={projectsdata} />
-            </div>
-        )
-    }
+    // if (searchParams.spotId) {
+    //     const spotdata = await api.spots.getSpotById.query({ spotIdSchema: { id: searchParams.spotId }, mapIdSchema: { id: params.mapId } })
+    //     const projectsdata = await api.projects.getProjectsByMapId.query({ id: params.mapId })
+    //     if (!spotdata || projectsdata) return null
+    //     return (
+    //         <div className='w-[500px] h-full overflow-y-auto p-4 flex flex-col border-r'>
+    //             <SpotFormSlider spot={spotdata} projects={projectsdata} />
+    //         </div>
+    //     )
+    // }
 
     const styles = await fetch(`https://api.mapbox.com/styles/v1/${USERNAME}?access_token=${STYLE_TOKEN}`)
         .then(res => res.json())
