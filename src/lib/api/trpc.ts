@@ -52,13 +52,12 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  console.log("enforceUserIsAuthed", ctx.auth?.userId);
-  if (!ctx.auth?.userId) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You have to be logged in to do this.",
-    });
-  }
+  // if (!ctx.auth?.userId) {
+  //   throw new TRPCError({
+  //     code: "UNAUTHORIZED",
+  //     message: "You have to be logged in to do this.",
+  //   });
+  // }
   return next({
     ctx: {
       auth: {
