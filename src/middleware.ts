@@ -1,17 +1,5 @@
-import { redirectToSignIn } from "@clerk/nextjs";
+import { NextResponse } from "next/server";
 import { authMiddleware } from "@clerk/nextjs/server";
-
-import { NextRequest, NextResponse } from "next/server";
-
-const before = (req: NextRequest) => {
-  const url = req.nextUrl.clone();
-
-  if (url.pathname.includes("api/trpc")) {
-    return NextResponse.next();
-  }
-
-  return NextResponse.next();
-};
 
 export default authMiddleware({
   publicRoutes: [
@@ -23,12 +11,20 @@ export default authMiddleware({
     "api/webhooks/clerk",
     "api/webhooks/stripe",
   ],
-  beforeAuth: before,
   afterAuth(auth, req) {
-    if (!auth.userId && !auth.isPublicRoute) {
-      return redirectToSignIn({ returnBackUrl: req.url });
+    const isPublicRoute = auth.isPublicRoute;
+    const userId = auth.userId;
+
+    if (isPublicRoute) {
+      return NextResponse.next();
     }
 
+    const url = new URL(req.nextUrl.origin);
+    if (!userId) {
+      // User is not signed in
+      url.pathname = "/sign-in";
+      return NextResponse.redirect(url);
+    }
     return NextResponse.next();
   },
 });
