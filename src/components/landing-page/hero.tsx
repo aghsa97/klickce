@@ -17,7 +17,7 @@ function Hero() {
             <p className="text-center text-muted-foreground font-medium text-base md:text-lg mt-2">
                 Discover, Customize, and Share Your Passion
                 <br />
-                with Our Unique Maps.
+                With Our Unique Maps.
             </p>
             <div className='flex items-center justify-center gap-4'>
                 <Button variant={'outline'} asChild>
