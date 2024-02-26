@@ -8,7 +8,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster';
-import { Providers } from '@/providers';
 
 const font = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] })
 
@@ -28,11 +27,9 @@ export default function RootLayout({
         <body className={font.className} style={{
           boxSizing: 'border-box',
         }}>
-          <Providers>
-            <ThemeProvider attribute="class" defaultTheme={'dark'} enableSystem>
-              {children}
-            </ThemeProvider>
-          </Providers>
+          <ThemeProvider attribute="class" defaultTheme={'dark'} enableSystem>
+            {children}
+          </ThemeProvider>
           <Toaster />
           <Analytics />
         </body>
