@@ -4,10 +4,12 @@ import { AppRouter } from "../api/routers/_app";
 
 export const getBaseUrl = () => {
   if (typeof window !== "undefined") return "";
-  const vc = process.env.VERCEL_URL;
-  console.log("process.env.VERCEL_URL", vc);
+  let vc = process.env.VERCEL_URL;
+  if (process.env.NODE_ENV === "production") {
+    vc = "https://klickce.vercel.app";
+    return vc;
+  }
   if (vc) return `https://${vc}`;
-  console.log("Dev mode");
   return `http://localhost:3000`;
 };
 
