@@ -5,9 +5,7 @@ import { AppRouter } from "../api/routers/_app";
 export const getBaseUrl = () => {
   if (typeof window !== "undefined") return "";
   let vc = process.env.VERCEL_URL;
-  console.log("vc", vc);
   if (process.env.VERCEL_ENV === "production") {
-    console.log("vc production", vc);
     return `https://www.klickce.se`;
   }
   if (vc) return `https://${vc}`;
