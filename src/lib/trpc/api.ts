@@ -4,13 +4,13 @@ import { headers } from "next/headers";
 import { appRouter } from "../api/routers/_app";
 import { loggerLink } from "@trpc/client";
 import { experimental_createTRPCNextAppDirServer as createTRPCNextAppDirServer } from "@trpc/next/app-dir/server";
-import SuperJSON from "superjson";
+import Superjson from "superjson";
 import { endingLink } from "./shared";
 
 export const api = createTRPCNextAppDirServer<typeof appRouter>({
   config() {
     return {
-      transformer: SuperJSON,
+      transformer: Superjson,
       links: [
         loggerLink({
           enabled: (opts) =>
