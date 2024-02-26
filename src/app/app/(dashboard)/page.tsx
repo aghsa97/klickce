@@ -4,7 +4,12 @@ import CreateMapBtn from './_components/create-map-btn'
 
 
 async function DashboardPage() {
-    const maps = await api.maps.getCustomerMaps.query()
+    let maps: any[] = []
+    try {
+        maps = await api.maps.getCustomerMaps.query()
+    } catch (error) {
+        console.log(error);
+    }
     return (
         <div className='w-full'>
             <div className='mb-6 flex items-center justify-between'>
