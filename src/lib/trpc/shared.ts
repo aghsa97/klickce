@@ -4,7 +4,10 @@ import { AppRouter } from "../api/routers/_app";
 
 export const getBaseUrl = () => {
   if (typeof window !== "undefined") return "";
-  const vc = process.env.VERCEL_URL;
+  let vc = process.env.VERCEL_URL;
+  if (process.env.VERCEL_ENV === "production") {
+    return `https://www.klickce.se`;
+  }
   if (vc) return `https://${vc}`;
   return `http://localhost:3000`;
 };
