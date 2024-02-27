@@ -2,19 +2,17 @@ import type { ReactNode } from "react";
 
 import Header from "@/components/landing-page/header";
 import Logo from "@/components/ui/logo";
-import AppFooter from "@/components/landing-page/landing-page-footer";
+import LandingPageFooter from "@/components/landing-page/landing-page-footer";
 
 export default function LandingPageLayout(props: { children: ReactNode }) {
     return (
-        <div className="flex min-h-screen flex-col max-w-screen-md mx-auto">
-            <nav className="w-full px-4 fixed max-w-screen-md z-50 flex h-16 items-center justify-between border-b backdrop-blur-[2px]">
-                <div className="mr-8">
-                    <Logo size="lg" />
-                </div>
+        <div className="flex min-h-screen flex-col max-w-screen-xl mx-auto px-3 xl:px-0">
+            <nav className="w-full flex py-3 items-center justify-between">
+                <Logo className="text-3xl" />
                 <Header />
             </nav>
             <main className="flex-1">{props.children}</main>
-            <AppFooter />
+            <LandingPageFooter />
         </div>
     );
 }

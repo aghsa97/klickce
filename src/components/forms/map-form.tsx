@@ -3,6 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useTransition } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { z } from 'zod'
 
 import { updateMapSchema } from '@/lib/db/schema/maps'
@@ -13,13 +15,11 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Switch } from '../ui/switch'
 import ActionBtns from './action-btns'
-import { useToastAction } from '@/hooks/use-toast-action'
-import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { env } from '@/env'
 import { Label } from '../ui/label'
 import { Button } from '../ui/button'
-import Link from 'next/link'
+import { toast } from 'sonner'
 
 
 const STYLE_TOKEN = env.NEXT_PUBLIC_MAPBOX_API_TOKEN
@@ -32,7 +32,6 @@ type MapCustomizeTabFormProps = {
 
 function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
     const router = useRouter()
-    const { toast } = useToastAction()
     const [_, startTransition] = useTransition()
 
     const form = useForm<z.infer<typeof updateMapSchema>>({
@@ -50,7 +49,7 @@ function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
         startTransition(async () => {
             try {
                 await api.maps.updateMap.mutate({ ...data })
-                toast('updated', `Map ${data.name} updated`)
+                toast.success(`Map ${data.name} updated`)
                 router.refresh()
             } catch (error) {
                 console.log(error); // TODO: handle error
@@ -63,11 +62,10 @@ function MapCustomizeTabForm({ data }: MapCustomizeTabFormProps) {
         startTransition(async () => {
             try {
                 await api.maps.deleteMap.mutate({ id: data.id })
-                toast('deleted', `Map ${data.name} deleted`)
+                toast.success(`Map ${data.name} deleted`)
                 router.push('/app')
             } catch (error) {
-                console.log(error); // TODO: handle error
-                toast('error')
+                toast.error('An unknown error occurred, please try again later.')
             }
         })
     }

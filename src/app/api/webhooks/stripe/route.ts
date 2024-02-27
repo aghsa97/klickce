@@ -2,10 +2,9 @@ import type { NextRequest } from "next/server";
 import { TRPCError } from "@trpc/server";
 import { getHTTPStatusCodeFromError } from "@trpc/server/http";
 
-import { appRouter, stripe } from "@/lib/api/routers/_app";
+import { stripe } from "@/lib/api/routers/_app";
 
 import { env } from "@/env";
-import { createTRPCContext } from "@/lib/api";
 
 export async function POST(req: NextRequest) {
   const payload = await req.text();
@@ -20,29 +19,28 @@ export async function POST(req: NextRequest) {
 
     /**
      * Forward to tRPC API to handle the webhook event
-     */
-    const ctx = createTRPCContext({ req });
-    const caller = appRouter.createCaller(ctx);
+    //const ctx = createTRPCContext({ req });
+    //const caller = appRouter.createCaller(ctx);
+    */
 
     switch (event.type) {
       case "checkout.session.completed":
-        await caller.stripeRouter.webhooks.sessionCompleted({ event });
+        // await caller.stripeRouter.webhooks.sessionCompleted({ event });
         break;
 
       case "customer.subscription.deleted":
-        await caller.stripeRouter.webhooks.customerSubscriptionDeleted({
-          event,
-        });
+        // await caller.stripeRouter.webhooks.customerSubscriptionDeleted({
+        //   event,
+        // });
         break;
 
       case "customer.subscription.updated":
-        await caller.stripeRouter.webhooks.customerSubscriptionUpdated({
-          event,
-        });
+        // await caller.stripeRouter.webhooks.customerSubscriptionUpdated({
+        //   event,
+        // });
         break;
 
       case "customer.subscription.trial_will_end":
-        console.log("customer.subscription.trial_will_end");
         break;
 
       default:
@@ -51,12 +49,10 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (error instanceof TRPCError) {
       const errorCode = getHTTPStatusCodeFromError(error);
-      console.error("Error in tRPC webhook handler", error);
       return new Response(error.message, { status: errorCode });
     }
 
     const message = error instanceof Error ? error.message : "Unknown error";
-    console.error("Error in Stripe webhook handler", error);
     return new Response(`Webhook Error: ${message}`, {
       status: 400,
     });

@@ -19,7 +19,9 @@ export const webhookRouter = router({
       const isCustomer = await ctx.db.query.customers.findFirst({
         where: eq(customers.clerkUesrId, input.data.data.id),
       });
-      if (isCustomer) return;
+      if (isCustomer) {
+        throw new Error("User already exists");
+      }
       await ctx.db
         .insert(customers)
         .values({
@@ -28,40 +30,6 @@ export const webhookRouter = router({
           name:
             input.data.data.first_name || "" + input.data.data.last_name || "",
         })
-        .execute();
-
-      const stripeCustomer = await stripe.customers.create({
-        email: input.data.data.email_addresses[0].email_address,
-        metadata: {
-          clerkUesrId: input.data.data.id,
-        },
-      });
-
-      const subscription = await stripe.subscriptions.create({
-        customer: stripeCustomer.id,
-        items: [{ price: env.STRIPE_BASIC_MONTHLY_PRICE_ID }],
-        trial_period_days: 30,
-        trial_settings: {
-          end_behavior: {
-            missing_payment_method: "pause",
-          },
-        },
-        metadata: {
-          plan: "BASIC",
-        },
-      });
-
-      await ctx.db
-        .update(customers)
-        .set({
-          stripeId: stripeCustomer.id,
-          subscriptionId: subscription.id,
-          subPlan: "BASIC",
-          endsAt: new Date(subscription.current_period_end * 1000),
-          paidUntil: new Date(subscription.current_period_end * 1000),
-          onTrial: true,
-        })
-        .where(eq(customers.clerkUesrId, input.data.data.id))
         .execute();
     }
 

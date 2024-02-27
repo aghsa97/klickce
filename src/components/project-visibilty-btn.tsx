@@ -3,15 +3,14 @@
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 
-import { useToastAction } from '@/hooks/use-toast-action'
 import { api } from '@/lib/trpc/client'
 import { Button } from './ui/button'
 import * as Icon from './icons'
+import { toast } from 'sonner'
 
 function ProjectVisibiltyBtn({ data }: { data: { id: string, isVisible: boolean } }) {
     const router = useRouter()
     const [_, startTransition] = useTransition()
-    const { toast } = useToastAction()
 
     async function updateVisibilty() {
         startTransition(async () => {
@@ -20,11 +19,10 @@ function ProjectVisibiltyBtn({ data }: { data: { id: string, isVisible: boolean 
                     id: data.id,
                     isVisible: !data.isVisible
                 })
-                toast('updated', data.isVisible ? 'Project now is hidden' : 'Project now is visible')
+                toast.success(data.isVisible ? 'Project now is hidden' : 'Project now is visible')
                 router.refresh()
             } catch (error) {
-                console.log(error);
-                toast('error')
+                toast.error("Something went wrong, please try again later.")
             }
         })
     }

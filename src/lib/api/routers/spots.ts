@@ -5,7 +5,6 @@ import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 import {
   insertSpotSchema,
-  selectSpotSchema,
   spotIdSchema,
   spots,
   updateSpotSchema,
@@ -19,14 +18,6 @@ import { images } from "@/lib/db/schema/images";
 import { z } from "zod";
 
 export const spotsRouter = router({
-  getSpotsCount: publicProcedure.query(async ({ ctx }) => {
-    const [count] = await ctx.db
-      .select({ count: sql<number>`count(*)` })
-      .from(spots)
-      .execute();
-
-    return count;
-  }),
   getSpotById: publicProcedure
     .input(z.object({ spotIdSchema, mapIdSchema }))
     .query(async ({ ctx, input }) => {
@@ -54,21 +45,7 @@ export const spotsRouter = router({
         .where(eq(spots.ownerId, currentCustomer[0].clerkUesrId))
         .execute();
 
-      const userPlan = currentCustomer[0].subPlan;
-      if (!userPlan) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message:
-            "You don't have a plan, please subscribe to start using Klickce.",
-        });
-      }
-      const limit = allPlans[userPlan].limits.spots;
-
-      if (
-        spotsCount.count >= limit &&
-        currentCustomer[0].id !== 1 &&
-        currentCustomer[0].id !== 2 // HOT FIX FOR DEMO ACCOUNTS CHANGE IT LATER
-      ) {
+      if (spotsCount.count >= 50 && !currentCustomer[0].onTrial) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "You have reached the limit of spots.",

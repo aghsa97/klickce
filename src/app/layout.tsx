@@ -1,13 +1,12 @@
 import { Poppins } from 'next/font/google'
+import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from '@vercel/analytics/react'
 
 
 import '../styles/globals.css'
 import type { Metadata } from 'next'
-import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner"
 
-import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/toaster';
 import { Providers } from '@/providers';
 
 const font = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] })
@@ -29,9 +28,7 @@ export default function RootLayout({
           boxSizing: 'border-box',
         }}>
           <Providers>
-            <ThemeProvider attribute="class" defaultTheme={'dark'} enableSystem>
-              {children}
-            </ThemeProvider>
+            {children}
           </Providers>
           <Toaster />
           <Analytics />

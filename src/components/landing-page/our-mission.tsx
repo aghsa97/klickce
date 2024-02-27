@@ -1,21 +1,14 @@
 import React from 'react'
 
-import { Button } from '../ui/button'
-import * as Icon from '../icons';
 import { aboutUs } from '@/app/config';
 
 function OurMission() {
     return (
-        <div className='flex flex-col justify-center items-center gap-12 w-full border border-border rounded-lg px-6 py-6'>
-            <div className='flex flex-col items-center justify-center gap-2'>
-                <Button variant={'outline'} size="icon" className='w-16 h-16 rounded-full'>
-                    <Icon.FingerPrint className='w-8 h-8' />
-                </Button>
-                <h2 className="text-xl md:text-3xl font-semibold text-center">
-                    Our mission
-                </h2>
-            </div>
-            <div className='w-full flex items-center justify-center text-center text-base'>
+        <div className='flex flex-col 2xl:flex-row justify-center items-start gap-12 2xl:gap-24 text-zinc-950 w-full px-12 py-24 my-24 backdrop-blur-[1pxs] border rounded-2xl bg-gradient-to-br from-zinc-200/50 from-0% to-50%'>
+            <h2 className="text-3xl font-semibold tracking-tight shrink-0">
+                Our mission
+            </h2>
+            <div className='w-full text-pretty text-[22px] leading-normal'>
                 {aboutUs.body}
             </div>
         </div>

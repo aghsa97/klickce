@@ -1,23 +1,4 @@
-import dynamic from "next/dynamic";
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
-import Logo from "@/components/ui/logo";
 import AppHeader from "@/components/layouts/app-header";
-
-const ThemeToggle = dynamic(() => import("@/components/theme-toggle"), {
-    ssr: false,
-    loading: () => (
-        <Button
-            variant="ghost"
-            size="sm"
-            className="gap-1 px-2 text-lg font-semibold md:text-base"
-        >
-            <div className="h-6 w-6 animate-pulse rounded-full bg-muted-foreground/70" />
-        </Button>
-    ),
-});
 
 async function DashboardLayout(props: { children: React.ReactNode }) {
     return (

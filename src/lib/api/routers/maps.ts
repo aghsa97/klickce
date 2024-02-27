@@ -18,21 +18,6 @@ import { images } from "@/lib/db/schema/images";
 import { deleteFolder, deleteImage } from "@/lib/cloudinary";
 
 export const mapsRouter = router({
-  getMapsCount: publicProcedure.query(async ({ ctx }) => {
-    const [count] = await ctx.db
-      .select({ count: sql<number>`count(*)` })
-      .from(maps)
-      .execute();
-    return count;
-  }),
-  getViewsCount: publicProcedure.query(async ({ ctx }) => {
-    const [count] = await ctx.db
-      .select({ count: sql<number>`SUM(views)` })
-      .from(maps)
-      .execute();
-
-    return count;
-  }),
   getCustomerMaps: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db
       .select()
@@ -164,22 +149,7 @@ export const mapsRouter = router({
         .where(eq(maps.ownerId, ctx.auth.userId))
         .execute();
 
-      const userPlan = currentCustomer[0].subPlan;
-      if (!userPlan) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message:
-            "You don't have a plan, please subscribe to start using Klickce.",
-        });
-      }
-
-      const limit = allPlans[userPlan].limits.maps;
-
-      if (
-        mapsCount.count >= limit &&
-        currentCustomer[0].id !== 1 &&
-        currentCustomer[0].id !== 2 // HOT FIX FOR DEMO ACCOUNTS CHANGE IT LATER
-      ) {
+      if (mapsCount.count >= 1 && !currentCustomer[0].onTrial) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "You have reached the limit for your plan.",
