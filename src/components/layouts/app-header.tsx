@@ -31,7 +31,7 @@ function AppHeader({ className }: AppHeaderProps) {
         )}>
             <div className="flex items-center justify-between">
                 <Link href={'/app'} className="mr-8 items-center flex">
-                    <Logo size="lg" />
+                    <Logo />
                 </Link>
                 <Link href={`/app`} className="ml-8 hidden items-center md:flex text-sm text-muted-foreground hover:text-secondary-foreground">
                     Dashboard
