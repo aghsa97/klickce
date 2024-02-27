@@ -6,7 +6,6 @@ import Image from 'next/image';
 
 import { CldImage } from 'next-cloudinary';
 
-import { useToastAction } from '@/hooks/use-toast-action';
 import { api } from '@/lib/trpc/client';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +13,7 @@ import { buttonVariants } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label'
 import * as Icon from '../icons'
+import { toast } from 'sonner';
 
 type ImageSectionProps = {
     spotId: string
@@ -23,7 +23,6 @@ function ImageSection({ spotId }: ImageSectionProps) {
     const { mapId } = useParams()
     const [isPending, startTransition] = useTransition()
     const [publicIds, setPublicIds] = useState<{ id: string, publicId: string }[]>([])
-    const { toast } = useToastAction()
 
     useEffect(() => {
         function getPublicIds() {
@@ -38,7 +37,7 @@ function ImageSection({ spotId }: ImageSectionProps) {
 
     async function handleImgChange(e: ChangeEvent<HTMLInputElement>) {
         if (!e.target.files || !mapId) {
-            toast('error')
+            toast.error('Something went wrong, please try again later.')
             return; // TODO: add error handling
         }
 
@@ -56,13 +55,13 @@ function ImageSection({ spotId }: ImageSectionProps) {
                                 spotId,
                             })
                             setPublicIds((prev) => [...prev, { id: result.id, publicId: result.publicId }])
-                            toast('created')
+                            toast.success('Created successfully')
                         } catch (error: any) {
                             console.log(error); // TODO: handle error
                             if (error.message === 'Maximum number of images reached') {
-                                toast('error', error.message)
+                                toast.error(error.message)
                             } else
-                                toast('error', 'Could not upload image, try again later.')
+                                toast.error('Could not upload image, try again later.')
                         } finally {
                             setPublicIds((prev) => prev.filter((img) => img.publicId !== 'loading'))
                         }
@@ -78,10 +77,9 @@ function ImageSection({ spotId }: ImageSectionProps) {
             try {
                 await api.images.deleteImage.mutate({ id })
                 setPublicIds((prev) => prev.filter((img) => img.id !== id))
-                toast('deleted')
+                toast.success('Deleted successfully')
             } catch (error: any) {
-                console.log(error); // TODO: handle error
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
     }

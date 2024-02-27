@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useTransition } from 'react'
 import { z } from 'zod'
 
-import { useToastAction } from '@/hooks/use-toast-action'
 import { updateSpotSchema } from '@/lib/db/schema/spots'
 import { api, RouterOutputs } from '@/lib/trpc/client'
 
@@ -17,6 +16,7 @@ import { Textarea } from '../ui/textarea'
 import ImageSection from './img-section'
 import ActionBtns from './action-btns'
 import { Input } from '../ui/input'
+import { toast } from 'sonner'
 
 
 
@@ -30,7 +30,6 @@ type SpotPopoverProps = {
 function SpotForm({ data, project, projects }: SpotPopoverProps) {
     const router = useRouter()
     const [_, startTransition] = useTransition()
-    const { toast } = useToastAction()
 
     const form = useForm<z.infer<typeof updateSpotSchema>>({
         resolver: zodResolver(updateSpotSchema),
@@ -59,11 +58,10 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
         startTransition(async () => {
             try {
                 await api.spots.updateSpot.mutate({ ...data })
-                toast('updated', `Spot ${data.name} updated`)
+                toast.success(`Spot ${data.name} updated`)
                 router.refresh()
             } catch (error: any) {
-                console.log(error); // TODO: handle error
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
     }
@@ -72,11 +70,10 @@ function SpotForm({ data, project, projects }: SpotPopoverProps) {
         startTransition(async () => {
             try {
                 await api.spots.deleteSpot.mutate({ id: data.id })
-                toast('deleted', `Spot ${data.name} deleted`)
+                toast.success(`Spot ${data.name} deleted`)
                 router.refresh()
             } catch (error: any) {
-                console.log(error); // TODO: handle error
-                toast('error', error.message)
+                toast.error(error.message)
             }
         })
     }

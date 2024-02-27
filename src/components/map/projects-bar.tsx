@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { z } from 'zod';
 import Link from 'next/link';
 import { Badge } from "@nextui-org/react";
 import { usePathname, useSearchParams } from 'next/navigation';
