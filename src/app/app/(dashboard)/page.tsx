@@ -18,16 +18,13 @@ async function DashboardPage() {
                 </div>
                 <CreateMapBtn />
             </div>
-            <ul className='grid grid-cols-2 gap-5'>
+            <ul className='grid gap-3'>
                 {/* Map cards go here needs to be redesigned*/}
                 {maps.map((map) => (
                     <MapCard
                         key={map.id}
                         id={map.id}
                         name={map.name}
-                        views={map.views}
-                        tags={[]}
-                        style={''}
                     />
                 ))}
             </ul>

@@ -1,17 +1,17 @@
-import { cn } from '@/lib/utils'
 import React from 'react'
+import { Leckerli_One } from 'next/font/google'
 
-function Logo({ size = 'base', className }: { size?: 'base' | 'sm' | 'lg' | '3xl' | '2xl' | 'xs', className?: string }) {
+import { cn } from '@/lib/utils'
+
+const font = Leckerli_One({ subsets: ['latin'], weight: ['400'] })
+
+type Props = {
+    className?: string
+}
+
+function Logo({ className }: Props) {
     return (
-        <p className={cn("font-semibold",
-            size === '3xl' && "text-3xl",
-            size === '2xl' && "text-2xl",
-            size === 'lg' && "text-lg",
-            size === 'base' && "text-base",
-            size === 'sm' && "text-sm",
-            size === 'xs' && "text-xs",
-            className
-        )}>Klick<span className="text-primary">ce</span></p>
+        <div className={cn("text-2xl text-foreground", className)} style={font.style}>Klickce</div>
     )
 }
 

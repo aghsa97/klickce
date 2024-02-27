@@ -28,16 +28,16 @@ export const marketingFeatures = [
             </>
         ),
     },
-    {
-        icon: <Icons.Kanban className="h-8 w-8" />,
-        title: "Detailed Overview",
-        badge: "Coming Soon",
-        body: (
-            <>
-                Stay updated on your map performance. With Our Analytics, monitor map views, interactions, and user engagement at your fingertips.
-            </>
-        ),
-    },
+    // {
+    //     icon: <Icons.Kanban className="h-8 w-8" />,
+    //     title: "Detailed Overview",
+    //     badge: "Coming Soon",
+    //     body: (
+    //         <>
+    //             Stay updated on your map performance. With Our Analytics, monitor map views, interactions, and user engagement at your fingertips.
+    //         </>
+    //     ),
+    // },
     {
         icon: <Icons.Share className="w-8 h-8" />,
         title: "Sharing & Integration",
@@ -65,15 +65,15 @@ export const marketingFeatures = [
             </>
         ),
     },
-    {
-        icon: <Icons.MonitorSmartphone className="h-8 w-8" />,
-        title: "Always Accessible",
-        badge: "Coming Soon",
-        body: (
-            <>
-                Our responsive design ensures that whether you are creating or browsing, Klickce maps adjust perfectly to your mobile screens.            </>
-        ),
-    },
+    // {
+    //     icon: <Icons.MonitorSmartphone className="h-8 w-8" />,
+    //     title: "Always Accessible",
+    //     badge: "Coming Soon",
+    //     body: (
+    //         <>
+    //             Our responsive design ensures that whether you are creating or browsing, Klickce maps adjust perfectly to your mobile screens.            </>
+    //     ),
+    // },
 ];
 
 export const faqs = [
@@ -115,9 +115,7 @@ export const aboutUs = {
     body: (
         <p>
             We believe that every journey, every adventure, and every dream is unique.
-            <br />
             We designed Klickce to let you craft your stories, stitch your memories,
-            <br />
             and share your vision on a canvas that is truly yours.
         </p>
     ),
