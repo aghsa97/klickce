@@ -120,7 +120,7 @@ function Map({ data }: MapProps) {
             <div className="absolute text-xs italic w-max bottom-1 right-4 md:left-1/2 md:right-1/2 text-white bg-black/50 backdrop-blur-[2px] rounded-full px-3 py-1.5 gap-1.5 flex items-center justify-center">
                 <p>Powered By</p>
                 <Link href={'https://www.klickce.se/'} target="_blank">
-                    <Logo size="xs" />
+                    <Logo />
                 </Link>
             </div>
         </ReactMap>
