@@ -13,7 +13,7 @@ async function MapLayout({ params, children }: { children: React.ReactNode, para
 
     if (!data) return notFound()
     return (
-        <div className='relative h-screen box-border overflow-hidden'
+        <div className='relative h-dvh box-border overflow-hidden'
             style={{
                 height: "calc(var(--vh, 1vh) * 100)",
             }}

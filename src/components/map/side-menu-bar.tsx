@@ -28,22 +28,22 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
     if (!spotData || isMobile) return null
     return (
         <div
-            className={cn('hidden absolute top-0 z-50 md:flex gap-4 pb-12 mx-6 pt-6 w-fit h-full overflow-y-scroll',
+            className={cn('hidden absolute top-0 z-50 md:flex gap-3 pb-12 mx-3 pt-3 w-fit h-full overflow-y-scroll',
                 !spotData.description && 'flex-col',
             )}>
-            <header className={"flex flex-col bg-black/50 text-white backdrop-blur-[2px] rounded-[2.8rem] w-[35vw] md:max-w-3xl h-fit shadow-md"}>
-                <div className={cn('flex items-center justify-between pl-8 pr-2 py-2',
-                    spotData.description && 'border-b'
+            <header className={"flex flex-col bg-black/50 text-white backdrop-blur-[2px] rounded-2xl w-[22vw] md:max-w-3xl h-fit shadow-md"}>
+                <div className={cn('flex items-center justify-between pl-3 pr-2 py-2',
+                    spotData.description && 'border-b border-border/25',
                 )
                 }>
-                    <div className="flex items-center justify-start gap-4">
-                        <div className='w-8 h-8 rounded-full border-4 border-white flex-shrink-0'
+                    <div className="flex items-center justify-start gap-3">
+                        <div className='size-8 rounded-full border-4 border-white flex-shrink-0'
                             style={{ backgroundColor: spotData.color }}
                         />
                         <div className='flex flex-col items-start justify-center'>
-                            <p className='text-xl hover:underline underline-offset-4 decoration-[2px] cursor-pointer'
+                            <p className='text-xl font-semibold hover:underline underline-offset-4 decoration-[2px] cursor-pointer'
                             >{spotData.name}</p>
-                            <p className='text-base text-muted/50 dark:text-muted-foreground line-clamp-1'
+                            <p className='text-base text-muted-foreground dark:text-muted-foreground line-clamp-1'
                             >{spotData.address}</p>
                         </div>
                     </div>
@@ -51,8 +51,8 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button size={'sm'} variant="outline" className="w-16 h-16 rounded-full bg-black mr-2" onClick={() => NavigateToGoogleMaps(spotData.address)}>
-                                        <Icon.Milestone className='w-8 h-8' strokeWidth={3} />
+                                    <Button size={'icon'} variant="ghost" className="size-12 rounded-full mr-3" onClick={() => NavigateToGoogleMaps(spotData.address)}>
+                                        <Icon.Milestone className='size-6' strokeWidth={3} />
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -60,18 +60,18 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
-                        <Button size={'sm'} variant="outline" className="w-16 h-16 rounded-full bg-black mr-2" onClick={() => router.push(pathname)}>
-                            <Icon.Close className='w-8 h-8' strokeWidth={3} />
+                        <Button size={'icon'} variant="ghost" className="size-12 rounded-full mr-3" onClick={() => router.push(pathname)}>
+                            <Icon.Close className='size-6' strokeWidth={3} />
                         </Button>
                     </div>
                 </div>
-                {spotData.description && <div className='p-4 pb-8'>
-                    <p className='text-base'>
+                {spotData.description && <div className='p-3 py-6'>
+                    <p className='text-base text-pretty'>
                         {spotData.description}
                     </p>
                 </div>}
             </header>
-            {publicIds.length > 0 && <div className={"w-[35vw] md:max-w-3xl h-full flex flex-col gap-2 overflow-y-scroll"}>
+            {publicIds.length > 0 && <div className={"w-[28vw] md:max-w-3xl h-full flex flex-col gap-3 overflow-y-scroll"}>
                 {publicIds.map((publicId) => (
                     <CldImage
                         key={publicId}
@@ -80,7 +80,7 @@ function SideMenuBar({ spotData, publicIds }: SideMenuBarProps) {
                         height="0"
                         sizes="100vw"
                         alt="Description of my image"
-                        className={"w-full object-cover shadow-md rounded-[2.8rem] "}
+                        className={"w-full object-cover shadow-md rounded-2xl"}
                     />
                 ))}
             </div>}
