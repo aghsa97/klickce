@@ -19,15 +19,11 @@ import { deleteFolder, deleteImage } from "@/lib/cloudinary";
 
 export const mapsRouter = router({
   getCustomerMaps: protectedProcedure.query(async ({ ctx }) => {
-    try {
-      return await ctx.db
-        .select()
-        .from(maps)
-        .where(eq(maps.ownerId, ctx.auth.userId))
-        .execute();
-    } catch (error) {
-      console.error(error);
-    }
+    return await ctx.db
+      .select()
+      .from(maps)
+      .where(eq(maps.ownerId, ctx.auth.userId))
+      .execute();
   }),
   getMapById: publicProcedure
     .input(mapIdSchema)
