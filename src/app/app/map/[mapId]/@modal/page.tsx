@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation';
 
 
 import { cn } from '@/lib/utils';
-import { api } from '@/lib/trpc/api'
 
 import CloudinaryImg from './_components/cloudinary-img';
+import { getImagesBySpotId, getProjectById, getSpotById } from '@/lib/queries/inedex';
 
 
 const searchParamsSchema = z.object({
@@ -21,9 +21,9 @@ async function Page(props: { params: { mapId: string }, searchParams: { [key: st
 
     const spotId = search.data.spotId
 
-    const spot = spotId ? await api.spots.getSpotById.query({ spotIdSchema: { id: spotId }, mapIdSchema: { id: props.params.mapId } }) : null
-    const project = spot && spot.projectId ? await api.projects.getProjectById.query({ id: spot.projectId }) : null
-    const imgsIds = spot && spotId ? await api.images.getImagesBySpotId.query({ id: spotId }) : null
+    const spot = spotId ? await getSpotById(spotId) : null
+    const project = spot && spot.projectId ? await getProjectById(spot.projectId) : null
+    const imgsIds = spot && spotId ? await getImagesBySpotId(spotId) : null
 
     const spotData = spot && { ...spot, color: project?.color ?? spot?.color }
     const publicIds = imgsIds ? imgsIds.map((img) => img.publicId) : []

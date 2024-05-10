@@ -1,10 +1,10 @@
 import MapCard from '@/components/map-card'
-import { api } from '@/lib/trpc/api'
 import CreateMapBtn from './_components/create-map-btn'
+import { getCustomerMaps } from '@/lib/queries/inedex'
 
 
 async function DashboardPage() {
-    const maps = await api.maps.getCustomerMaps.query()
+    const maps = await getCustomerMaps()
 
     return (
         <div className='w-full'>
