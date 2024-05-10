@@ -4,6 +4,7 @@ import { maps } from "../db/schema/maps";
 import { auth } from "@clerk/nextjs";
 import { spots } from "../db/schema/spots";
 import { projects } from "../db/schema/projects";
+import { images } from "../db/schema/images";
 
 export async function getCustomerMaps() {
   const { userId } = auth();
@@ -95,7 +96,7 @@ export async function getProjectById(id: string) {
 
 export async function getImagesBySpotId(id: string) {
   const res = await db.query.images.findMany({
-    where: eq(spots.id, id),
+    where: eq(images.spotId, id),
   });
   return res;
 }

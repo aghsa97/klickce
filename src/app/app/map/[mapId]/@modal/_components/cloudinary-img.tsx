@@ -13,6 +13,7 @@ function CloudinaryImg({ publicId }: { publicId: string }) {
             sizes="100vw"
             alt="Description of my image"
             className={"w-full object-cover shadow-md rounded-[2.8rem] "}
+            priority
         />
     )
 }
