@@ -1,11 +1,10 @@
 import React from 'react'
 import { notFound } from 'next/navigation';
 
-import { api } from '@/lib/trpc/api'
-
 import { z } from 'zod';
 import SideMenuBar from '@/components/map/side-menu-bar';
 import MobileDataBar from '@/components/map/mobile-data-bar';
+import { getImagesBySpotId, getProjectById, getSpotById } from '@/lib/queries/inedex';
 
 export const revalidate = 900
 
@@ -20,9 +19,9 @@ async function MapPage(props: { params: { mapId: string }, searchParams: { [key:
 
     const spotId = search.data.spotId
 
-    const spot = spotId ? await api.spots.getSpotById.query({ spotIdSchema: { id: spotId }, mapIdSchema: { id: props.params.mapId } }) : null
-    const project = spot && spot.projectId ? await api.projects.getProjectById.query({ id: spot.projectId }) : null
-    const imgsIds = spot && spotId ? await api.images.getImagesBySpotId.query({ id: spotId }) : null
+    const spot = spotId ? await getSpotById(spotId) : null
+    const project = spot && spot.projectId ? await getProjectById(spot.projectId) : null
+    const imgsIds = spot && spotId ? await getImagesBySpotId(spotId) : null
 
     const spotData = spot && { ...spot, color: project?.color ?? spot?.color }
     const publicIds = imgsIds ? imgsIds.map((img) => img.publicId) : []

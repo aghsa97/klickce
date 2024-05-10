@@ -1,15 +1,15 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
 
-import { api } from '@/lib/trpc/api'
 import BrowseMap from '../_components/browse-map'
 import MapMenu from '@/components/map/map-menu';
 import ProjectsBar from '@/components/map/projects-bar';
+import { getMapById } from '@/lib/queries/inedex';
 
 
 async function MapLayout({ params, children }: { children: React.ReactNode, params: { mapId: string } }) {
     const mapId = params.mapId
-    const data = await api.maps.getMapById.query({ id: mapId })
+    const data = await getMapById(mapId)
 
     if (!data) return notFound()
     return (

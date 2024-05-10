@@ -1,14 +1,14 @@
 import { notFound } from "next/navigation";
 
 import AppHeader from "@/components/layouts/app-header";
-import { api } from "@/lib/trpc/api";
+import { getMapById } from "@/lib/queries/inedex";
 
 import FormSearch from "../_components/search";
 import FormTabs from "../_components/tabs";
 import Map from "../_components/edit-map";
 
 export default async function OnboardingLayout(props: { children: React.ReactNode, modal: React.ReactNode, params: { mapId: string } }) {
-    const data = await api.maps.getMapDataById.query({ id: props.params.mapId })
+    const data = await getMapById(props.params.mapId)
 
     if (!data) return notFound()
     return (

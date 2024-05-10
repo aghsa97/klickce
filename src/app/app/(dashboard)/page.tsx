@@ -1,5 +1,4 @@
 import MapCard from '@/components/map-card'
-import { api } from '@/lib/trpc/api'
 import CreateMapBtn from './_components/create-map-btn'
 import { getCustomerMaps } from '@/lib/queries/inedex'
 

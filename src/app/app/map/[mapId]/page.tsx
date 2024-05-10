@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { env } from '@/env';
-import { api } from '@/lib/trpc/api';
 
 import StyleFormSlider from '../_components/style-form-slider';
 import SpotFormSlider from '../_components/spot-form-slider';
+import { getProjectsByMapId, getSpotById } from '@/lib/queries/inedex';
 
 const STYLE_TOKEN = env.MAPBOX_STYLE_API_TOKEN
 const USERNAME = env.NEXT_PUBLIC_MAPBOX_USERNAME
@@ -12,8 +12,8 @@ const USERNAME = env.NEXT_PUBLIC_MAPBOX_USERNAME
 async function MapFromPage({ params, searchParams }: { params: { mapId: string }, searchParams: any }) {
 
     if (searchParams.spotId) {
-        const data = await api.spots.getSpotById.query({ spotIdSchema: { id: searchParams.spotId }, mapIdSchema: { id: params.mapId } })
-        const projects = await api.projects.getProjectsByMapId.query({ id: params.mapId })
+        const data = await getSpotById(searchParams.spotId)
+        const projects = await getProjectsByMapId(params.mapId)
         if (!data) return null
         return (
             <div className='w-[500px] h-full overflow-y-auto p-4 flex flex-col border-r'>
