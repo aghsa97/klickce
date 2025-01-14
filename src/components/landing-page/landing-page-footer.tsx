@@ -10,7 +10,7 @@ function LandingPageFooter() {
                     &copy; {new Date().getFullYear()} All rights reserved.
                 </p>
             </div>
-            <div className='flex flex-col lg:flex-row gap-12 w-full justify-between mt-12 text-foreground text-sm lg:text-base 2xl:text-lg'>
+            {/* <div className='flex flex-col lg:flex-row gap-12 w-full justify-between mt-12 text-foreground text-sm lg:text-base 2xl:text-lg'>
                 <div className='space-y-3'>
                     <h1 className='uppercase font-semibold'>Solutions</h1>
                     <ul className='space-y-3'>
@@ -40,7 +40,7 @@ function LandingPageFooter() {
                         <li>Contact</li>
                     </ul>
                 </div>
-            </div>
+            </div> */}
         </footer>
     );
 }
